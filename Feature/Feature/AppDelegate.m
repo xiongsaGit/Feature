@@ -7,6 +7,8 @@
 //
 
 #import "AppDelegate.h"
+#import "MainViewController.h"
+
 
 @interface AppDelegate ()
 
@@ -17,6 +19,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    [application setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    self.window.rootViewController = [[MainViewController alloc] init];
     return YES;
 }
 
