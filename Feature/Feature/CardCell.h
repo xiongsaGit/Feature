@@ -23,7 +23,7 @@ typedef void(^ToSignPageBlock)();
 @interface CardCell : UITableViewCell
 @property (nonatomic, copy) ToAuthorNamePageBlock toAuthorPageBlock;
 @property (nonatomic, copy) ToSignPageBlock toSignPageBlock;
-
+@property (nonatomic, assign) CardCellType cardType;
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier cellType:(CardCellType)cellType;
 

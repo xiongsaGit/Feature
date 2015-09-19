@@ -8,9 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-//typedef void(^SuspendViewReturnBackBlock)();
-//typedef void(^SuspendViewMagnifyBlock)();
-//typedef void(^SuspendViewMinifyBlock)();
 
 typedef void(^SuspendViewItemClickBlock)(UIButton *itemBtn);
 

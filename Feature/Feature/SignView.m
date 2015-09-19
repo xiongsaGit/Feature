@@ -9,7 +9,7 @@
 #import "SignView.h"
 
 static CGFloat const kSpace = 10;
-static CGFloat const kOriginY = 10;
+static CGFloat const kOriginY = 12;
 
 static CGFloat const kLabelHeight = 20;
 #define kSignFont   [UIFont systemFontOfSize:14]
@@ -17,6 +17,9 @@ static CGFloat const kLabelHeight = 20;
 @interface SignView()<UIGestureRecognizerDelegate>
 @property (nonatomic, strong) UILabel *authorNameLabel;
 @property (nonatomic, strong) UILabel *signLabel;
+
+@property (nonatomic, strong) UIButton *authorNameButton;
+@property (nonatomic, strong) UIButton *signButton;
 @end
 
 @implementation SignView
@@ -26,7 +29,7 @@ static CGFloat const kLabelHeight = 20;
 {
     if (self = [super initWithFrame:frame])
     {
-        
+        self.backgroundColor = [UIColor clearColor];
         [self configureUI];
         [self configureFrame];
         
@@ -36,12 +39,13 @@ static CGFloat const kLabelHeight = 20;
 
 - (void)showSignViewDataWithAuthorName:(NSString *)authorName sign:(NSString *)sign
 {
-    [self.authorNameLabel setText:authorName];
-    [self.signLabel setText:sign];
+    [self.authorNameButton setTitle:authorName forState:UIControlStateNormal];
+    NSString *resultSign = [NSString stringWithFormat:@"  %@  ",sign];
+    [self.signButton setTitle:resultSign forState:UIControlStateNormal];
 }
 
 
-- (void)handleTapGestureInSignLabel
+- (void)handleSignButton
 {
     if (self.signLabelTapBlock)
     {
@@ -49,7 +53,7 @@ static CGFloat const kLabelHeight = 20;
     }
 }
 
-- (void)handleTapGestureInAuthorNameLabel
+- (void)handleAuthorNameButton
 {
     if (self.authorNameTapBlock)
     {
@@ -59,8 +63,8 @@ static CGFloat const kLabelHeight = 20;
 
 - (void)configureUI
 {
-    [self addSubview:self.authorNameLabel];
-    [self addSubview:self.signLabel];
+    [self addSubview:self.authorNameButton];
+    [self addSubview:self.signButton];
 }
 
 /**
@@ -68,20 +72,45 @@ static CGFloat const kLabelHeight = 20;
  */
 - (void)configureFrame
 {
-    [self.signLabel mas_makeConstraints:^(MASConstraintMaker *make){
+    [self.signButton mas_makeConstraints:^(MASConstraintMaker *make){
         make.top.mas_equalTo(kOriginY);
         make.right.mas_equalTo(-kSpace);
         make.height.mas_equalTo(kLabelHeight);
 
     }];
     
-    [self.authorNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.authorNameButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(kOriginY);
 
-        make.right.mas_equalTo(self.signLabel.mas_left).offset(-kSpace);
+        make.right.mas_equalTo(self.signButton.mas_left).offset(-kSpace);
         
         make.height.mas_equalTo(kLabelHeight);
     }];
+}
+
+- (UIButton *)authorNameButton
+{
+    if (!_authorNameButton)
+    {
+        _authorNameButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_authorNameButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_authorNameButton addTarget:self action:@selector(handleAuthorNameButton) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _authorNameButton;
+}
+
+- (UIButton *)signButton
+{
+    if (!_signButton)
+    {
+        _signButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//        [_signButton setBackgroundColor:[UIColor redColor]];
+//        [_signButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 10)];
+        _signButton.layer.cornerRadius = 8;
+        [_signButton setBackgroundColor:[self randomColor]];
+        [_signButton addTarget:self action:@selector(handleSignButton) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _signButton;
 }
 
 
@@ -90,50 +119,19 @@ static CGFloat const kLabelHeight = 20;
  *
  *  @return 标签label
  */
-- (UILabel *)signLabel
-{
-    if (!_signLabel)
-    {
-        _signLabel = [[UILabel alloc] init];
-        _signLabel.layer.cornerRadius = 5;
-        _signLabel.layer.masksToBounds = YES;
-        _signLabel.font = [UIFont systemFontOfSize:14];
-        [_signLabel setBackgroundColor:[self randomColor]];
-        [_signLabel setUserInteractionEnabled:YES];
-        UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGestureInSignLabel)];
-        [_signLabel addGestureRecognizer:tapGes];
-    }
-    return _signLabel;
-}
-
-- (UILabel *)authorNameLabel
-{
-    if (!_authorNameLabel)
-    {
-        _authorNameLabel = [[UILabel alloc] init];
-        _authorNameLabel.backgroundColor = [UIColor clearColor];
-        [_authorNameLabel setFont:kSignFont];
-        [_authorNameLabel setUserInteractionEnabled:YES];
-        UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGestureInAuthorNameLabel)];
-        [_authorNameLabel addGestureRecognizer:tapGes];
-    }
-    return _authorNameLabel;
-}
-
-
 /**
  *  如何生成一个随机颜色，且不能为白色
  *
  *  @return <#return value description#>
  */
 - (UIColor *) randomColor
-
 {
-    
-    CGFloat red = (arc4random()%255/255.0);
-    CGFloat green = (arc4random()%255/255.0);
-    CGFloat blue = (arc4random()%255/255.0);
-
+    CGFloat red = (arc4random()%256/255.0);
+    CGFloat green = (arc4random()%256/255.0);
+    CGFloat blue = (arc4random()%256/255.0);
+    if (red == 1.0&&green == 1.0&&blue == 1.0 ) {
+        green = 0.5;
+    }
     return [UIColor colorWithRed:red green:green blue:blue alpha:1];
 }
 /*

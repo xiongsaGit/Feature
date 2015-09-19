@@ -28,7 +28,6 @@ static CGFloat const kSmallImageWidth = 100;
 
 @interface CardCell()
 
-@property (nonatomic, assign) CardCellType cardType;
 
 @property (nonatomic, strong) UIView *backView;
 @property (nonatomic, strong) SignView *signView;
@@ -45,6 +44,7 @@ static CGFloat const kSmallImageWidth = 100;
 {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])
     {
+        self.contentView.backgroundColor = UIColorFromHex(0xfefefe);
         self.cardType = cellType;
         [self configureUI];
     }
@@ -158,7 +158,7 @@ static CGFloat const kSmallImageWidth = 100;
         [self.cardImageView mas_makeConstraints:^(MASConstraintMaker *make){
             make.top.mas_equalTo(self.cardTitleLabel.mas_bottom).offset(kSpaceY/2);
             make.centerX.mas_equalTo(self.mas_centerX);
-            make.width.mas_equalTo(self.mas_width).offset(-2*kSpaceX);
+            make.width.mas_equalTo(self.mas_width);
             make.bottom.mas_equalTo(self.mas_bottom).offset(-kSpaceY/2);
             
         }];
@@ -248,6 +248,14 @@ static CGFloat const kSmallImageWidth = 100;
     if (!_cardImageView)
     {
         _cardImageView = [[UIImageView alloc] init];
+        [[_cardImageView layer] setShadowOffset:CGSizeMake(5, 5)]; //设置阴影起点位置
+        
+        [[_cardImageView layer] setShadowRadius:6];                       //设置阴影扩散程度
+        
+        [[_cardImageView layer] setShadowOpacity:1];                      //设置阴影透明度
+        
+        [[_cardImageView layer] setShadowColor:[UIColor grayColor].CGColor]; //设置阴影颜色
+        
     }
     return _cardImageView;
 }

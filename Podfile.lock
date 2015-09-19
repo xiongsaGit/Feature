@@ -24,6 +24,7 @@ PODS:
   - Masonry (0.6.2)
   - MGJRequestManager (0.8.2):
     - AFNetworking (~> 2.0)
+  - MJRefresh (2.4.10)
   - SDWebImage (3.7.3):
     - SDWebImage/Core (= 3.7.3)
   - SDWebImage/Core (3.7.3)
@@ -32,6 +33,7 @@ DEPENDENCIES:
   - JSONModel (~> 1.1.0)
   - Masonry (~> 0.6.2)
   - MGJRequestManager (~> 0.8.2)
+  - MJRefresh (~> 2.4.10)
   - SDWebImage (~> 3.7.3)
 
 SPEC CHECKSUMS:
@@ -39,6 +41,7 @@ SPEC CHECKSUMS:
   JSONModel: ec77e9865236a7a09d9cf7668df6b4b328d9ec1d
   Masonry: 362e8a1cc0beada4a4c4832d5e863da2a51533be
   MGJRequestManager: 912b56c5127478c93d70a53592245c07bb32ab88
+  MJRefresh: e52328552ed9cbfce3501e3820b18bf7643c65cc
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
 
 COCOAPODS: 0.38.2

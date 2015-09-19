@@ -16,6 +16,8 @@
 
 #import "RootModel.h"
 
+
+
 static CGFloat const kAnimationDuration = .2;
 static CGFloat const LeftMenuWidth = 200;//3*(self.view.frame.size.width)/4;
 
@@ -40,13 +42,15 @@ static CGFloat const LeftMenuWidth = 200;//3*(self.view.frame.size.width)/4;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    self.view.backgroundColor = [UIColor whiteColor];
     [self commonSet];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
     
     [[MGJRequestManager sharedInstance] POST:@"http://e.dangdang.com/media/api2.go" parameters:
      @{@"act": @"new",
@@ -72,6 +76,15 @@ static CGFloat const LeftMenuWidth = 200;//3*(self.view.frame.size.width)/4;
 /**
  *  何时请求
  */
+- (void)loadNewData
+{
+    NSLog(@"%s",__func__);
+}
+
+- (void)loadMoreData
+{
+    NSLog(@"%s",__func__);
+}
 
 - (void)commonSet
 {
@@ -144,7 +157,13 @@ static CGFloat const LeftMenuWidth = 200;//3*(self.view.frame.size.width)/4;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 200.0f;
+    DigestModel *model = self.tableData[indexPath.row];
+    CardCellType theType = [model.cardType intValue];
+    if (theType == CardCellTypeImage)
+    {
+        return 280;
+    }else
+        return 200.0f;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -233,7 +252,7 @@ static CGFloat const LeftMenuWidth = 200;//3*(self.view.frame.size.width)/4;
     
 }
 
-
+#pragma mark - 跳转详情页面
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //    NSIndexPath *
@@ -242,9 +261,9 @@ static CGFloat const LeftMenuWidth = 200;//3*(self.view.frame.size.width)/4;
     
     animation.duration = 1.0;
     
-    animation.timingFunction = UIViewAnimationCurveEaseInOut;
+//    animation.timingFunction = UIViewAnimationCurveEaseInOut;
     
-    animation.type = kCATransitionPush;//@"pageCurl";
+    animation.type = kCATransitionMoveIn;//kCATransitionPush;//@"pageCurl";
     
     //animation.type = kCATransitionPush;
     
@@ -293,7 +312,9 @@ static CGFloat const LeftMenuWidth = 200;//3*(self.view.frame.size.width)/4;
         _tableView.dataSource = self;
         _tableView.delegate = self;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        //        _tableView.bounces = NO;
+
+        _tableView.header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+        _tableView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
     }
     return _tableView;
 }

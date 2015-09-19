@@ -25,11 +25,17 @@ static CGFloat const kSpaceY = 20;
 {
     if (self = [super initWithFrame:frame])
     {
-        
+        [self configureUI];
+        [self configureFrame];
     }
     return self;
 }
 
+- (void)setArticleTitle:(NSString *)title Author:(NSString *)author
+{
+    self.titleLabel.text = title;
+    self.authorLabel.text = author;
+}
 
 - (void)configureUI
 {

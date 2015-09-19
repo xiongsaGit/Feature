@@ -214,7 +214,6 @@ static CGFloat const kOriginX = 10;
 
 - (NSMutableArray *)getStringTime:(NSInteger)counts
 {
-    NSString *timeString;
     NSMutableArray *array = [NSMutableArray array];
     if (counts >3600)
     {
@@ -316,7 +315,6 @@ static CGFloat const kOriginX = 10;
     NSArray *baseArray = [baseDate componentsSeparatedByString:@":"];
     
     
-    NSInteger intervalCount = 0;
     NSInteger nowCounts = 0;
     NSInteger baseCounts = 0;
     for (int i = 0; i< nowArray.count; i++)
