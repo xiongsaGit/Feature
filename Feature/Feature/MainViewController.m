@@ -18,8 +18,6 @@
 #import "SMTHomePageListRequest.h"
 #import "SMTListViewController.h"
 
-#import "SMTGifImageView.h"
-
 typedef NS_ENUM(NSInteger,HomePageListRequestType)
 {
     HomePageListRequestTypeDefault,
@@ -51,8 +49,6 @@ static CGFloat const kAnimationDuration = .2;
     
     self.view.backgroundColor = kCOLOR_VIEW_BACKGROUND;
     
-    [SMTGifImageView showGifInView:self.view];
-    
     [self commonSet];
 }
 
@@ -71,7 +67,7 @@ static CGFloat const kAnimationDuration = .2;
 {
     SMTHomePageListRequest *homePageListRequest = [[SMTHomePageListRequest alloc] initWithAct:act dayOrNight:dayOrNight sortPage:sortPage];
     [homePageListRequest startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
-        
+        [SvGifView startGifAddedToView:self.view];
         NSError* err = nil;
         RootModel *rootModel = [[RootModel alloc] initWithString:request.responseString error:&err];
         
@@ -93,6 +89,7 @@ static CGFloat const kAnimationDuration = .2;
         }
         
     } failure:^(YTKBaseRequest *request) {
+        [SvGifView stopGifForView:self.view];
         [SNLog Log:@"request fail"];
     }];
 }
@@ -111,8 +108,6 @@ static CGFloat const kAnimationDuration = .2;
 #pragma mark - 加载更多数据
 - (void)loadMoreDataInTableView
 {
-//    [self requestHomePageListWithAct:@"old" dayOrNight:@"day" requestType:HomePageListRequestTypeLoadMore];
-
     DigestModel *digestModel = self.tableData[self.tableData.count-1];
 
     [self requestHomePageListWithAct:@"old" dayOrNight:@"day" sortPage:digestModel.sortPage requestType:HomePageListRequestTypeLoadMore];

@@ -28,7 +28,6 @@
 		3335371C1BA6AC3000B5B353 /* SingleDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3335371B1BA6AC3000B5B353 /* SingleDetailViewController.m */; };
 		3335371F1BA6C14D00B5B353 /* TitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3335371E1BA6C14C00B5B353 /* TitleView.m */; };
 		334662751C1E9B1B0084F362 /* SMTPageDetatilRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 334662741C1E9B1B0084F362 /* SMTPageDetatilRequest.m */; };
-		334662C31C1EE2020084F362 /* SMTGifImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 334662C21C1EE2020084F362 /* SMTGifImageView.m */; };
 		336D6D1D1C1BD9EB001F1B33 /* SNLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 336D6D1C1C1BD9EB001F1B33 /* SNLog.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		336D6D201C1C24EC001F1B33 /* SMTListByAuthorRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 336D6D1F1C1C24EC001F1B33 /* SMTListByAuthorRequest.m */; };
 		336D6D231C1C2603001F1B33 /* SMTListBySignRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 336D6D221C1C2603001F1B33 /* SMTListBySignRequest.m */; };
@@ -45,6 +44,7 @@
 		338AA2FC1C1C77C900FBB79C /* UIImage+animatedGIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 338AA2FB1C1C77C900FBB79C /* UIImage+animatedGIF.m */; };
 		33F795441C1AC7BE001556FE /* SMTHomePageListRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F795431C1AC7BE001556FE /* SMTHomePageListRequest.m */; };
 		33F795481C1AD751001556FE /* SMTBaseRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F795471C1AD751001556FE /* SMTBaseRequest.m */; };
+		5693635E1C1F197D0051DB6F /* SvGifView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5693635D1C1F197D0051DB6F /* SvGifView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		EE0A2730A8BD34E14634E46C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 60F81D4E499FC6183799C50E /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -106,8 +106,6 @@
 		3335371E1BA6C14C00B5B353 /* TitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitleView.m; sourceTree = "<group>"; };
 		334662731C1E9B1B0084F362 /* SMTPageDetatilRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTPageDetatilRequest.h; sourceTree = "<group>"; };
 		334662741C1E9B1B0084F362 /* SMTPageDetatilRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTPageDetatilRequest.m; sourceTree = "<group>"; };
-		334662C11C1EE2020084F362 /* SMTGifImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTGifImageView.h; sourceTree = "<group>"; };
-		334662C21C1EE2020084F362 /* SMTGifImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTGifImageView.m; sourceTree = "<group>"; };
 		336D6D1B1C1BD9EB001F1B33 /* SNLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNLog.h; sourceTree = "<group>"; };
 		336D6D1C1C1BD9EB001F1B33 /* SNLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNLog.m; sourceTree = "<group>"; };
 		336D6D1E1C1C24EC001F1B33 /* SMTListByAuthorRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTListByAuthorRequest.h; sourceTree = "<group>"; };
@@ -141,6 +139,8 @@
 		33F795451C1AD6C3001556FE /* CommonURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonURL.h; sourceTree = "<group>"; };
 		33F795461C1AD751001556FE /* SMTBaseRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTBaseRequest.h; sourceTree = "<group>"; };
 		33F795471C1AD751001556FE /* SMTBaseRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTBaseRequest.m; sourceTree = "<group>"; };
+		5693635C1C1F197D0051DB6F /* SvGifView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SvGifView.h; sourceTree = "<group>"; };
+		5693635D1C1F197D0051DB6F /* SvGifView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SvGifView.m; sourceTree = "<group>"; };
 		60F81D4E499FC6183799C50E /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DB70D036B173E6000EC3E64 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "../Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -234,7 +234,6 @@
 		33153B751BA57DF2007B6859 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				334662BD1C1EE09D0084F362 /* CommonView */,
 				33153B761BA57DFF007B6859 /* SuspendView.h */,
 				33153B771BA57DFF007B6859 /* SuspendView.m */,
 				33153B781BA57DFF007B6859 /* MenuItem.h */,
@@ -253,15 +252,6 @@
 				338AA2F81C1C45CB00FBB79C /* SMTContentView.m */,
 			);
 			name = View;
-			sourceTree = "<group>";
-		};
-		334662BD1C1EE09D0084F362 /* CommonView */ = {
-			isa = PBXGroup;
-			children = (
-				334662C11C1EE2020084F362 /* SMTGifImageView.h */,
-				334662C21C1EE2020084F362 /* SMTGifImageView.m */,
-			);
-			name = CommonView;
 			sourceTree = "<group>";
 		};
 		337E5F391BA5783500C83E58 = {
@@ -357,6 +347,8 @@
 		33F94AAE1C1BCB7100563A4E /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
+				5693635C1C1F197D0051DB6F /* SvGifView.h */,
+				5693635D1C1F197D0051DB6F /* SvGifView.m */,
 				338AA2FA1C1C77C900FBB79C /* UIImage+animatedGIF.h */,
 				338AA2FB1C1C77C900FBB79C /* UIImage+animatedGIF.m */,
 				336D6D1B1C1BD9EB001F1B33 /* SNLog.h */,
@@ -545,6 +537,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5693635E1C1F197D0051DB6F /* SvGifView.m in Sources */,
 				337E5F4D1BA5783600C83E58 /* ViewController.m in Sources */,
 				33153B871BA57DFF007B6859 /* SignView.m in Sources */,
 				33153B841BA57DFF007B6859 /* LeftMenuView.m in Sources */,
@@ -565,7 +558,6 @@
 				33153B6D1BA57C29007B6859 /* AuthorModel.m in Sources */,
 				337E5F471BA5783500C83E58 /* main.m in Sources */,
 				33F795441C1AC7BE001556FE /* SMTHomePageListRequest.m in Sources */,
-				334662C31C1EE2020084F362 /* SMTGifImageView.m in Sources */,
 				33153B831BA57DFF007B6859 /* MenuItem.m in Sources */,
 				334662751C1E9B1B0084F362 /* SMTPageDetatilRequest.m in Sources */,
 				33153B861BA57DFF007B6859 /* CardCell.m in Sources */,
@@ -644,6 +636,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -663,7 +656,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -687,6 +680,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -700,7 +694,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -716,7 +710,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Feature/FeaturePCH.pch";
 				INFOPLIST_FILE = Feature/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = xiongsa.Feature;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -732,7 +726,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Feature/FeaturePCH.pch";
 				INFOPLIST_FILE = Feature/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = xiongsa.Feature;
 				PRODUCT_NAME = "$(TARGET_NAME)";
