@@ -1,47 +1,55 @@
 PODS:
-  - AFNetworking (2.6.0):
-    - AFNetworking/NSURLConnection (= 2.6.0)
-    - AFNetworking/NSURLSession (= 2.6.0)
-    - AFNetworking/Reachability (= 2.6.0)
-    - AFNetworking/Security (= 2.6.0)
-    - AFNetworking/Serialization (= 2.6.0)
-    - AFNetworking/UIKit (= 2.6.0)
-  - AFNetworking/NSURLConnection (2.6.0):
+  - AFDownloadRequestOperation (2.0.1):
+    - AFNetworking (~> 2.0)
+  - AFNetworking (2.6.3):
+    - AFNetworking/NSURLConnection (= 2.6.3)
+    - AFNetworking/NSURLSession (= 2.6.3)
+    - AFNetworking/Reachability (= 2.6.3)
+    - AFNetworking/Security (= 2.6.3)
+    - AFNetworking/Serialization (= 2.6.3)
+    - AFNetworking/UIKit (= 2.6.3)
+  - AFNetworking/NSURLConnection (2.6.3):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.6.0):
+  - AFNetworking/NSURLSession (2.6.3):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.6.0)
-  - AFNetworking/Security (2.6.0)
-  - AFNetworking/Serialization (2.6.0)
-  - AFNetworking/UIKit (2.6.0):
+  - AFNetworking/Reachability (2.6.3)
+  - AFNetworking/Security (2.6.3)
+  - AFNetworking/Serialization (2.6.3)
+  - AFNetworking/UIKit (2.6.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - JSONModel (1.1.0)
-  - Masonry (0.6.2)
+  - JSONModel (1.1.2)
+  - Masonry (0.6.3)
   - MGJRequestManager (0.8.2):
     - AFNetworking (~> 2.0)
-  - MJRefresh (2.4.10)
+  - MJRefresh (3.0.7)
   - SDWebImage (3.7.3):
     - SDWebImage/Core (= 3.7.3)
   - SDWebImage/Core (3.7.3)
+  - YTKNetwork (0.5.0):
+    - AFDownloadRequestOperation (~> 2.0)
+    - AFNetworking (~> 2.0)
 
 DEPENDENCIES:
   - JSONModel (~> 1.1.0)
   - Masonry (~> 0.6.2)
   - MGJRequestManager (~> 0.8.2)
-  - MJRefresh (~> 2.4.10)
+  - MJRefresh (~> 3.0.7)
   - SDWebImage (~> 3.7.3)
+  - YTKNetwork (~> 0.5.0)
 
 SPEC CHECKSUMS:
-  AFNetworking: 79f7eb1a0fcfa7beb409332b2ca49afe9ce53b05
-  JSONModel: ec77e9865236a7a09d9cf7668df6b4b328d9ec1d
-  Masonry: 362e8a1cc0beada4a4c4832d5e863da2a51533be
+  AFDownloadRequestOperation: 748a1643423e1ddb23f2178f778087d4f0ae8ac7
+  AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
+  JSONModel: 216584d0311b053ff714f1d6cb700dbf890847bc
+  Masonry: ff105a956abcd19a618b2028b121cb638d7a8e2f
   MGJRequestManager: 912b56c5127478c93d70a53592245c07bb32ab88
-  MJRefresh: e52328552ed9cbfce3501e3820b18bf7643c65cc
+  MJRefresh: f3e1228ec3d38c7ba5208d58032631a52f39f495
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
+  YTKNetwork: 3f163c181ce5f03d52cf88f39d6757f46894280c
 
 COCOAPODS: 0.38.2

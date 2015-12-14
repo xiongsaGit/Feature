@@ -10,5 +10,6 @@
 
 @interface StatusModel : JSONModel
 @property (nonatomic, strong) NSNumber *code;
+@property (nonatomic, strong) NSString<Optional> *message;
 @end
 

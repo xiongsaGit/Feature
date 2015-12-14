@@ -16,10 +16,18 @@
 
 #import "RootModel.h"
 
+#import "SMTHomePageListRequest.h"
+#import "SMTListViewController.h"
 
+
+typedef NS_ENUM(NSInteger,HomePageListRequestType)
+{
+    HomePageListRequestTypeDefault,
+    HomePageListRequestTypeRefresh,
+    HomePageListRequestTypeLoadMore
+};
 
 static CGFloat const kAnimationDuration = .2;
-static CGFloat const LeftMenuWidth = 200;//3*(self.view.frame.size.width)/4;
 
 @interface MainViewController()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic, strong) UIImageView *imageView;
@@ -43,47 +51,71 @@ static CGFloat const LeftMenuWidth = 200;//3*(self.view.frame.size.width)/4;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.view.backgroundColor = [UIColor whiteColor];
-    [self commonSet];
+    self.view.backgroundColor = kCOLOR_VIEW_BACKGROUND;
     
+    [self commonSet];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    [[MGJRequestManager sharedInstance] POST:@"http://e.dangdang.com/media/api2.go" parameters:
-     @{@"act": @"new",
-       @"action":@"getDigestHomePageList",
-       @"dayOrNight":@"day",
-       @"pageSize":@"10"} startImmediately:YES
-                        configurationHandler:nil completionHandler:^(NSError *error, id<NSObject> result, BOOL isFromCache, AFHTTPRequestOperation *operation) {
-                            
-                            
-                            NSError* err = nil;
-                            
-                            RootModel *rootModel = [[RootModel alloc] initWithDictionary:(NSDictionary *)result error:&err];
-                            
-                            self.tableData = [NSMutableArray arrayWithArray:rootModel.data.digestList];
-                            
-                            [self.tableView reloadData];
-                            
-                            
-                        }];
+    [self requestHomePageListWithAct:@"new" dayOrNight:@"day" sortPage:nil requestType:HomePageListRequestTypeDefault];
+  
+}
+
+
+#pragma mark -
+#pragma mark - 数据请求
+- (void)requestHomePageListWithAct:(NSString *)act dayOrNight:(NSString *)dayOrNight sortPage:(NSNumber *)sortPage requestType:(HomePageListRequestType)requestType
+{
+    SMTHomePageListRequest *homePageListRequest = [[SMTHomePageListRequest alloc] initWithAct:act dayOrNight:dayOrNight sortPage:sortPage];
+    [homePageListRequest startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
+        
+        NSError* err = nil;
+        RootModel *rootModel = [[RootModel alloc] initWithString:request.responseString error:&err];
+        
+        if (requestType == HomePageListRequestTypeLoadMore) {
+            [self.tableView.mj_footer endRefreshing];
+        }else
+            [self.tableView.mj_header endRefreshing];
+
+        
+        if (rootModel != nil) {
+            if (requestType == HomePageListRequestTypeLoadMore) {
+                [self.tableData addObjectsFromArray:rootModel.data.digestList];
+            }else {
+                if (rootModel.data.digestList.count>0) {
+                    self.tableData = [NSMutableArray arrayWithArray:rootModel.data.digestList];
+                }
+            }
+            [self.tableView reloadData];
+        }
+        
+    } failure:^(YTKBaseRequest *request) {
+        [SNLog Log:@"request fail"];
+    }];
+}
+
+#pragma mark -
+#pragma mark - 刷新列表数据
+- (void)refreshDataInTableView
+{
     
+    DigestModel *digestModel = self.tableData[0];
+    
+    [self requestHomePageListWithAct:@"new" dayOrNight:@"day" sortPage:digestModel.sortPage requestType:HomePageListRequestTypeRefresh];
 }
 
-/**
- *  何时请求
- */
-- (void)loadNewData
+#pragma mark - 
+#pragma mark - 加载更多数据
+- (void)loadMoreDataInTableView
 {
-    NSLog(@"%s",__func__);
-}
+//    [self requestHomePageListWithAct:@"old" dayOrNight:@"day" requestType:HomePageListRequestTypeLoadMore];
 
-- (void)loadMoreData
-{
-    NSLog(@"%s",__func__);
+    DigestModel *digestModel = self.tableData[self.tableData.count-1];
+
+    [self requestHomePageListWithAct:@"old" dayOrNight:@"day" sortPage:digestModel.sortPage requestType:HomePageListRequestTypeLoadMore];
 }
 
 - (void)commonSet
@@ -91,21 +123,16 @@ static CGFloat const LeftMenuWidth = 200;//3*(self.view.frame.size.width)/4;
     _tableData = [NSMutableArray array];
     
     [self.view addSubview:self.tableView];
-//    [self.tableView setFrame:CGRectMake(0, 100, self.view.frame.size.width, self.view.frame.size.height-100)];
     [self.tableView setFrame:self.view.bounds];
 
     self.oldOffsetY = 0;
-    
-    
-    
-    NSArray *items = [NSArray arrayWithObjects:@"001",@"005", nil];
+
+    NSArray *items = [NSArray arrayWithObjects:@"card_1_03",@"card_1_03", nil];
     self.suspendView = [[SuspendView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-60, self.view.frame.size.width, 60) menuItemsArray:items];
     self.suspendView.backgroundColor = [UIColor clearColor];
     
     __weak typeof(self) weakSelf = self;
     self.suspendView.itemClickBlock = ^(UIButton *itemBtn){
-        NSLog(@"click btn tag:%ld",itemBtn.tag);
-        
         switch (itemBtn.tag)
         {
             case 0:
@@ -113,7 +140,7 @@ static CGFloat const LeftMenuWidth = 200;//3*(self.view.frame.size.width)/4;
                 
                 [UIView animateWithDuration:kAnimationDuration animations:^{
                     CGRect rect =  weakSelf.leftMenu.frame;
-                    rect.origin.x = weakSelf.leftMenu.isOpen?-LeftMenuWidth:0;
+                    rect.origin.x = weakSelf.leftMenu.isOpen?-LEFT_MENU_WIDTH:0;
                     weakSelf.leftMenu.frame = rect;
                     if (!weakSelf.leftMenu.isOpen)
                     {
@@ -140,7 +167,7 @@ static CGFloat const LeftMenuWidth = 200;//3*(self.view.frame.size.width)/4;
     };
     [self.view addSubview:self.suspendView];
     
-    [self.leftMenu setFrame:CGRectMake(-LeftMenuWidth, 0, LeftMenuWidth, self.view.frame.size.height)];
+    [self.leftMenu setFrame:CGRectMake(-LEFT_MENU_WIDTH, 0, LEFT_MENU_WIDTH, self.view.frame.size.height)];
     
 
 }
@@ -150,104 +177,55 @@ static CGFloat const LeftMenuWidth = 200;//3*(self.view.frame.size.width)/4;
     return self.tableData.count;
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
-
+#pragma mark - 这个地方要如何根据数据计算高度呢
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DigestModel *model = self.tableData[indexPath.row];
-    CardCellType theType = [model.cardType intValue];
-    if (theType == CardCellTypeImage)
+    CardType theType = [model.cardType intValue];
+    if (theType == CardTypeImage)
     {
-        return 280;
+        return 300;
     }else
-        return 200.0f;
+        return 220;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *textCellId = @"textCell";
-    static NSString *mixtureCellId = @"mixtureCell";
-    static NSString *imageCellId = @"imageCell";
-    
-    
+
     DigestModel *model = self.tableData[indexPath.row];
-    CardCellType theType;
-    if ([model.cardType intValue]==0)
-    {
-        // 文字
-        theType = CardCellTypeText;
-    }else if ([model.cardType intValue] == 1)
-    {
-        // 文字图片
-        theType = CardCellTypeMixture;
-    }else
-    {
-        // 图片
-        theType = CardCellTypeImage;
-    }
-    switch (theType) {
-        case CardCellTypeText:
-        {
-            CardCell *cell = (CardCell *)[tableView dequeueReusableCellWithIdentifier:textCellId];
-            if (!cell)
-            {
-                cell = [[CardCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:textCellId cellType:theType];
-                cell.selectionStyle = UITableViewCellSeparatorStyleNone;
-                [self blockForCell:cell];
-            }
-            [cell showDataForCellType:theType WithDataModel:model];
-            return cell;
-        }
-            break;
-         case CardCellTypeMixture:
-        {
-            CardCell *cell = (CardCell *)[tableView dequeueReusableCellWithIdentifier:mixtureCellId];
-            if (!cell)
-            {
-                cell = [[CardCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:mixtureCellId cellType:theType];
-                cell.selectionStyle = UITableViewCellSeparatorStyleNone;
-                [self blockForCell:cell];
-
-            }
-            [cell showDataForCellType:theType WithDataModel:model];
-            return cell;
-        
-        }
-            break;
-            case CardCellTypeImage:
-        {
-            CardCell *cell = (CardCell *)[tableView dequeueReusableCellWithIdentifier:imageCellId];
-            if (!cell)
-            {
-                cell = [[CardCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:imageCellId cellType:theType];
-                cell.selectionStyle = UITableViewCellSeparatorStyleNone;
-                [self blockForCell:cell];
-
-            }
-            [cell showDataForCellType:theType WithDataModel:model];
-            return cell;
-        }
-            break;
-        default:
-            break;
-    }
+    CardType theType = ([model.cardType intValue]==0)?CardTypeText:(([model.cardType intValue] == 1)?CardTypeMixture:CardTypeImage);
     
-    return nil;
+    CardCell *cell = (CardCell *)[tableView dequeueReusableCellWithIdentifier:[NSString stringWithFormat:@"%ld",theType]];
+    if (!cell)
+    {
+        cell = [[CardCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[NSString stringWithFormat:@"%ld",theType] cellType:theType];
+        cell.selectionStyle = UITableViewCellSeparatorStyleNone;
+        [self blockForCell:cell];
+    }
+    [cell showDataForCellType:theType WithDataModel:model];
+   
+    return cell;
 }
 
 - (void)blockForCell:(CardCell *)theCell
 {
-    theCell.toAuthorPageBlock = ^()
-    {
-        NSLog(@"to-page");
+    __weak typeof(self)weakSelf = self;
+    
+    AuthorModel *authorModel = theCell.digestModel.authorList[0];
+    SignModel *signModel = theCell.digestModel.signList[0];
+
+    theCell.toAuthorPageBlock = ^(){
+   
+        SMTListViewController *listViewCtrl = [[SMTListViewController alloc] initWithListType:ListTypeByAuthor listId:authorModel.authorId];
+        [weakSelf.navigationController pushViewController:listViewCtrl animated:YES];
+    
     };
+  
     theCell.toSignPageBlock = ^()
     {
-        NSLog(@"to-author");
-
+        SMTListViewController *listViewCtrl = [[SMTListViewController alloc] initWithListType:ListTypeByAuthor listId:signModel.id];
+        [weakSelf.navigationController pushViewController:listViewCtrl animated:YES];
+        
     };
     
 }
@@ -255,20 +233,11 @@ static CGFloat const LeftMenuWidth = 200;//3*(self.view.frame.size.width)/4;
 #pragma mark - 跳转详情页面
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //    NSIndexPath *
     SingleDetailViewController *viewCtrl = [[SingleDetailViewController alloc] init];
     CATransition *animation = [CATransition animation];
-    
     animation.duration = 1.0;
-    
-//    animation.timingFunction = UIViewAnimationCurveEaseInOut;
-    
-    animation.type = kCATransitionMoveIn;//kCATransitionPush;//@"pageCurl";
-    
-    //animation.type = kCATransitionPush;
-    
+    animation.type = kCATransitionMoveIn;
     animation.subtype = kCATransitionFromRight;
-    
     [self.view.window.layer addAnimation:animation forKey:nil];
     [self presentViewController:viewCtrl animated:YES completion:^{
         
@@ -280,10 +249,6 @@ static CGFloat const LeftMenuWidth = 200;//3*(self.view.frame.size.width)/4;
     
     if (scrollView.contentOffset.y > self.oldOffsetY) {//如果当前位移大于缓存位移，说明scrollView向上滑动
         
-        
-        NSLog(@"scroll up");
-        //        self.suspendView.alpha = 0;
-        
         [UIView animateWithDuration:.1 animations:^{
 
             [self.suspendView setHidden:YES WithButtonTag:[self.suspendView.itemArray count]-1];
@@ -292,7 +257,6 @@ static CGFloat const LeftMenuWidth = 200;//3*(self.view.frame.size.width)/4;
         
     }else
     {
-        NSLog(@"scroll down");
         [UIView animateWithDuration:.1 animations:^{
 
             [self.suspendView setHidden:NO WithButtonTag:[self.suspendView.itemArray count]-1];
@@ -313,10 +277,11 @@ static CGFloat const LeftMenuWidth = 200;//3*(self.view.frame.size.width)/4;
         _tableView.delegate = self;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
-        _tableView.header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
-        _tableView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+        _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshDataInTableView)];
+        _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreDataInTableView)];
     }
     return _tableView;
+
 }
 
 
@@ -330,7 +295,7 @@ static CGFloat const LeftMenuWidth = 200;//3*(self.view.frame.size.width)/4;
             
             [UIView animateWithDuration:kAnimationDuration animations:^{
                 CGRect rect =  weakSelf.leftMenu.frame;
-                rect.origin.x = -LeftMenuWidth;
+                rect.origin.x = -LEFT_MENU_WIDTH;
                 weakSelf.leftMenu.frame = rect;
                 weakSelf.leftMenu.isOpen = NO;
                 
@@ -338,19 +303,21 @@ static CGFloat const LeftMenuWidth = 200;//3*(self.view.frame.size.width)/4;
             }];
             
         };
-        _leftMenu.buttonClickBlock = ^(){
+        _leftMenu.buttonClickBlock = ^(UIButton *btn){
             
+            if (btn.tag == kFEEDBACK_TAG) {
+                NSLog(@"click feedback");
+            }else
+            {
+                NSLog(@"click return day");
+            }
             // 弹出意见反馈页面
             
-            NSLog(@"click feedback");
             
         };
     }
     return _leftMenu;
 }
-
-
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -9,12 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class DigestModel;
-typedef NS_ENUM(NSInteger,CardCellType)
-{
-    CardCellTypeText,// 纯文字
-    CardCellTypeMixture,// 文字图片共存
-    CardCellTypeImage, // 纯图片
-};
+
 
 typedef void(^ToAuthorNamePageBlock)();
 typedef void(^ToSignPageBlock)();
@@ -23,11 +18,11 @@ typedef void(^ToSignPageBlock)();
 @interface CardCell : UITableViewCell
 @property (nonatomic, copy) ToAuthorNamePageBlock toAuthorPageBlock;
 @property (nonatomic, copy) ToSignPageBlock toSignPageBlock;
-@property (nonatomic, assign) CardCellType cardType;
+@property (nonatomic, assign) CardType cardType;
+@property (nonatomic, strong) DigestModel *digestModel;
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier cellType:(CardCellType)cellType;
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier cellType:(CardType)cellType;
 
-
-- (void)showDataForCellType:(CardCellType)type WithDataModel:(DigestModel *)model;
+- (void)showDataForCellType:(CardType)type WithDataModel:(DigestModel *)model;
 
 @end

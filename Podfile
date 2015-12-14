@@ -12,4 +12,6 @@ pod 'JSONModel', '~> 1.1.0'
 
 pod 'SDWebImage', '~> 3.7.3'
 
-pod 'MJRefresh', '~> 2.4.10'
+pod 'MJRefresh', '~> 3.0.7'
+
+pod 'YTKNetwork', '~> 0.5.0'

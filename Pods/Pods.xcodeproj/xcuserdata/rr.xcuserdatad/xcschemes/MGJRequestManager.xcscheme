@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F0F75C576E52DC4FDD86C7C4"
+               BlueprintIdentifier = "BEFC4128354EE7B5EE20AD78"
                BuildableName = "libMGJRequestManager.a"
                BlueprintName = "MGJRequestManager"
                ReferencedContainer = "container:Pods.xcodeproj">

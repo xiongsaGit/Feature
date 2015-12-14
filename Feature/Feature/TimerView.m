@@ -9,9 +9,9 @@
 #import "TimerView.h"
 #import <QuartzCore/CADisplayLink.h>
 
-static CGFloat const kLabelWidth = 20;
+static CGFloat const kLabelWidth = 12;
 static CGFloat const kLabelHeight = 20;
-static CGFloat const kOriginX = 10;
+static CGFloat const kOriginX = 5;
 
 @interface TimerView()
 
@@ -21,9 +21,11 @@ static CGFloat const kOriginX = 10;
  */
 @property (nonatomic, strong) UILabel *hourLabel;
 @property (nonatomic, strong) UILabel *hourSingleLabel;
+@property (nonatomic, strong) UILabel *hourSepLabel;
 
 @property (nonatomic, strong) UILabel *minuteLabel;
 @property (nonatomic, strong) UILabel *minuteSingleLabel;
+@property (nonatomic, strong) UILabel *minuteSepLabel;
 
 @property (nonatomic, strong) UILabel *secondLabel;
 @property (nonatomic, strong) UILabel *secondSingleLabel;
@@ -41,31 +43,39 @@ static CGFloat const kOriginX = 10;
     {
         self.hourLabel = [self factoryForLabel];
         self.hourSingleLabel = [self factoryForLabel];
+        self.hourSepLabel = [self factoryForLabel];
         self.minuteLabel = [self factoryForLabel];
         self.minuteSingleLabel = [self factoryForLabel];
+        self.minuteSepLabel = [self factoryForLabel];
         self.secondLabel = [self factoryForLabel];
         self.secondSingleLabel = [self factoryForLabel];
         
         [self addSubview:self.hourLabel];
         [self addSubview:self.hourSingleLabel];
+        [self addSubview:self.hourSepLabel];
         [self addSubview:self.minuteLabel];
         [self addSubview:self.minuteSingleLabel];
+        [self addSubview:self.minuteSepLabel];
         [self addSubview:self.secondLabel];
         [self addSubview:self.secondSingleLabel];
         
+        self.hourSepLabel.text = @":";
+        self.minuteSepLabel.text = @":";
+        self.hourSepLabel.backgroundColor = [UIColor clearColor];
+        self.minuteSepLabel.backgroundColor = [UIColor clearColor];
+
         
-//        _timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(handleTimerRefresh) userInfo:nil repeats:YES];
         
         [self configureFrame];
 //        [self refreshTime];
        
             
-            _theTimer = [CADisplayLink displayLinkWithTarget:self selector:@selector(MyTask)];
+        _theTimer = [CADisplayLink displayLinkWithTarget:self selector:@selector(MyTask)];
         _theTimer.paused = YES;
 
-            _theTimer.frameInterval = 1;
+        _theTimer.frameInterval = 1;
             
-            [_theTimer addToRunLoop: [NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+        [_theTimer addToRunLoop: [NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
             
   
 //        //停用
@@ -103,10 +113,12 @@ static CGFloat const kOriginX = 10;
 
 - (void)configureFrame
 {
+    CGFloat whiteSpace = (CGRectGetWidth(self.frame)-7*kLabelWidth-7*kOriginX)/2;
+    
     [self.hourLabel mas_makeConstraints:^(MASConstraintMaker *make){
     
         make.centerY.mas_equalTo(self.mas_centerY);
-        make.left.mas_equalTo(self.mas_left).offset(kOriginX);
+        make.left.mas_equalTo(self.mas_left).offset(whiteSpace);
         make.size.mas_equalTo(CGSizeMake(kLabelWidth, kLabelHeight)).priorityHigh();
     
     }];
@@ -119,13 +131,18 @@ static CGFloat const kOriginX = 10;
         
     }];
     
-    [self.minuteLabel setBackgroundColor:[UIColor cyanColor]];
-    [self.minuteSingleLabel setBackgroundColor:[UIColor cyanColor]];
+    [self.hourSepLabel mas_remakeConstraints:^(MASConstraintMaker *make){
+    
+        make.centerY.mas_equalTo(self.mas_centerY);
+        make.left.mas_equalTo(self.hourSingleLabel.mas_right).offset(kOriginX);
+        make.size.mas_equalTo(CGSizeMake(kLabelWidth/2, kLabelHeight)).priorityHigh();
+
+    }];
     
     [self.minuteLabel mas_makeConstraints:^(MASConstraintMaker *make){
         
         make.centerY.mas_equalTo(self.mas_centerY);
-        make.left.mas_equalTo(self.hourSingleLabel.mas_right).offset(kOriginX);
+        make.left.mas_equalTo(self.hourSepLabel.mas_right).offset(kOriginX);
         make.size.mas_equalTo(CGSizeMake(kLabelWidth, kLabelHeight)).priorityHigh();
         
     }];
@@ -138,14 +155,18 @@ static CGFloat const kOriginX = 10;
         
     }];
     
-    [self.secondLabel setBackgroundColor:[UIColor greenColor]];
-    [self.secondSingleLabel setBackgroundColor:[UIColor greenColor]];
-    
+    [self.minuteSepLabel mas_remakeConstraints:^(MASConstraintMaker *make){
+        
+        make.centerY.mas_equalTo(self.mas_centerY);
+        make.left.mas_equalTo(self.self.minuteSingleLabel.mas_right).offset(kOriginX);
+        make.size.mas_equalTo(CGSizeMake(kLabelWidth/2, kLabelHeight)).priorityHigh();
+        
+    }];
     
     [self.secondLabel mas_makeConstraints:^(MASConstraintMaker *make){
         
         make.centerY.mas_equalTo(self.mas_centerY);
-        make.left.mas_equalTo(self.minuteSingleLabel.mas_right).offset(kOriginX);
+        make.left.mas_equalTo(self.minuteSepLabel.mas_right).offset(kOriginX);
         make.size.mas_equalTo(CGSizeMake(kLabelWidth, kLabelHeight)).priorityHigh();
         
     }];
@@ -398,12 +419,8 @@ static CGFloat const kOriginX = 10;
     [formatter setDateFormat:@"HH:mm:ss"];
     date = [formatter stringFromDate:[NSDate date]];
     
-    NSLog(@"8888:%ld",    [self getIntervalBetweenDateNow:date baseDate:@"20:00:00"]);
-
     
     [self showTime:[self timeFormatted:[self getIntervalBetweenDateNow:date baseDate:@"20:00:00"]]];
-    
-   
     
 }
 
@@ -423,7 +440,8 @@ static CGFloat const kOriginX = 10;
 - (UILabel *)factoryForLabel
 {
     UILabel *lbl = [[UILabel alloc] init];
-    [lbl setBackgroundColor:[UIColor redColor]];
+    [lbl setTextColor:[UIColor lightGrayColor]];
+    [lbl setBackgroundColor:UIColorFromHex(0x343436)];
     [lbl setTextAlignment:NSTextAlignmentCenter];
     [lbl setFont:[UIFont systemFontOfSize:13]];
     return lbl;

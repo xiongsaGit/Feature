@@ -8,42 +8,38 @@
 
 #import "SignView.h"
 
-static CGFloat const kSpace = 10;
+static CGFloat const kSpace = 15;
 static CGFloat const kOriginY = 12;
 
 static CGFloat const kLabelHeight = 20;
-#define kSignFont   [UIFont systemFontOfSize:14]
 
 @interface SignView()<UIGestureRecognizerDelegate>
-@property (nonatomic, strong) UILabel *authorNameLabel;
-@property (nonatomic, strong) UILabel *signLabel;
-
 @property (nonatomic, strong) UIButton *authorNameButton;
 @property (nonatomic, strong) UIButton *signButton;
 @end
 
 @implementation SignView
 
-
 - (instancetype)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame])
     {
         self.backgroundColor = [UIColor clearColor];
-        [self configureUI];
-        [self configureFrame];
-        
+        [self configureUI];        
     }
     return self;
 }
 
 - (void)showSignViewDataWithAuthorName:(NSString *)authorName sign:(NSString *)sign
 {
-    [self.authorNameButton setTitle:authorName forState:UIControlStateNormal];
-    NSString *resultSign = [NSString stringWithFormat:@"  %@  ",sign];
-    [self.signButton setTitle:resultSign forState:UIControlStateNormal];
-}
+    [self configureFrameWithAuthorName:authorName sign:sign];
 
+    [self.authorNameButton setTitle:authorName forState:UIControlStateNormal];
+   
+        NSString *resultSign = [NSString stringWithFormat:@"  %@  ",sign];
+        [self.signButton setTitle:resultSign forState:UIControlStateNormal];
+    
+}
 
 - (void)handleSignButton
 {
@@ -70,23 +66,34 @@ static CGFloat const kLabelHeight = 20;
 /**
  *  宽度是自动变化的，如何写约束呢
  */
-- (void)configureFrame
+
+- (void)configureFrameWithAuthorName:(NSString *)authorName sign:(NSString *)sign
 {
     [self.signButton mas_makeConstraints:^(MASConstraintMaker *make){
-        make.top.mas_equalTo(kOriginY);
-        make.right.mas_equalTo(-kSpace);
-        make.height.mas_equalTo(kLabelHeight);
-
+            make.top.mas_equalTo(kOriginY);
+            make.height.mas_equalTo(kLabelHeight);
+        if (sign==nil) {
+            make.right.mas_equalTo(self.mas_right);
+            make.width.mas_equalTo(0);
+        }else {
+            make.right.mas_equalTo(self.mas_right).offset(-kSpace);
+        }
+            
     }];
-    
     [self.authorNameButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(kOriginY);
-
-        make.right.mas_equalTo(self.signButton.mas_left).offset(-kSpace);
+        if (sign == nil) {
+            make.right.mas_equalTo(self.mas_right).offset(-kSpace);
+        }else
+            make.right.mas_equalTo(self.signButton.mas_left).offset(-kSpace);
         
         make.height.mas_equalTo(kLabelHeight);
+        if (authorName == nil) {
+            make.width.mas_equalTo(0);
+        }
     }];
 }
+
 
 - (UIButton *)authorNameButton
 {
@@ -94,6 +101,7 @@ static CGFloat const kLabelHeight = 20;
     {
         _authorNameButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_authorNameButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        _authorNameButton.titleLabel.font = kFONT_AUTHORNAME;
         [_authorNameButton addTarget:self action:@selector(handleAuthorNameButton) forControlEvents:UIControlEventTouchUpInside];
     }
     return _authorNameButton;
@@ -104,10 +112,9 @@ static CGFloat const kLabelHeight = 20;
     if (!_signButton)
     {
         _signButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//        [_signButton setBackgroundColor:[UIColor redColor]];
-//        [_signButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 10)];
-        _signButton.layer.cornerRadius = 8;
+        _signButton.layer.cornerRadius = 10;
         [_signButton setBackgroundColor:[self randomColor]];
+        _signButton.titleLabel.font = kFONT_MAIN;
         [_signButton addTarget:self action:@selector(handleSignButton) forControlEvents:UIControlEventTouchUpInside];
     }
     return _signButton;

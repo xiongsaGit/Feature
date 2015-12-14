@@ -15,7 +15,7 @@
 @end
 
 @interface DigestModel : JSONModel
-@property (nonatomic, strong) NSArray<AuthorModel>* authorList;
+@property (nonatomic, strong) NSArray<Optional,AuthorModel> *authorList;
 @property (nonatomic, strong) NSString *cardRemark;
 @property (nonatomic, strong) NSString *cardTitle;
 @property (nonatomic, strong) NSNumber *cardType;
@@ -29,7 +29,7 @@
 @property (nonatomic, strong) NSNumber *replyCnt;
 @property (nonatomic, strong) NSNumber *showStartDateYmdLong;
 
-@property (nonatomic, strong) NSArray<SignModel>* signList;
+@property (nonatomic, strong) NSArray<Optional,SignModel>* signList;
 
 @property (nonatomic, strong) NSString *smallPic1Path;
 @property (nonatomic, strong) NSString *smallPic2Path;

@@ -14,8 +14,8 @@
 @interface DataModel : JSONModel
 @property (nonatomic, strong) NSString *currentDate;
 
-@property (nonatomic, strong) NSArray<DigestModel>* digestList;
+@property (nonatomic, strong) NSArray<Optional,DigestModel>* digestList;
 
-@property (nonatomic, strong) NSNumber *hasNext;
+@property (nonatomic, strong) NSNumber<Optional> *hasNext;
 @property (nonatomic, strong) NSString *systemDate;
 @end

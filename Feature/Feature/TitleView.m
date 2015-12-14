@@ -8,12 +8,6 @@
 
 #import "TitleView.h"
 
-#define kTitleFont       [UIFont systemFontOfSize:17]
-#define kAuthorFont      [UIFont systemFontOfSize:13]
-
-static CGFloat const kSpaceX = 20;
-static CGFloat const kSpaceY = 20;
-
 @interface TitleView()
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *authorLabel;
@@ -58,7 +52,8 @@ static CGFloat const kSpaceY = 20;
     if (!_titleLabel)
     {
         _titleLabel = [[UILabel alloc] init];
-        [_titleLabel setFont:kTitleFont];
+        
+        [_titleLabel setFont:kFONT_TITLE];
     }
     return _titleLabel;
 }
@@ -68,7 +63,7 @@ static CGFloat const kSpaceY = 20;
     if (!_authorLabel)
     {
         _authorLabel = [[UILabel alloc] init];
-        [_authorLabel setFont:kAuthorFont];
+        [_authorLabel setFont:kFONT_TITLE];
         [_authorLabel setBackgroundColor:UIColorFromHex(0x7bb1d7)];
     }
     return _authorLabel;

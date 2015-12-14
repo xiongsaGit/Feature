@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 typedef void(^LeftMenuViewSwipeBlock)();
-typedef void(^LeftMenuViewButtonBlock)();
+typedef void(^LeftMenuViewButtonBlock)(UIButton *btn);
 
 @interface LeftMenuView : UIView
 
