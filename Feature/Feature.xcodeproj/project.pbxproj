@@ -28,6 +28,7 @@
 		3335371C1BA6AC3000B5B353 /* SingleDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3335371B1BA6AC3000B5B353 /* SingleDetailViewController.m */; };
 		3335371F1BA6C14D00B5B353 /* TitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3335371E1BA6C14C00B5B353 /* TitleView.m */; };
 		334662751C1E9B1B0084F362 /* SMTPageDetatilRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 334662741C1E9B1B0084F362 /* SMTPageDetatilRequest.m */; };
+		334662C31C1EE2020084F362 /* SMTGifImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 334662C21C1EE2020084F362 /* SMTGifImageView.m */; };
 		336D6D1D1C1BD9EB001F1B33 /* SNLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 336D6D1C1C1BD9EB001F1B33 /* SNLog.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		336D6D201C1C24EC001F1B33 /* SMTListByAuthorRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 336D6D1F1C1C24EC001F1B33 /* SMTListByAuthorRequest.m */; };
 		336D6D231C1C2603001F1B33 /* SMTListBySignRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 336D6D221C1C2603001F1B33 /* SMTListBySignRequest.m */; };
@@ -105,6 +106,8 @@
 		3335371E1BA6C14C00B5B353 /* TitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitleView.m; sourceTree = "<group>"; };
 		334662731C1E9B1B0084F362 /* SMTPageDetatilRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTPageDetatilRequest.h; sourceTree = "<group>"; };
 		334662741C1E9B1B0084F362 /* SMTPageDetatilRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTPageDetatilRequest.m; sourceTree = "<group>"; };
+		334662C11C1EE2020084F362 /* SMTGifImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTGifImageView.h; sourceTree = "<group>"; };
+		334662C21C1EE2020084F362 /* SMTGifImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTGifImageView.m; sourceTree = "<group>"; };
 		336D6D1B1C1BD9EB001F1B33 /* SNLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNLog.h; sourceTree = "<group>"; };
 		336D6D1C1C1BD9EB001F1B33 /* SNLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNLog.m; sourceTree = "<group>"; };
 		336D6D1E1C1C24EC001F1B33 /* SMTListByAuthorRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTListByAuthorRequest.h; sourceTree = "<group>"; };
@@ -188,7 +191,7 @@
 			name = Image;
 			sourceTree = "<group>";
 		};
-		33153B521BA57BF7007B6859 /* Main */ = {
+		33153B521BA57BF7007B6859 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
 				33153B721BA57D1B007B6859 /* MainViewController.h */,
@@ -198,7 +201,7 @@
 				338AA2F41C1C35C300FBB79C /* SMTListViewController.h */,
 				338AA2F51C1C35C300FBB79C /* SMTListViewController.m */,
 			);
-			name = Main;
+			name = ViewController;
 			sourceTree = "<group>";
 		};
 		33153B5D1BA57C17007B6859 /* Model */ = {
@@ -228,9 +231,10 @@
 			name = Main;
 			sourceTree = "<group>";
 		};
-		33153B751BA57DF2007B6859 /* CustomFile */ = {
+		33153B751BA57DF2007B6859 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				334662BD1C1EE09D0084F362 /* CommonView */,
 				33153B761BA57DFF007B6859 /* SuspendView.h */,
 				33153B771BA57DFF007B6859 /* SuspendView.m */,
 				33153B781BA57DFF007B6859 /* MenuItem.h */,
@@ -248,7 +252,16 @@
 				338AA2F71C1C45CB00FBB79C /* SMTContentView.h */,
 				338AA2F81C1C45CB00FBB79C /* SMTContentView.m */,
 			);
-			name = CustomFile;
+			name = View;
+			sourceTree = "<group>";
+		};
+		334662BD1C1EE09D0084F362 /* CommonView */ = {
+			isa = PBXGroup;
+			children = (
+				334662C11C1EE2020084F362 /* SMTGifImageView.h */,
+				334662C21C1EE2020084F362 /* SMTGifImageView.m */,
+			);
+			name = CommonView;
 			sourceTree = "<group>";
 		};
 		337E5F391BA5783500C83E58 = {
@@ -278,9 +291,9 @@
 			children = (
 				33F94AAE1C1BCB7100563A4E /* ThirdParty */,
 				33F795411C1AC66A001556FE /* Request */,
-				33153B751BA57DF2007B6859 /* CustomFile */,
+				33153B751BA57DF2007B6859 /* View */,
 				33153B5D1BA57C17007B6859 /* Model */,
-				33153B521BA57BF7007B6859 /* Main */,
+				33153B521BA57BF7007B6859 /* ViewController */,
 				33153B511BA57BF0007B6859 /* Image */,
 				337E5F481BA5783500C83E58 /* AppDelegate.h */,
 				337E5F491BA5783600C83E58 /* AppDelegate.m */,
@@ -552,6 +565,7 @@
 				33153B6D1BA57C29007B6859 /* AuthorModel.m in Sources */,
 				337E5F471BA5783500C83E58 /* main.m in Sources */,
 				33F795441C1AC7BE001556FE /* SMTHomePageListRequest.m in Sources */,
+				334662C31C1EE2020084F362 /* SMTGifImageView.m in Sources */,
 				33153B831BA57DFF007B6859 /* MenuItem.m in Sources */,
 				334662751C1E9B1B0084F362 /* SMTPageDetatilRequest.m in Sources */,
 				33153B861BA57DFF007B6859 /* CardCell.m in Sources */,

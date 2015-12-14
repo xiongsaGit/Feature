@@ -18,6 +18,7 @@
 #import "SMTHomePageListRequest.h"
 #import "SMTListViewController.h"
 
+#import "SMTGifImageView.h"
 
 typedef NS_ENUM(NSInteger,HomePageListRequestType)
 {
@@ -49,6 +50,8 @@ static CGFloat const kAnimationDuration = .2;
     // Do any additional setup after loading the view.
     
     self.view.backgroundColor = kCOLOR_VIEW_BACKGROUND;
+    
+    [SMTGifImageView showGifInView:self.view];
     
     [self commonSet];
 }
