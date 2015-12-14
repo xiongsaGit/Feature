@@ -10,7 +10,7 @@
 
 @implementation SMTListBySignRequest
 {
-    NSString *_signId;
+    NSNumber *_signId;
 }
 
 - (id)initWithSignId:(NSNumber *)signId

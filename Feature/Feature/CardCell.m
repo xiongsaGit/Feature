@@ -59,7 +59,8 @@
     NSArray *signList = model.signList;
     SignModel *signModel = signList[0];
     [self.signView showSignViewDataWithAuthorName:authorModel.name sign:signModel.name];
-    NSLog(@"log titile:%@",signModel.name);
+    NSLog(@"logsignModel.name:%@",signModel.name);
+    [SNLog Log:@"logTitle:%@",model.cardTitle];
 
 }
 

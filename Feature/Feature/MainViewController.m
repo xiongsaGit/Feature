@@ -11,7 +11,6 @@
 
 #import "SuspendView.h"
 #import "LeftMenuView.h"
-#import "TimerView.h"
 #import "CardCell.h"
 
 #import "RootModel.h"
@@ -39,8 +38,6 @@ static CGFloat const kAnimationDuration = .2;
 @property (nonatomic, strong) SuspendView *suspendView;
 
 @property (nonatomic, strong) LeftMenuView *leftMenu;
-
-@property (nonatomic, strong) TimerView *timerView;
 
 @end
 
@@ -185,7 +182,9 @@ static CGFloat const kAnimationDuration = .2;
     if (theType == CardTypeImage)
     {
         return 300;
-    }else
+    }else if (theType == CardTypeMutilImages)
+        return 200;
+    else
         return 220;
 }
 
@@ -193,7 +192,23 @@ static CGFloat const kAnimationDuration = .2;
 {
 
     DigestModel *model = self.tableData[indexPath.row];
-    CardType theType = ([model.cardType intValue]==0)?CardTypeText:(([model.cardType intValue] == 1)?CardTypeMixture:CardTypeImage);
+    
+    CardType theType;
+    switch ([model.cardType intValue]) {
+        case 0:
+            theType = CardTypeText;
+            break;
+        case 1:
+            theType = CardTypeMixture;
+            break;
+        case 2:
+            theType = CardTypeImage;
+            break;
+        case 3:
+            theType = CardTypeMutilImages;
+        default:
+            break;
+    }
     
     CardCell *cell = (CardCell *)[tableView dequeueReusableCellWithIdentifier:[NSString stringWithFormat:@"%ld",theType]];
     if (!cell)
@@ -233,15 +248,9 @@ static CGFloat const kAnimationDuration = .2;
 #pragma mark - 跳转详情页面
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SingleDetailViewController *viewCtrl = [[SingleDetailViewController alloc] init];
-    CATransition *animation = [CATransition animation];
-    animation.duration = 1.0;
-    animation.type = kCATransitionMoveIn;
-    animation.subtype = kCATransitionFromRight;
-    [self.view.window.layer addAnimation:animation forKey:nil];
-    [self presentViewController:viewCtrl animated:YES completion:^{
-        
-    }];
+    DigestModel *digestModel = [self.tableData objectAtIndex:indexPath.row];
+    SingleDetailViewController *viewCtrl = [[SingleDetailViewController alloc] initWithDigestId:digestModel.id];
+    [self presentViewController:viewCtrl animated:YES completion:^{}];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView

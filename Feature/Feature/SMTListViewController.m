@@ -11,6 +11,9 @@
 #import "SMTListBySignRequest.h"
 
 @interface SMTListViewController()<UITableViewDataSource,UITableViewDelegate>
+
+@property (nonatomic, assign) ListType listType;
+@property (nonatomic, strong) NSNumber *listId;
 @property (nonatomic, strong) UITableView *listTableView;
 @property (nonatomic, strong) NSMutableArray *listMutArray;
 @end
@@ -23,6 +26,8 @@
     
     [self.view addSubview:self.listTableView];
     NSLog(@"%s",__func__);
+    
+    [self requestListDataByListType:self.listType listId:self.listId];
 }
 
 - (id)initWithListType:(ListType)listType listId:(NSNumber *)listId
@@ -31,7 +36,8 @@
 
     if (self = [super init]) {
         
-        [self requestListDataByListType:listType listId:listId];
+        self.listType = listType;
+        self.listId = listId;
     }
     return self;
 }
@@ -43,8 +49,8 @@
         SMTListByAuthorRequest *authorRequest = [[SMTListByAuthorRequest alloc] initWithAuthorId:listId];
         [authorRequest startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
             
-            
-            [weakSelf.listTableView reloadData];
+            NSLog(@"request data:%@",request.responseString);
+//            [weakSelf.listTableView reloadData];
         } failure:^(YTKBaseRequest *request) {
             
         }];

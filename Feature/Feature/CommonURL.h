@@ -17,6 +17,10 @@
 #define kDigestListByAuthor  @"getDigestListByAuthor"
 // 按文章分类请求
 #define kDigestListBySign    @"getDigestListBySign"
+// 主页列表详情
+#define kDigestDetail        @"getDigestDetail"
+// 主业列表h5
+#define kDigestContentForH5  @"getDigestContentForH5"
 
 #define kPageSize @"10"
 

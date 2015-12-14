@@ -13,9 +13,10 @@
 
 typedef NS_ENUM(NSInteger,CardType)
 {
-    CardTypeText,// 纯文字
-    CardTypeMixture,// 文字图片共存
-    CardTypeImage, // 纯图片
+    CardTypeText=0,// 纯文字
+    CardTypeMixture,// 文字图片共存,一段文字一张图片
+    CardTypeImage, // 纯图片，一张大图片
+    CardTypeMutilImages // 多张图片
 };
 
 

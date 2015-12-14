@@ -12,34 +12,38 @@
 
 
 @interface SingleDetailViewController ()<UIWebViewDelegate>
-@property (nonatomic, strong) UIWebView *webView;
+@property (nonatomic, strong) NSNumber *digestId;
+@property (nonatomic, strong) UIWebView *contentWebView;
+@property (nonatomic, strong) NSMutableURLRequest *urlRequest;
 @property (nonatomic, strong) SuspendView *suspendView;
 @property (nonatomic, strong) TitleView *titleView;
 @end
 
 @implementation SingleDetailViewController
 
+
+- (id)initWithDigestId:(NSNumber *)digestId
+{
+    if (self = [super init]) {
+        self.digestId = digestId;
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-//    self.view.backgroundColor = [UIColor yellowColor];
-    
     [self configureUI];
     [self configureFrame];
     
-//    NSURL *url = [NSURL URLWithString:@"http://e.dangdang.com/media/api2.go?action=getDigestContentForH5&digestId=506062"];//http://e.dangdang.com/media/api2.go?action=getDigestContentForH5&digestId=2105
-     NSURL *url = [NSURL URLWithString:@"http://e.dangdang.com/media/api2.go?action=getDigestContentForH5&digestId=2105"];
-    NSURLRequest *request=[NSURLRequest requestWithURL:url];
-    self.webView.scalesPageToFit=YES;
-    
-    [self.webView loadRequest:request];
+    [self.contentWebView loadRequest:self.urlRequest];
 }
 
 - (void)configureUI
 {
     [self.view addSubview:self.titleView];
-    [self.view addSubview:self.webView];
+    [self.view addSubview:self.contentWebView];
     [self.view addSubview:self.suspendView];
 }
 
@@ -51,7 +55,7 @@
         make.right.mas_equalTo(self.view.mas_right);
         make.height.mas_equalTo(100);
     }];
-    [self.webView mas_makeConstraints:^(MASConstraintMaker *make){
+    [self.contentWebView mas_makeConstraints:^(MASConstraintMaker *make){
         make.top.mas_equalTo(100);
         make.left.mas_equalTo(self.view.mas_left);
         make.right.mas_equalTo(self.view.mas_right);
@@ -90,14 +94,16 @@
     NSLog(@"%s",__func__);
 }
 
-- (UIWebView *)webView
+- (UIWebView *)contentWebView
 {
-    if (!_webView)
+    if (!_contentWebView)
     {
-        _webView = [[UIWebView alloc] init];
-        _webView.delegate = self;
+        _contentWebView = [[UIWebView alloc] init];
+        _contentWebView.delegate = self;
+        _contentWebView.scalesPageToFit=YES;
+
     }
-    return _webView;
+    return _contentWebView;
 }
 
 - (SuspendView *)suspendView
@@ -152,6 +158,16 @@
     return _titleView;
 }
 
+- (NSMutableURLRequest *)urlRequest
+{
+    if (!_urlRequest) {
+        
+        NSString *urlString = [NSString stringWithFormat:@"%@?action=%@&digestId=%@",kBaseURL,kDigestContentForH5,[self.digestId stringValue]];
+        NSURL *url = [NSURL URLWithString:urlString];
+        _urlRequest = [NSMutableURLRequest requestWithURL:url];
+    }
+    return _urlRequest;
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -14,6 +14,12 @@
 @property (nonatomic, strong) UILabel *cardTitleLabel;
 @property (nonatomic, strong) UILabel *cardRemarkLabel;
 @property (nonatomic, strong) UIImageView *cardImageView;
+
+@property (nonatomic, strong) UIImageView *pic1ImageView;
+@property (nonatomic, strong) UIImageView *pic2ImageView;
+@property (nonatomic, strong) UIImageView *pic3ImageView;
+
+
 @end
 
 @implementation SMTContentView
@@ -30,19 +36,21 @@
 
 - (void)showContentViewWithCardType:(CardType)type DigestModel:(DigestModel *)model
 {
-    
     self.cardTitleLabel.text = model.cardTitle;
-    
     if (type == CardTypeText) {
         self.cardRemarkLabel.text = model.cardRemark;
     }else if (type == CardTypeImage) {
-        
-        [self.cardImageView sd_setImageWithURL:[NSURL URLWithString:model.pic1Path] placeholderImage:[UIImage imageNamed:@""] options:SDWebImageProgressiveDownload];
-        
-    }else {
-        
+        [self downloadToImageView:self.cardImageView withPicPath:model.pic1Path];
+    }else if(type == CardTypeMixture) {
+        [self downloadToImageView:self.cardImageView withPicPath:model.pic1Path];
         self.cardRemarkLabel.text = model.cardRemark;
-        [self.cardImageView sd_setImageWithURL:[NSURL URLWithString:model.pic1Path] placeholderImage:[UIImage imageNamed:@""] options:SDWebImageProgressiveDownload];
+    }else
+    {
+        // 多张图片
+        [self downloadToImageView:self.pic1ImageView withPicPath:model.smallPic1Path];
+        [self downloadToImageView:self.pic2ImageView withPicPath:model.smallPic2Path];
+        [self downloadToImageView:self.pic3ImageView withPicPath:model.smallPic3Path];
+
     }
 }
 
@@ -52,17 +60,30 @@
     [self addSubview:self.cardTitleLabel];
     
     if (type == CardTypeText) {
-        self.cardRemarkLabel = [self factoryForLabelWithFont:kCardRemarkFont textColor:kCardRemarkTextColor];
-        [self addSubview:self.cardRemarkLabel];
+        [self addCardRemarkLabel];
     }else if (type == CardTypeImage) {
+        self.cardImageView = [self factoryForImageView];
         [self addSubview:self.cardImageView];
-    }else
+    }else if (type == CardTypeMixture)
     {
-        self.cardRemarkLabel = [self factoryForLabelWithFont:kCardRemarkFont textColor:kCardRemarkTextColor];
-        [self addSubview:self.cardRemarkLabel];
+        [self addCardRemarkLabel];
+        self.cardImageView = [self factoryForImageView];
         [self addSubview:self.cardImageView];
+    }else {
+        self.pic1ImageView = [self factoryForImageView];
+        self.pic2ImageView = [self factoryForImageView];
+        self.pic3ImageView = [self factoryForImageView];
+        [self addSubview:self.pic1ImageView];
+        [self addSubview:self.pic2ImageView];
+        [self addSubview:self.pic3ImageView];
+
     }
 }
+
+/*
+ *  CardTypeMutilImages时，标题不展示，连标题背景色也没有
+ *
+ */
 
 - (void)configureFrameWithCardType:(CardType)type
 {
@@ -80,15 +101,15 @@
             make.width.mas_equalTo(self.mas_width).offset(-2*kSpaceX);
             make.bottom.mas_equalTo(self.mas_bottom);
         }];
-    }else if (type == CardTypeImage)
-    {
+    }
+    else if (type == CardTypeImage) {
         [self.cardImageView mas_makeConstraints:^(MASConstraintMaker *make){
             make.top.mas_equalTo(self.cardTitleLabel.mas_bottom).offset(kSpaceY/2);
             make.width.mas_equalTo(self.mas_width);
             make.bottom.mas_equalTo(self.mas_bottom);
         }];
-    }else
-    {
+    }
+    else if (type == CardTypeMixture) {
         [self.cardImageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.mas_equalTo(self.cardTitleLabel.mas_bottom).offset(kSpaceY/2);
             make.right.mas_equalTo(self.mas_right).offset(-kSpaceX);
@@ -104,9 +125,45 @@
             
         }];
     }
+    else {
+        [self.pic1ImageView mas_remakeConstraints:^(MASConstraintMaker *make){
+            make.top.mas_equalTo(self.cardTitleLabel.mas_bottom).offset(kSpaceY/2);
+            make.bottom.mas_equalTo(self.mas_bottom);
+            make.left.mas_equalTo(self.mas_left).offset(kSpaceX/2);
+            make.right.mas_equalTo(self.pic2ImageView.mas_left).offset(-kSpaceX/2);
+            make.width.mas_equalTo(self.pic2ImageView.mas_width);
+            
+        }];
+        [self.pic2ImageView mas_remakeConstraints:^(MASConstraintMaker *make){
+            make.top.mas_equalTo(self.pic1ImageView.mas_top);
+            make.bottom.mas_equalTo(self.mas_bottom);
+            make.left.mas_equalTo(self.pic1ImageView.mas_right).offset(kSpaceX/2);
+            make.right.mas_equalTo(self.pic3ImageView.mas_left).offset(-kSpaceX/2);
+            make.width.mas_equalTo(self.pic3ImageView.mas_width);
+        }];
+        [self.pic3ImageView mas_remakeConstraints:^(MASConstraintMaker *make){
+            make.top.mas_equalTo(self.pic1ImageView.mas_top);
+            make.bottom.mas_equalTo(self.mas_bottom);
+            make.left.mas_equalTo(self.pic2ImageView.mas_right).offset(kSpaceX/2);
+            make.right.mas_equalTo(self.mas_right).offset(-kSpaceX/2);
+            make.width.mas_equalTo(self.pic1ImageView.mas_width);
 
+        }];
+    }
 }
 
+#pragma mark - 下载图片
+- (void)downloadToImageView:(UIImageView *)imageView withPicPath:(NSString *)picPath
+{
+    [imageView sd_setImageWithURL:[NSURL URLWithString:picPath] placeholderImage:[UIImage imageNamed:@""] options:SDWebImageProgressiveDownload];
+}
+
+#pragma mark - 添加配文说明
+- (void)addCardRemarkLabel
+{
+    self.cardRemarkLabel = [self factoryForLabelWithFont:kCardRemarkFont textColor:kCardRemarkTextColor];
+    [self addSubview:self.cardRemarkLabel];
+}
 
 /**
  *  大图片直接放置
@@ -114,22 +171,33 @@
  *
  *  @return imageview
  */
-- (UIImageView *)cardImageView
-{
-    if (!_cardImageView)
-    {
-        _cardImageView = [[UIImageView alloc] init];
-        [[_cardImageView layer] setShadowOffset:CGSizeMake(5, 5)]; //设置阴影起点位置
-        
-        [[_cardImageView layer] setShadowRadius:6];                       //设置阴影扩散程度
-        
-        [[_cardImageView layer] setShadowOpacity:1];                      //设置阴影透明度
-        
-        [[_cardImageView layer] setShadowColor:[UIColor grayColor].CGColor]; //设置阴影颜色
-        
-    }
-    return _cardImageView;
+- (UIImageView *)factoryForImageView {
+    UIImageView *imageView = [[UIImageView alloc] init];
+    [[imageView layer] setShadowOffset:CGSizeMake(5, 5)]; //设置阴影起点位置
+    [[imageView layer] setShadowRadius:6];                       //设置阴影扩散程度
+    [[imageView layer] setShadowOpacity:1];                      //设置阴影透明度
+    [[imageView layer] setShadowColor:[UIColor grayColor].CGColor]; //设置阴影颜色
+    return imageView;
 }
+
+
+
+//- (UIImageView *)cardImageView
+//{
+//    if (!_cardImageView)
+//    {
+//        _cardImageView = [[UIImageView alloc] init];
+//        [[_cardImageView layer] setShadowOffset:CGSizeMake(5, 5)]; //设置阴影起点位置
+//        
+//        [[_cardImageView layer] setShadowRadius:6];                       //设置阴影扩散程度
+//        
+//        [[_cardImageView layer] setShadowOpacity:1];                      //设置阴影透明度
+//        
+//        [[_cardImageView layer] setShadowColor:[UIColor grayColor].CGColor]; //设置阴影颜色
+//        
+//    }
+//    return _cardImageView;
+//}
 
 - (UILabel *)factoryForLabelWithFont:(UIFont *)font textColor:(UIColor *)textColor
 {

@@ -10,4 +10,6 @@
 
 @interface SingleDetailViewController : UIViewController
 
+- (id)initWithDigestId:(NSNumber *)digestId;
+
 @end
