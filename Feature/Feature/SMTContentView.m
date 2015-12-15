@@ -8,6 +8,7 @@
 
 #import "SMTContentView.h"
 #import "DigestModel.h"
+#import "SMTCurrentIsDay.h"
 
 @interface SMTContentView()
 
@@ -29,6 +30,12 @@
     if (self = [super init]) {
         [self configureUIWithCardType:cardType];
         [self configureFrameWithCardType:cardType];
+        
+        if ([SMTCurrentIsDay currentTimeIsDay]) {
+            self.cardTitleLabel.textColor = kTEXT_COLOR_DAY;
+        }else {
+            self.cardTitleLabel.textColor = kTEXT_COLOR_NIGHT;
+        }
     }
     return self;
 }

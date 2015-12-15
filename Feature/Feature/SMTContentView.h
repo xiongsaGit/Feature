@@ -9,13 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @class DigestModel;
-typedef NS_ENUM(NSInteger,ContentViewType)
-{
-    ContentViewTypeText,// 纯文字
-    ContentViewTypeMixture,// 文字图片共存
-    ContentViewTypeImage, // 纯图片
-};
-
 @interface SMTContentView : UIView
 
 - (id)initWithCardType:(CardType)cardType;

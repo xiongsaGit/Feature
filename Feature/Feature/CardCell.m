@@ -10,19 +10,13 @@
 #import "SignView.h"
 #import "SMTContentView.h"
 #import "DigestModel.h"
-
-/**
- kHeight 是signView和cardTitleLabel的高度
- */
+#import "SMTCurrentIsDay.h"
 
 @interface CardCell()
 
 @property (nonatomic, strong) UIView *backView;
 @property (nonatomic, strong) SignView *signView;
 @property (nonatomic, strong) SMTContentView *cardView;
-//@property (nonatomic, strong) UILabel *cardTitleLabel;
-//@property (nonatomic, strong) UILabel *cardRemarkLabel;
-//@property (nonatomic, strong) UIImageView *cardImageView;
 
 @end
 
@@ -33,14 +27,22 @@
 {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])
     {
-        self.contentView.backgroundColor = kCOLOR_SEPARATOR;
         self.cardType = cellType;
         [self configureUI];
         [self configureFrame];
+        
+        if ([SMTCurrentIsDay currentTimeIsDay]) {
+            self.contentView.backgroundColor = kCOLOR_DAY_SEPARATOR;
+            self.backView.backgroundColor = kCOLOR_DAY_BACKGROUND;
+        }else {
+            self.contentView.backgroundColor = kCOLOR_NIGHT_SEPARATOR;
+            self.backView.backgroundColor = kCOLOR_NIGHT_BACKGROUND;
+        }
 
     }
     return self;
 }
+
 
 - (void)showDataForCellType:(CardType)type WithDataModel:(DigestModel *)model
 {
@@ -94,8 +96,6 @@
     if (!_backView)
     {
         _backView = [[UIView alloc] init];
-        _backView.backgroundColor =  kCOLOR_BACKGROUND;
-;
     }
     return _backView;
 }

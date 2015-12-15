@@ -91,7 +91,7 @@
     
     self.iconImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"head"]];
     self.iconImageView.layer.cornerRadius = CGRectGetWidth(self.iconImageView.frame)/2;
-    self.appNameLabel = [self factoryForLabelWithTitle:@"翻篇儿" textColor:kCOLOR_BACKGROUND fontSize:20];
+    self.appNameLabel = [self factoryForLabelWithTitle:@"翻篇儿" textColor:kTEXT_COLOR_DAY fontSize:20];
     self.timeLabel = [self factoryForLabelWithTitle:@"距夜幕降临还有" textColor:[UIColor lightGrayColor] fontSize:13];
     self.timeLabel.textAlignment = NSTextAlignmentCenter;
     
@@ -208,8 +208,9 @@
 - (void)handleButtonClick:(UIButton *)btn
 {
     // 返回白天按钮 要把侧滑栏隐藏
-    if (btn.tag == kBUTTON_RETURN_DAY_TAG) {
-     
+    if (btn.tag == kBUTTON_RETURN_DAY_TAG||btn.tag == kBUTTON_ENTER_NIGHT_TAG) {
+        
+        btn.tag = (btn.tag == kBUTTON_RETURN_DAY_TAG)?kBUTTON_ENTER_NIGHT_TAG:kBUTTON_RETURN_DAY_TAG;
         self.showTimerView = !self.showTimerView;
 
         if (self.swipeBlock)

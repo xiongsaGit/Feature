@@ -69,9 +69,7 @@ static CGFloat const kAnimationDuration = .2;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    self.view.backgroundColor = kCOLOR_VIEW_BACKGROUND;
-    
+        
     [self commonSet];
     
     if (self.isMainList) {
@@ -94,8 +92,6 @@ static CGFloat const kAnimationDuration = .2;
 
 - (void)requestListDataByListType:(ListType)listType listId:(NSNumber *)listId
 {
-    NSLog(@"log tableData:%ld",self.tableData.count);
-    
     [self.tableData removeAllObjects];
     [SvGifView startGifAddedToView:self.view];
     __weak typeof(self)weakSelf = self;
@@ -385,19 +381,37 @@ static CGFloat const kAnimationDuration = .2;
             
             if (btn.tag == kBUTTON_FEEDBACK_TAG) {
                 NSLog(@"click feedback");
-            }else
-            {
+            }else {
                 NSLog(@"click return day");
+
+                [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
                 
-                [weakSelf requestHomePageListWithAct:@"new" dayOrNight:@"day" sortPage:nil requestType:HomePageListRequestTypeDefault];
-                
-            }
-            // 弹出意见反馈页面
-            
-            
+                CGRect rect = weakSelf.tableView.frame;
+                rect.origin.y = 0;
+                weakSelf.tableView.frame = rect;
+                if (btn.tag == kBUTTON_RETURN_DAY_TAG) {
+
+                    [weakSelf requestHomePageListWithAct:@"new" dayOrNight:@"night" sortPage:nil requestType:HomePageListRequestTypeDefault];
+                }else {
+                        // 进入黑夜
+                    [weakSelf requestHomePageListWithAct:@"new" dayOrNight:@"day" sortPage:nil requestType:HomePageListRequestTypeDefault];
+                        
+                    }
+                }
         };
     }
     return _leftMenu;
+}
+
+- (void)showDifferentColorWithButton:(UIButton *)button
+{
+    if (button.tag == kBUTTON_RETURN_DAY_TAG) {
+        CardCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+        
+    }else {
+    
+    
+    }
 }
 
 - (void)didReceiveMemoryWarning {

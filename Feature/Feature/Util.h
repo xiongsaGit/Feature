@@ -29,10 +29,15 @@ green:((float)((rgbValue & 0x00FF00) >> 8))/255.0 \
 blue:((float)(rgbValue & 0x0000FF))/255.0 \
 alpha:1.0]
 
+#define kCOLOR_DAY_BACKGROUND    UIColorFromHex(0xffffff)
+#define kCOLOR_NIGHT_BACKGROUND  UIColorFromHex(0x222222)
 
-#define kCOLOR_BACKGROUND  UIColorFromHex(0xffffff)
-#define kCOLOR_SEPARATOR   UIColorFromHex(0xf2f2f2)
-#define kCOLOR_VIEW_BACKGROUND   kCOLOR_BACKGROUND
+#define kCOLOR_DAY_SEPARATOR        UIColorFromHex(0xf2f2f2)
+#define kCOLOR_NIGHT_SEPARATOR       UIColorFromHex(0x232323)
+
+#define kTEXT_COLOR_DAY         kCOLOR_DAY_BACKGROUND
+#define kTEXT_COLOR_NIGHT       UIColorFromHex(0xaaaaaa)
+
 #define kCOLOR_MENU_BACKGROUND   UIColorFromHex(0x2c2c2c)
 
 
@@ -49,6 +54,8 @@ alpha:1.0]
 #define kCardTitleFont       [UIFont systemFontOfSize:20]
 #define kCardRemarkFont       [UIFont systemFontOfSize:14]
 #define kCardTitleTextColor     [UIColor blackColor]
+
+#define kTEXT_COLOR_DAY_CARD_TITLE
 #define kCardRemarkTextColor     [UIColor lightGrayColor]
 
 
@@ -64,6 +71,8 @@ static CGFloat const kSmallImageWidth = 120;
 #define kBUTTON_FEEDBACK_TAG  1000
 // 返回白天按钮
 #define kBUTTON_RETURN_DAY_TAG 1001
+// 进入黑夜按钮
+#define kBUTTON_ENTER_NIGHT_TAG 1002
 
 /*
  *屏幕宽度
