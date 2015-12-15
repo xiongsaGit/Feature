@@ -30,7 +30,7 @@
 {
     return @{
              @"action":kDigestListByAuthor,
-             @"authorId":_authorId,
+             @"authorId":[_authorId stringValue],
              @"pageSize":kPageSize
              };
 }

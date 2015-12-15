@@ -59,9 +59,6 @@
     NSArray *signList = model.signList;
     SignModel *signModel = signList[0];
     [self.signView showSignViewDataWithAuthorName:authorModel.name sign:signModel.name];
-    NSLog(@"logsignModel.name:%@",signModel.name);
-    [SNLog Log:@"logTitle:%@",model.cardTitle];
-
 }
 
 - (void)configureUI
@@ -70,8 +67,6 @@
     [self.backView addSubview:self.signView];
     [self.backView addSubview:self.cardView];
 }
-
-
 
 - (void)configureFrame
 {
@@ -117,16 +112,12 @@
             {
                 weakSelf.toAuthorPageBlock();
             }
-            // 点击进入对应标签的列表✌️
-            NSLog(@"点击进入对应标签的列表✌️");
-            
         };
         _signView.signLabelTapBlock = ^(){
             if (weakSelf.toSignPageBlock)
             {
                 weakSelf.toSignPageBlock();
             }
-            NSLog(@"点击进入标签页面");
         };
     }
     return _signView;

@@ -116,21 +116,9 @@
         _suspendView.itemClickBlock = ^(UIButton *itemBtn){
             NSInteger btnTag = itemBtn.tag;
             if (btnTag == 0) {
-                CATransition *animation = [CATransition animation];
                 
-                animation.duration = 1.0;
+                [weakSelf.navigationController popViewControllerAnimated:YES];
                 
-//                animation.timingFunction = UIViewAnimationCurveEaseInOut;
-                
-                animation.type = kCATransitionMoveIn;//kCATransitionPush;//@"pageCurl";
-                
-                //animation.type = kCATransitionPush;
-                
-                animation.subtype = kCATransitionFromLeft;
-                
-                [weakSelf.view.window.layer addAnimation:animation forKey:nil];                [weakSelf dismissViewControllerAnimated:YES completion:^{
-                    
-                }];
             }else if (btnTag == 1)
             {
                 // 缩小文字

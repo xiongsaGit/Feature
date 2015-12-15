@@ -6,9 +6,9 @@
 //  Copyright © 2015年 sa.xiong. All rights reserved.
 //
 
-#import "YTKBaseRequest.h"
+#import "SMTBaseRequest.h"
 
-@interface SMTListByAuthorRequest : YTKBaseRequest
+@interface SMTListByAuthorRequest : SMTBaseRequest
 
 - (id)initWithAuthorId:(NSNumber *)authorId;
 

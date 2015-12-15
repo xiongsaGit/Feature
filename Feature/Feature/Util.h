@@ -61,9 +61,9 @@ static CGFloat const kSpaceY = 20;
 static CGFloat const kSmallImageWidth = 120;
 
 // 反馈信息按钮
-#define kFEEDBACK_TAG  1000
+#define kBUTTON_FEEDBACK_TAG  1000
 // 返回白天按钮
-#define kRETURN_DAY_TAG 1001
+#define kBUTTON_RETURN_DAY_TAG 1001
 
 /*
  *屏幕宽度

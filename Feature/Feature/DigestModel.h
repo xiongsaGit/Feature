@@ -21,21 +21,21 @@
 @property (nonatomic, strong) NSNumber *cardType;
 
 @property (nonatomic, strong) NSNumber *createTime;
-@property (nonatomic, strong) NSNumber *dayOrNight;
+@property (nonatomic, strong) NSNumber<Optional> *dayOrNight;
 @property (nonatomic, strong) NSNumber *id;// id
-@property (nonatomic, strong) NSNumber *isPraise;
+@property (nonatomic, strong) NSNumber<Optional> *isPraise;
 
 @property (nonatomic, strong) NSString<Optional> *pic1Path;
-@property (nonatomic, strong) NSNumber *replyCnt;
-@property (nonatomic, strong) NSNumber *showStartDateYmdLong;
+@property (nonatomic, strong) NSNumber<Optional> *replyCnt;
+@property (nonatomic, strong) NSNumber<Optional> *showStartDateYmdLong;
 
 @property (nonatomic, strong) NSArray<Optional,SignModel>* signList;
 
-@property (nonatomic, strong) NSString *smallPic1Path;
-@property (nonatomic, strong) NSString *smallPic2Path;
-@property (nonatomic, strong) NSString *smallPic3Path;
+@property (nonatomic, strong) NSString<Optional> *smallPic1Path;
+@property (nonatomic, strong) NSString<Optional> *smallPic2Path;
+@property (nonatomic, strong) NSString<Optional> *smallPic3Path;
 
-@property (nonatomic, strong) NSNumber *sortPage;
-@property (nonatomic, strong) NSNumber *topCnt;
+@property (nonatomic, strong) NSNumber<Optional> *sortPage;
+@property (nonatomic, strong) NSNumber<Optional> *topCnt;
 
 @end

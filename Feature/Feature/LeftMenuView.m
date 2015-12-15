@@ -8,6 +8,7 @@
 
 #import "LeftMenuView.h"
 #import "TimerView.h"
+#import "SMTCurrentIsDay.h"
 
 @interface LeftMenuView()<UIGestureRecognizerDelegate>
 {
@@ -23,6 +24,8 @@
 @property (nonatomic, strong) UILabel *appNameLabel;
 @property (nonatomic, strong) UILabel *timeLabel;
 @property (nonatomic, strong) TimerView *timerView;
+// 控制倒计时是否展示（night时，展示“返回白天”按钮，点击后展示为"进入黑夜"，此时不展示倒计时，即showTimerView = NO）
+@property (nonatomic, assign) BOOL showTimerView;
 @end
 
 @implementation LeftMenuView
@@ -33,7 +36,7 @@
     {
         [self setBackgroundColor:kCOLOR_MENU_BACKGROUND];
         self.isOpen = NO;
-        
+        self.showTimerView = YES;
         [self configureUI];
         [self configureFrame];
 
@@ -41,45 +44,39 @@
     return self;
 }
 
-- (void)gradientLayer
-{
-   CAGradientLayer  *gradientLayer = [CAGradientLayer layer];  // 设置渐变效果
-    gradientLayer.bounds = self.backgroundView.bounds;
-    gradientLayer.borderWidth = 0;
-    
-    gradientLayer.frame = self.backgroundView.bounds;
-    gradientLayer.colors = [NSArray arrayWithObjects:
-                             (id)[[UIColor clearColor] CGColor],
-                             (id)[[UIColor blackColor] CGColor],nil];
-    gradientLayer.startPoint = CGPointMake(0.5, 0.5);
-    gradientLayer.endPoint = CGPointMake(0.5, 1.0);
-    
-    [self.backgroundView.layer insertSublayer:gradientLayer atIndex:0];
-}
-
-/*
- _layerView = [[UIView alloc] initWithFrame:CGRectMake(0, 320-100, 320, 100)];
- 
- _gradientLayer = [CAGradientLayer layer];  // 设置渐变效果
- _gradientLayer.bounds = _layerView.bounds;
- _gradientLayer.borderWidth = 0;
- 
- _gradientLayer.frame = _layerView.bounds;
- _gradientLayer.colors = [NSArray arrayWithObjects:
- (id)[[UIColor clearColor] CGColor],
- (id)[[UIColor blackColor] CGColor], nil nil];
- _gradientLayer.startPoint = CGPointMake(0.5, 0.5);
- _gradientLayer.endPoint = CGPointMake(0.5, 1.0);
- 
- [_layerView.layer insertSublayer:_gradientLayer atIndex:0];
- 
- */
-
-
 /* 检测室day还是night
  * 控制 返回白天  按钮是否显示--返回白天（距白天来临还有+倒计时），进入黑夜（倒计时不展示）
  * 同时,timeLabel展示不同（1）距夜幕降临还有 (2)距白天到来还有
  */
+
+- (void)decideToShowWhatWhenTimeIsCurrent
+{
+    if ([SMTCurrentIsDay currentTimeIsDay]) {
+        self.timeLabel.hidden = NO;
+        self.timeLabel.text = @"距夜幕降临还有";
+        
+        self.returnDayBtn.hidden = YES;
+        
+        self.timerView.hidden = NO;
+        [self.timerView openTimer];
+
+    }else {
+        if (self.showTimerView) {
+            self.returnDayBtn.hidden = NO;
+            self.returnDayBtn.titleLabel.text = @"返回白天";
+            self.timeLabel.hidden = NO;
+            self.timeLabel.text = @"距白天来临还有";
+            self.timerView.hidden = NO;
+            [self.timerView openTimer];
+
+        }else {
+            self.returnDayBtn.hidden = NO;
+            self.returnDayBtn.titleLabel.text = @"进入黑夜";
+            self.timeLabel.hidden = YES;
+            self.timerView.hidden = YES;
+        }
+    }
+}
 
 - (void)configureUI
 {
@@ -87,15 +84,10 @@
     swipeGes.direction = UISwipeGestureRecognizerDirectionLeft;
     [self addGestureRecognizer:swipeGes];
     
-    self.backgroundView = [[UIView alloc] init];
-    [self addSubview:self.backgroundView];
-    
-    [self gradientLayer];
-    
-    self.feedbackBtn = [self factortyForButtonWithTitle:@"反馈信息" selectorString:@"handleFeedbackButtonClick:" tag:kFEEDBACK_TAG];
-    self.returnDayBtn = [self factortyForButtonWithTitle:@"返回白天" selectorString:@"handleFeedbackButtonClick:" tag:kRETURN_DAY_TAG];
-    [self.backgroundView addSubview:self.feedbackBtn];
-    [self.backgroundView addSubview:self.returnDayBtn];
+    self.feedbackBtn = [self factortyForButtonWithTitle:@"反馈信息" selectorString:@"handleButtonClick:" tag:kBUTTON_FEEDBACK_TAG];
+    self.returnDayBtn = [self factortyForButtonWithTitle:@"返回白天" selectorString:@"handleButtonClick:" tag:kBUTTON_RETURN_DAY_TAG];
+    [self addSubview:self.feedbackBtn];
+    [self addSubview:self.returnDayBtn];
     
     self.iconImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"head"]];
     self.iconImageView.layer.cornerRadius = CGRectGetWidth(self.iconImageView.frame)/2;
@@ -103,23 +95,18 @@
     self.timeLabel = [self factoryForLabelWithTitle:@"距夜幕降临还有" textColor:[UIColor lightGrayColor] fontSize:13];
     self.timeLabel.textAlignment = NSTextAlignmentCenter;
     
-    [self.backgroundView addSubview:self.iconImageView];
+    [self addSubview:self.iconImageView];
     
-    [self.backgroundView addSubview:self.appNameLabel];
+    [self addSubview:self.appNameLabel];
     
-    [self.backgroundView addSubview:self.timeLabel];
+    [self addSubview:self.timeLabel];
     
-    [self.backgroundView addSubview:self.timerView];
-
+    [self addSubview:self.timerView];
 }
-
 
 - (void)configureFrame
 {
-    [self.backgroundView mas_remakeConstraints:^(MASConstraintMaker *make){
-        make.top.mas_equalTo(self.mas_top);
-        make.size.mas_equalTo(self.frame.size);
-    }];
+
     [self.feedbackBtn mas_makeConstraints:^(MASConstraintMaker *make){
         make.left.mas_equalTo(self.mas_left).offset(10);
         make.top.mas_equalTo(self.mas_top).offset(10);
@@ -155,10 +142,7 @@
         make.centerX.mas_equalTo(self.mas_centerX);
 
     }];
-    
-    
 }
-
 
 -(void)showFrame:(CGRect)rect
 {
@@ -177,8 +161,7 @@
     CGRect kRect = rect;
     kRect.origin.x = -rect.size.width;
     _closeRect = kRect;
-    [self.timerView openTimer];
-
+    [self decideToShowWhatWhenTimeIsCurrent];
 }
 
 - (void)applicationWillResignActive:(NSNotification *)notification
@@ -222,8 +205,18 @@
     }
 }
 
-- (void)handleFeedbackButtonClick:(UIButton *)btn
+- (void)handleButtonClick:(UIButton *)btn
 {
+    // 返回白天按钮 要把侧滑栏隐藏
+    if (btn.tag == kBUTTON_RETURN_DAY_TAG) {
+     
+        self.showTimerView = !self.showTimerView;
+
+        if (self.swipeBlock)
+        {
+            self.swipeBlock();
+        }
+    }
     if (self.buttonClickBlock)
     {
         self.buttonClickBlock(btn);
@@ -235,7 +228,7 @@
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.layer.borderColor = [UIColor whiteColor].CGColor;
     btn.layer.borderWidth = 1;
-    btn.layer.cornerRadius = 4;
+    btn.layer.cornerRadius = 8;
     btn.layer.masksToBounds = YES;
     btn.titleLabel.adjustsFontSizeToFitWidth = YES;
     btn.tag = btnTag;

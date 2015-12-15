@@ -238,7 +238,6 @@ static CGFloat const kOriginX = 5;
     NSMutableArray *array = [NSMutableArray array];
     if (counts >3600)
     {
-//        timeString = [];
         if (counts/3600>9)
         {
             [array addObject:[NSString stringWithFormat:@"%ld",counts/3600/9]];
@@ -247,9 +246,6 @@ static CGFloat const kOriginX = 5;
         {
             [array addObject:@"0"];
             [array addObject:[NSString stringWithFormat:@"%ld",counts/3600%9]];
-            
-       
-            
         }
         if (counts%3600/60>9)
         {
@@ -307,8 +303,6 @@ static CGFloat const kOriginX = 5;
         }
     }else
     {
-//        counts<60
-    
         [array addObject:@"0"];
         [array addObject:@"0"];
         [array addObject:@"0"];
@@ -353,6 +347,7 @@ static CGFloat const kOriginX = 5;
             nowCounts+=[nowArray[2] intValue];
             baseCounts += [baseArray[2] intValue];
         }
+    
     }
     
     if (nowCounts<baseCounts)

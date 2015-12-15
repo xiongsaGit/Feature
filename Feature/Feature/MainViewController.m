@@ -12,11 +12,15 @@
 #import "SuspendView.h"
 #import "LeftMenuView.h"
 #import "CardCell.h"
+#import "SMTCurrentIsDay.h"
 
 #import "RootModel.h"
 
 #import "SMTHomePageListRequest.h"
+#import "SMTListByAuthorRequest.h"
+#import "SMTListBySignRequest.h"
 #import "SMTListViewController.h"
+
 
 typedef NS_ENUM(NSInteger,HomePageListRequestType)
 {
@@ -29,18 +33,37 @@ static CGFloat const kAnimationDuration = .2;
 
 @interface MainViewController()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic, strong) UIImageView *imageView;
-
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *tableData;
 @property (nonatomic, assign) CGFloat oldOffsetY;
-
 @property (nonatomic, strong) SuspendView *suspendView;
-
 @property (nonatomic, strong) LeftMenuView *leftMenu;
 
+// 判断是主页列表还是按Author或Sign分类展示的列表
+@property (nonatomic, assign) BOOL isMainList;
+@property (nonatomic, assign) ListType listType;
+@property (nonatomic, strong) NSNumber *listId;
 @end
 
 @implementation MainViewController
+
+- (id)init {
+    if (self = [super init]) {
+        self.isMainList = YES;
+    }
+    return self;
+}
+
+- (id)initWithListType:(ListType)listType listId:(NSNumber *)listId
+{
+    if (self = [super init]) {
+        
+        self.listType = listType;
+        self.listId = listId;
+        self.isMainList = NO;
+    }
+    return self;
+}
 
 
 - (void)viewDidLoad {
@@ -50,24 +73,69 @@ static CGFloat const kAnimationDuration = .2;
     self.view.backgroundColor = kCOLOR_VIEW_BACKGROUND;
     
     [self commonSet];
+    
+    if (self.isMainList) {
+        
+       NSString *dayOrNight =  [SMTCurrentIsDay currentTimeIsDay]?@"day":@"night";
+        
+        [self requestHomePageListWithAct:@"new" dayOrNight:dayOrNight sortPage:nil requestType:HomePageListRequestTypeDefault];
+    }else {
+        [self requestListDataByListType:self.listType listId:self.listId];
+    }
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    [self requestHomePageListWithAct:@"new" dayOrNight:@"day" sortPage:nil requestType:HomePageListRequestTypeDefault];
-  
+    self.navigationController.navigationBarHidden = self.isMainList;
 }
 
+- (void)requestListDataByListType:(ListType)listType listId:(NSNumber *)listId
+{
+    NSLog(@"log tableData:%ld",self.tableData.count);
+    
+    [self.tableData removeAllObjects];
+    [SvGifView startGifAddedToView:self.view];
+    __weak typeof(self)weakSelf = self;
+    if (listType == ListTypeByAuthor) {
+        SMTListByAuthorRequest *authorRequest = [[SMTListByAuthorRequest alloc] initWithAuthorId:listId];
+        [authorRequest startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
+            [SvGifView stopGifForView:self.view];
+            NSError* err = nil;
+            RootModel *rootModel = [[RootModel alloc] initWithString:request.responseString error:&err];
+            weakSelf.tableData = [NSMutableArray arrayWithArray:rootModel.data.digestList];
+            [weakSelf.tableView reloadData];
+        } failure:^(YTKBaseRequest *request) {
+            [SvGifView stopGifForView:self.view];
+        }];
+    }else {
+        SMTListBySignRequest *signRequest = [[SMTListBySignRequest alloc] initWithSignId:listId];
+        [signRequest startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
+            [SvGifView stopGifForView:self.view];
+            
+            NSError* err = nil;
+            RootModel *rootModel = [[RootModel alloc] initWithString:request.responseString error:&err];
+            weakSelf.tableData = [NSMutableArray arrayWithArray:rootModel.data.digestList];
+            [weakSelf.tableView reloadData];
+            
+        } failure:^(YTKBaseRequest *request) {
+            [SvGifView stopGifForView:self.view];
+        }];
+    }
+}
 
 #pragma mark -
 #pragma mark - 数据请求
 - (void)requestHomePageListWithAct:(NSString *)act dayOrNight:(NSString *)dayOrNight sortPage:(NSNumber *)sortPage requestType:(HomePageListRequestType)requestType
 {
+    [SvGifView startGifAddedToView:self.view];
+
     SMTHomePageListRequest *homePageListRequest = [[SMTHomePageListRequest alloc] initWithAct:act dayOrNight:dayOrNight sortPage:sortPage];
     [homePageListRequest startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
-        [SvGifView startGifAddedToView:self.view];
+        [SvGifView stopGifForView:self.view];
+
         NSError* err = nil;
         RootModel *rootModel = [[RootModel alloc] initWithString:request.responseString error:&err];
         
@@ -98,20 +166,21 @@ static CGFloat const kAnimationDuration = .2;
 #pragma mark - 刷新列表数据
 - (void)refreshDataInTableView
 {
+        NSString *dayOrNight =  [SMTCurrentIsDay currentTimeIsDay]?@"day":@"night";
+        DigestModel *digestModel = self.tableData[0];
     
-    DigestModel *digestModel = self.tableData[0];
-    
-    [self requestHomePageListWithAct:@"new" dayOrNight:@"day" sortPage:digestModel.sortPage requestType:HomePageListRequestTypeRefresh];
+        [self requestHomePageListWithAct:@"new" dayOrNight:dayOrNight sortPage:digestModel.sortPage requestType:HomePageListRequestTypeRefresh];
 }
 
 #pragma mark - 
 #pragma mark - 加载更多数据
 - (void)loadMoreDataInTableView
 {
-    DigestModel *digestModel = self.tableData[self.tableData.count-1];
+    NSString *dayOrNight =  [SMTCurrentIsDay currentTimeIsDay]?@"day":@"night";
 
-    [self requestHomePageListWithAct:@"old" dayOrNight:@"day" sortPage:digestModel.sortPage requestType:HomePageListRequestTypeLoadMore];
-}
+        DigestModel *digestModel = self.tableData[self.tableData.count-1];
+        [self requestHomePageListWithAct:@"old" dayOrNight:dayOrNight sortPage:digestModel.sortPage requestType:HomePageListRequestTypeLoadMore];
+ }
 
 - (void)commonSet
 {
@@ -122,49 +191,49 @@ static CGFloat const kAnimationDuration = .2;
 
     self.oldOffsetY = 0;
 
-    NSArray *items = [NSArray arrayWithObjects:@"card_1_03",@"card_1_03", nil];
-    self.suspendView = [[SuspendView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-60, self.view.frame.size.width, 60) menuItemsArray:items];
-    self.suspendView.backgroundColor = [UIColor clearColor];
-    
-    __weak typeof(self) weakSelf = self;
-    self.suspendView.itemClickBlock = ^(UIButton *itemBtn){
-        switch (itemBtn.tag)
-        {
-            case 0:
-            {
-                
-                [UIView animateWithDuration:kAnimationDuration animations:^{
-                    CGRect rect =  weakSelf.leftMenu.frame;
-                    rect.origin.x = weakSelf.leftMenu.isOpen?-LEFT_MENU_WIDTH:0;
-                    weakSelf.leftMenu.frame = rect;
-                    if (!weakSelf.leftMenu.isOpen)
-                    {
-                        [weakSelf.leftMenu showFrame:rect];
-                    }else
-                    {
-                        [weakSelf.leftMenu closeFrame:rect];
-                    }
-                }];
-                weakSelf.leftMenu.isOpen = !weakSelf.leftMenu.isOpen;
-                
-            }
-                break;
-            case 1:
-            {
-                NSIndexPath *path = [NSIndexPath indexPathForRow:0 inSection:0];
-                [weakSelf.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionTop animated:YES];
-            }
-                break;
-            default:
-                break;
-        }
+    if (self.isMainList) {
+        NSArray *items = [NSArray arrayWithObjects:@"card_1_03",@"card_1_03", nil];
+        self.suspendView = [[SuspendView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-60, self.view.frame.size.width, 60) menuItemsArray:items];
+        self.suspendView.backgroundColor = [UIColor clearColor];
         
-    };
-    [self.view addSubview:self.suspendView];
-    
-    [self.leftMenu setFrame:CGRectMake(-LEFT_MENU_WIDTH, 0, LEFT_MENU_WIDTH, self.view.frame.size.height)];
-    
-
+        __weak typeof(self) weakSelf = self;
+        self.suspendView.itemClickBlock = ^(UIButton *itemBtn){
+            switch (itemBtn.tag)
+            {
+                case 0:
+                {
+                    
+                    [UIView animateWithDuration:kAnimationDuration animations:^{
+                        CGRect rect =  weakSelf.leftMenu.frame;
+                        rect.origin.x = weakSelf.leftMenu.isOpen?-LEFT_MENU_WIDTH:0;
+                        weakSelf.leftMenu.frame = rect;
+                        if (!weakSelf.leftMenu.isOpen)
+                        {
+                            [weakSelf.leftMenu showFrame:rect];
+                        }else
+                        {
+                            [weakSelf.leftMenu closeFrame:rect];
+                        }
+                    }];
+                    weakSelf.leftMenu.isOpen = !weakSelf.leftMenu.isOpen;
+                    
+                }
+                    break;
+                case 1:
+                {
+                    NSIndexPath *path = [NSIndexPath indexPathForRow:0 inSection:0];
+                    [weakSelf.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionTop animated:YES];
+                }
+                    break;
+                default:
+                    break;
+            }
+            
+        };
+        [self.view addSubview:self.suspendView];
+        
+        [self.leftMenu setFrame:CGRectMake(-LEFT_MENU_WIDTH, 0, LEFT_MENU_WIDTH, SCREEN_HEIGHT)];
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -188,7 +257,6 @@ static CGFloat const kAnimationDuration = .2;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
     DigestModel *model = self.tableData[indexPath.row];
     
     CardType theType;
@@ -213,30 +281,31 @@ static CGFloat const kAnimationDuration = .2;
     {
         cell = [[CardCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[NSString stringWithFormat:@"%ld",theType] cellType:theType];
         cell.selectionStyle = UITableViewCellSeparatorStyleNone;
-        [self blockForCell:cell];
     }
     [cell showDataForCellType:theType WithDataModel:model];
+
+    [self blockForCell:cell withModel:model];
    
     return cell;
 }
 
-- (void)blockForCell:(CardCell *)theCell
+- (void)blockForCell:(CardCell *)theCell withModel:(DigestModel *)model
 {
     __weak typeof(self)weakSelf = self;
     
-    AuthorModel *authorModel = theCell.digestModel.authorList[0];
-    SignModel *signModel = theCell.digestModel.signList[0];
+    AuthorModel *authorModel = model.authorList[0];
+    SignModel *signModel = model.signList[0];
 
     theCell.toAuthorPageBlock = ^(){
    
-        SMTListViewController *listViewCtrl = [[SMTListViewController alloc] initWithListType:ListTypeByAuthor listId:authorModel.authorId];
+        MainViewController *listViewCtrl = [[MainViewController alloc] initWithListType:ListTypeByAuthor listId:authorModel.authorId];
         [weakSelf.navigationController pushViewController:listViewCtrl animated:YES];
     
     };
   
     theCell.toSignPageBlock = ^()
     {
-        SMTListViewController *listViewCtrl = [[SMTListViewController alloc] initWithListType:ListTypeByAuthor listId:signModel.id];
+        MainViewController *listViewCtrl = [[MainViewController alloc] initWithListType:ListTypeBySign listId:signModel.id];
         [weakSelf.navigationController pushViewController:listViewCtrl animated:YES];
         
     };
@@ -248,12 +317,13 @@ static CGFloat const kAnimationDuration = .2;
 {
     DigestModel *digestModel = [self.tableData objectAtIndex:indexPath.row];
     SingleDetailViewController *viewCtrl = [[SingleDetailViewController alloc] initWithDigestId:digestModel.id];
-    [self presentViewController:viewCtrl animated:YES completion:^{}];
+    [self.navigationController pushViewController:viewCtrl animated:YES];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    
+    if (self.isMainList) {
+
     if (scrollView.contentOffset.y > self.oldOffsetY) {//如果当前位移大于缓存位移，说明scrollView向上滑动
         
         [UIView animateWithDuration:.1 animations:^{
@@ -272,7 +342,8 @@ static CGFloat const kAnimationDuration = .2;
     }
     
     self.oldOffsetY = scrollView.contentOffset.y;//将当前位移变成缓存位移
-    
+        
+    }
 }
 
 - (UITableView *)tableView
@@ -312,11 +383,14 @@ static CGFloat const kAnimationDuration = .2;
         };
         _leftMenu.buttonClickBlock = ^(UIButton *btn){
             
-            if (btn.tag == kFEEDBACK_TAG) {
+            if (btn.tag == kBUTTON_FEEDBACK_TAG) {
                 NSLog(@"click feedback");
             }else
             {
                 NSLog(@"click return day");
+                
+                [weakSelf requestHomePageListWithAct:@"new" dayOrNight:@"day" sortPage:nil requestType:HomePageListRequestTypeDefault];
+                
             }
             // 弹出意见反馈页面
             

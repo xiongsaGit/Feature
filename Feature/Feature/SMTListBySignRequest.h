@@ -6,9 +6,9 @@
 //  Copyright © 2015年 sa.xiong. All rights reserved.
 //
 
-#import "YTKBaseRequest.h"
+#import "SMTBaseRequest.h"
 
-@interface SMTListBySignRequest : YTKBaseRequest
+@interface SMTListBySignRequest : SMTBaseRequest
 
 - (id)initWithSignId:(NSNumber *)signId;
 

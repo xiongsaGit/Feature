@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSInteger,ListType)
+{
+    ListTypeByAuthor,
+    ListTypeBySign
+};
+
 @interface MainViewController : UIViewController
+
+- (id)initWithListType:(ListType)listType listId:(NSNumber *)listId;
 
 @end

@@ -30,7 +30,7 @@
 {
     return @{
              @"action":kDigestListBySign,
-             @"signId":_signId,
+             @"signId":[_signId stringValue],
              @"pageSize":kPageSize
              };
 }

@@ -21,7 +21,10 @@
     // Override point for customization after application launch.
     
     [application setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-    self.window.rootViewController = [[MainViewController alloc] init];
+    
+    MainViewController *mainViewCtrl = [[MainViewController alloc] init];
+    UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:mainViewCtrl];
+    self.window.rootViewController = navCtrl;//[[MainViewController alloc] init];
     return YES;
 }
 
