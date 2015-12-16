@@ -11,6 +11,19 @@
 
 
 
+#define kDAY_FROM_TIME       @"05:59:59"
+#define kNIGHT_FROM_TIME   @"19:59:59"
+
+
+#define UserDefaultsSetObjectForKey(object,key)  [[NSUserDefaults standardUserDefaults] setObject:object forKey:key];  [[NSUserDefaults standardUserDefaults] synchronize];
+
+#define UserDefaultsGetObjectForKey(key)     [[NSUserDefaults standardUserDefaults] objectForKey:key]
+
+#define UserDefaultsRemoveObjectForKey(key) [[NSUserDefaults standardUserDefaults]removeObjectForKey:key]; [[NSUserDefaults standardUserDefaults] synchronize];
+
+/****************************************************************************/
+
+
 typedef NS_ENUM(NSInteger,CardType)
 {
     CardTypeText=0,// 纯文字
@@ -35,8 +48,8 @@ alpha:1.0]
 #define kCOLOR_DAY_SEPARATOR        UIColorFromHex(0xf2f2f2)
 #define kCOLOR_NIGHT_SEPARATOR       UIColorFromHex(0x232323)
 
-#define kTEXT_COLOR_DAY         kCOLOR_DAY_BACKGROUND
-#define kTEXT_COLOR_NIGHT       UIColorFromHex(0xaaaaaa)
+#define kTEXT_COLOR_DAY        UIColorFromHex(0x444444)
+#define kTEXT_COLOR_NIGHT      kCOLOR_DAY_BACKGROUND
 
 #define kCOLOR_MENU_BACKGROUND   UIColorFromHex(0x2c2c2c)
 
@@ -66,6 +79,8 @@ static CGFloat const kHeight = 40;
 static CGFloat const kSpaceX = 20;
 static CGFloat const kSpaceY = 20;
 static CGFloat const kSmallImageWidth = 120;
+
+#define kHEIGHT_OF_LABEL  30
 
 // 反馈信息按钮
 #define kBUTTON_FEEDBACK_TAG  1000

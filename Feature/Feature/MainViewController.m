@@ -19,7 +19,6 @@
 #import "SMTHomePageListRequest.h"
 #import "SMTListByAuthorRequest.h"
 #import "SMTListBySignRequest.h"
-#import "SMTListViewController.h"
 
 
 typedef NS_ENUM(NSInteger,HomePageListRequestType)
@@ -43,10 +42,13 @@ static CGFloat const kAnimationDuration = .2;
 @property (nonatomic, assign) BOOL isMainList;
 @property (nonatomic, assign) ListType listType;
 @property (nonatomic, strong) NSNumber *listId;
+@property (nonatomic, copy) NSString *title;
 @end
 
 @implementation MainViewController
 
+#pragma mark -
+//- 默认主页列表使用
 - (id)init {
     if (self = [super init]) {
         self.isMainList = YES;
@@ -54,17 +56,17 @@ static CGFloat const kAnimationDuration = .2;
     return self;
 }
 
-- (id)initWithListType:(ListType)listType listId:(NSNumber *)listId
+// - 按类型列表 使用
+- (id)initWithListType:(ListType)listType listId:(NSNumber *)listId title:(NSString *)title
 {
     if (self = [super init]) {
-        
+        self.title = title;
         self.listType = listType;
         self.listId = listId;
         self.isMainList = NO;
     }
     return self;
 }
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -74,8 +76,8 @@ static CGFloat const kAnimationDuration = .2;
     
     if (self.isMainList) {
         
+        UserDefaultsRemoveObjectForKey(kDay);
        NSString *dayOrNight =  [SMTCurrentIsDay currentTimeIsDay]?@"day":@"night";
-        
         [self requestHomePageListWithAct:@"new" dayOrNight:dayOrNight sortPage:nil requestType:HomePageListRequestTypeDefault];
     }else {
         [self requestListDataByListType:self.listType listId:self.listId];
@@ -90,6 +92,9 @@ static CGFloat const kAnimationDuration = .2;
     self.navigationController.navigationBarHidden = self.isMainList;
 }
 
+#pragma mark - 数据请求
+
+//  按类型列表
 - (void)requestListDataByListType:(ListType)listType listId:(NSNumber *)listId
 {
     [self.tableData removeAllObjects];
@@ -122,8 +127,7 @@ static CGFloat const kAnimationDuration = .2;
     }
 }
 
-#pragma mark -
-#pragma mark - 数据请求
+//  主页列表数据请求
 - (void)requestHomePageListWithAct:(NSString *)act dayOrNight:(NSString *)dayOrNight sortPage:(NSNumber *)sortPage requestType:(HomePageListRequestType)requestType
 {
     [SvGifView startGifAddedToView:self.view];
@@ -158,8 +162,7 @@ static CGFloat const kAnimationDuration = .2;
     }];
 }
 
-#pragma mark -
-#pragma mark - 刷新列表数据
+//  刷新列表数据
 - (void)refreshDataInTableView
 {
         NSString *dayOrNight =  [SMTCurrentIsDay currentTimeIsDay]?@"day":@"night";
@@ -168,8 +171,7 @@ static CGFloat const kAnimationDuration = .2;
         [self requestHomePageListWithAct:@"new" dayOrNight:dayOrNight sortPage:digestModel.sortPage requestType:HomePageListRequestTypeRefresh];
 }
 
-#pragma mark - 
-#pragma mark - 加载更多数据
+//  加载更多数据
 - (void)loadMoreDataInTableView
 {
     NSString *dayOrNight =  [SMTCurrentIsDay currentTimeIsDay]?@"day":@"night";
@@ -178,15 +180,103 @@ static CGFloat const kAnimationDuration = .2;
         [self requestHomePageListWithAct:@"old" dayOrNight:dayOrNight sortPage:digestModel.sortPage requestType:HomePageListRequestTypeLoadMore];
  }
 
+#pragma mark - tableView
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.tableData.count;
+}
+
+// - 这个地方要如何根据数据计算高度呢
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    DigestModel *model = self.tableData[indexPath.row];
+    CardType theType = [model.cardType intValue];
+    if (theType == CardTypeImage)
+    {
+        return 300;
+    }else if (theType == CardTypeMutilImages)
+        return 200;
+    else
+        return 220;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    DigestModel *model = self.tableData[indexPath.row];
+    
+    CardType theType;
+    switch ([model.cardType intValue]) {
+        case 0:
+            theType = CardTypeText;
+            break;
+        case 1:
+            theType = CardTypeMixture;
+            break;
+        case 2:
+            theType = CardTypeImage;
+            break;
+        case 3:
+            theType = CardTypeMutilImages;
+        default:
+            break;
+    }
+    
+    CardCell *cell = (CardCell *)[tableView dequeueReusableCellWithIdentifier:[NSString stringWithFormat:@"%d",(int)theType]];
+    if (!cell)
+    {
+        cell = [[CardCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[NSString stringWithFormat:@"%d",(int)theType] cellType:theType];
+        cell.selectionStyle = UITableViewCellSeparatorStyleNone;
+    }
+    [cell showDifferColorByCurrentTime];
+    [cell showDataForCellType:theType WithDataModel:model];
+
+    [self blockForCell:cell withModel:model];
+   
+    return cell;
+}
+
+//- 跳转详情页面
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    DigestModel *digestModel = [self.tableData objectAtIndex:indexPath.row];
+    SingleDetailViewController *viewCtrl = [[SingleDetailViewController alloc] initWithDigestId:digestModel.id];
+    [self.navigationController pushViewController:viewCtrl animated:YES];
+}
+
+#pragma mark - cell右上角 作者 类型 点击事件
+- (void)blockForCell:(CardCell *)theCell withModel:(DigestModel *)model
+{
+    __weak typeof(self)weakSelf = self;
+    
+    AuthorModel *authorModel = model.authorList[0];
+    SignModel *signModel = model.signList[0];
+
+    theCell.toAuthorPageBlock = ^(){
+   
+        MainViewController *listViewCtrl = [[MainViewController alloc] initWithListType:ListTypeByAuthor listId:authorModel.authorId title:authorModel.name];
+        [weakSelf.navigationController pushViewController:listViewCtrl animated:YES];
+    
+    };
+  
+    theCell.toSignPageBlock = ^()
+    {
+        MainViewController *listViewCtrl = [[MainViewController alloc] initWithListType:ListTypeBySign listId:signModel.id title:signModel.name];
+        [weakSelf.navigationController pushViewController:listViewCtrl animated:YES];
+        
+    };
+    
+}
+
+#pragma mark - others
 - (void)commonSet
 {
     _tableData = [NSMutableArray array];
     
     [self.view addSubview:self.tableView];
     [self.tableView setFrame:self.view.bounds];
-
+    
     self.oldOffsetY = 0;
-
+    
     if (self.isMainList) {
         NSArray *items = [NSArray arrayWithObjects:@"card_1_03",@"card_1_03", nil];
         self.suspendView = [[SuspendView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-60, self.view.frame.size.width, 60) menuItemsArray:items];
@@ -232,90 +322,6 @@ static CGFloat const kAnimationDuration = .2;
     }
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return self.tableData.count;
-}
-
-#pragma mark - 这个地方要如何根据数据计算高度呢
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    DigestModel *model = self.tableData[indexPath.row];
-    CardType theType = [model.cardType intValue];
-    if (theType == CardTypeImage)
-    {
-        return 300;
-    }else if (theType == CardTypeMutilImages)
-        return 200;
-    else
-        return 220;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    DigestModel *model = self.tableData[indexPath.row];
-    
-    CardType theType;
-    switch ([model.cardType intValue]) {
-        case 0:
-            theType = CardTypeText;
-            break;
-        case 1:
-            theType = CardTypeMixture;
-            break;
-        case 2:
-            theType = CardTypeImage;
-            break;
-        case 3:
-            theType = CardTypeMutilImages;
-        default:
-            break;
-    }
-    
-    CardCell *cell = (CardCell *)[tableView dequeueReusableCellWithIdentifier:[NSString stringWithFormat:@"%ld",theType]];
-    if (!cell)
-    {
-        cell = [[CardCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[NSString stringWithFormat:@"%ld",theType] cellType:theType];
-        cell.selectionStyle = UITableViewCellSeparatorStyleNone;
-    }
-    [cell showDataForCellType:theType WithDataModel:model];
-
-    [self blockForCell:cell withModel:model];
-   
-    return cell;
-}
-
-- (void)blockForCell:(CardCell *)theCell withModel:(DigestModel *)model
-{
-    __weak typeof(self)weakSelf = self;
-    
-    AuthorModel *authorModel = model.authorList[0];
-    SignModel *signModel = model.signList[0];
-
-    theCell.toAuthorPageBlock = ^(){
-   
-        MainViewController *listViewCtrl = [[MainViewController alloc] initWithListType:ListTypeByAuthor listId:authorModel.authorId];
-        [weakSelf.navigationController pushViewController:listViewCtrl animated:YES];
-    
-    };
-  
-    theCell.toSignPageBlock = ^()
-    {
-        MainViewController *listViewCtrl = [[MainViewController alloc] initWithListType:ListTypeBySign listId:signModel.id];
-        [weakSelf.navigationController pushViewController:listViewCtrl animated:YES];
-        
-    };
-    
-}
-
-#pragma mark - 跳转详情页面
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    DigestModel *digestModel = [self.tableData objectAtIndex:indexPath.row];
-    SingleDetailViewController *viewCtrl = [[SingleDetailViewController alloc] initWithDigestId:digestModel.id];
-    [self.navigationController pushViewController:viewCtrl animated:YES];
-}
-
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if (self.isMainList) {
@@ -357,7 +363,6 @@ static CGFloat const kAnimationDuration = .2;
     return _tableView;
 
 }
-
 
 - (LeftMenuView *)leftMenu
 {
@@ -401,17 +406,6 @@ static CGFloat const kAnimationDuration = .2;
         };
     }
     return _leftMenu;
-}
-
-- (void)showDifferentColorWithButton:(UIButton *)button
-{
-    if (button.tag == kBUTTON_RETURN_DAY_TAG) {
-        CardCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-        
-    }else {
-    
-    
-    }
 }
 
 - (void)didReceiveMemoryWarning {

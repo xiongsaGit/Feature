@@ -19,18 +19,23 @@
     NSDateFormatter *format1 = [[NSDateFormatter alloc] init];
     [format1 setDateFormat:@"HH:mm:ss"];
     
-    NSString *dayFromString = @"05:59:59";
-    NSString *nightFromString = @"19:59:59";
-    
     NSString *currentTimeString = [format1 stringFromDate:currentDate];
     NSTimeInterval currentInterval = [self timeIntervalWithTime:currentTimeString];
-    NSTimeInterval dayFromInterval = [self timeIntervalWithTime:dayFromString];
-    NSTimeInterval nightFromInterval = [self timeIntervalWithTime:nightFromString];
+    NSTimeInterval dayFromInterval = [self timeIntervalWithTime:kDAY_FROM_TIME];
+    NSTimeInterval nightFromInterval = [self timeIntervalWithTime:kNIGHT_FROM_TIME];
     if (currentInterval>dayFromInterval&&currentInterval<nightFromInterval) {
         currentIsDay = YES;
     }else {
         currentIsDay = NO;
     }
+    
+    if (!currentIsDay) {
+        if (UserDefaultsGetObjectForKey(kDay) &&[UserDefaultsGetObjectForKey(kDay) boolValue] == YES) {
+            currentIsDay = YES;
+        }
+    }
+
+    
     return currentIsDay;
 }
 

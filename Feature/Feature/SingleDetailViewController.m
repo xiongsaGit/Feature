@@ -7,16 +7,23 @@
 //
 
 #import "SingleDetailViewController.h"
+#import "MainViewController.h"
+#import "SMTPageDetatilRequest.h"
+
 #import "SuspendView.h"
 #import "TitleView.h"
 
+#import "SMTDetailModel.h"
 
 @interface SingleDetailViewController ()<UIWebViewDelegate>
 @property (nonatomic, strong) NSNumber *digestId;
-@property (nonatomic, strong) UIWebView *contentWebView;
 @property (nonatomic, strong) NSMutableURLRequest *urlRequest;
-@property (nonatomic, strong) SuspendView *suspendView;
+
 @property (nonatomic, strong) TitleView *titleView;
+@property (nonatomic, strong) UIWebView *contentWebView;
+
+@property (nonatomic, strong) UIView *bookInfoView;
+@property (nonatomic, strong) SuspendView *suspendView;
 @end
 
 @implementation SingleDetailViewController
@@ -37,11 +44,39 @@
     [self configureUI];
     [self configureFrame];
     
+    [self requestDigestDetail];
     [self.contentWebView loadRequest:self.urlRequest];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
+}
+
+- (void)requestDigestDetail {
+    __weak typeof(self)weakSelf = self;
+    [SvGifView startGifAddedToView:self.view];
+    SMTPageDetatilRequest *detailRequest = [[SMTPageDetatilRequest alloc] initWithDigestId:self.digestId];
+    [detailRequest startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
+        [SvGifView stopGifForView:self.view];
+        
+        NSError* err = nil;
+        SMTDetailModel *detailModel = [[SMTDetailModel alloc] initWithString:request.responseString error:&err];
+        
+    
+        [weakSelf.titleView setTitleViewDataWithDigestDetailModel:detailModel.data.digestDetail];
+        
+        
+    } failure:^(YTKBaseRequest *request) {
+        [SvGifView stopGifForView:self.view];
+    }];
+    
 }
 
 - (void)configureUI
 {
+    self.view.backgroundColor = kCOLOR_DAY_BACKGROUND;
     [self.view addSubview:self.titleView];
     [self.view addSubview:self.contentWebView];
     [self.view addSubview:self.suspendView];
@@ -53,19 +88,19 @@
         make.top.mas_equalTo(self.view.mas_top);
         make.left.mas_equalTo(self.view.mas_left);
         make.right.mas_equalTo(self.view.mas_right);
-        make.height.mas_equalTo(100);
+        make.height.mas_equalTo(120);
     }];
     [self.contentWebView mas_makeConstraints:^(MASConstraintMaker *make){
-        make.top.mas_equalTo(100);
+        make.top.mas_equalTo(self.titleView.mas_bottom);
         make.left.mas_equalTo(self.view.mas_left);
         make.right.mas_equalTo(self.view.mas_right);
         make.bottom.mas_equalTo(self.view.mas_bottom);
     }];
     [self.suspendView mas_makeConstraints:^(MASConstraintMaker *make){
-        make.bottom.mas_equalTo(self.view.mas_bottom);
         make.left.mas_equalTo(self.view.mas_left);
         make.right.mas_equalTo(self.view.mas_right);
         make.height.mas_equalTo(44);
+        make.bottom.mas_equalTo(self.view.mas_bottom);
     }];
 }
 
@@ -140,8 +175,11 @@
 {
     if (!_titleView)
     {
-        _titleView = [[TitleView alloc] initWithFrame:CGRectZero];
-        [_titleView setBackgroundColor:[UIColor yellowColor]];
+        __weak typeof(self)weakSelf = self;
+        _titleView = [[TitleView alloc] initWithToAuthorListBlock:^(AuthorModel *authorModel) {
+            MainViewController *mainViewCtrl = [[MainViewController alloc] initWithListType:ListTypeByAuthor listId:authorModel.authorId title:authorModel.name];
+            [weakSelf.navigationController pushViewController:mainViewCtrl animated:YES];
+        }];
     }
     return _titleView;
 }

@@ -27,14 +27,16 @@ static CGFloat const kLabelHeight = 20;
     {
         self.backgroundColor = [UIColor clearColor];
         [self configureUI];
-        if ([SMTCurrentIsDay currentTimeIsDay]) {
-            self.authorNameButton.titleLabel.textColor = kTEXT_COLOR_DAY;
-        }else {
-            self.authorNameButton.titleLabel.textColor = kTEXT_COLOR_NIGHT;
-        }
+
     }
     return self;
 }
+
+- (void)showDifferColorByCurrentIsDay:(BOOL)currentIsDay
+{
+    self.authorNameButton.titleLabel.textColor = currentIsDay?kTEXT_COLOR_DAY:kTEXT_COLOR_NIGHT;
+}
+
 
 - (void)showSignViewDataWithAuthorName:(NSString *)authorName sign:(NSString *)sign
 {
@@ -106,7 +108,7 @@ static CGFloat const kLabelHeight = 20;
     if (!_authorNameButton)
     {
         _authorNameButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_authorNameButton setTitleColor:kTEXT_COLOR_NIGHT forState:UIControlStateNormal];
+        [_authorNameButton setTitleColor:kTEXT_COLOR_DAY forState:UIControlStateNormal];
         _authorNameButton.titleLabel.font = kFONT_AUTHORNAME;
         [_authorNameButton addTarget:self action:@selector(handleAuthorNameButton) forControlEvents:UIControlEventTouchUpInside];
     }

@@ -16,6 +16,6 @@ typedef NS_ENUM(NSInteger,ListType)
 
 @interface MainViewController : UIViewController
 
-- (id)initWithListType:(ListType)listType listId:(NSNumber *)listId;
+- (id)initWithListType:(ListType)listType listId:(NSNumber *)listId title:(NSString *)title;
 
 @end

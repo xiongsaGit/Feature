@@ -10,14 +10,12 @@
 
 @implementation SMTPageDetatilRequest
 {
-    NSString *_action;
-    NSString *_digestId;
+    NSNumber *_digestId;
 }
 
-- (id)initWithAction:(NSString *)action digestId:(NSString *)digestId
+- (id)initWithDigestId:(NSNumber *)digestId
 {
     if (self = [super init]) {
-        _action = action;
         _digestId = digestId;
     }
     return self;
@@ -31,8 +29,8 @@
 - (id)requestArgument
 {
     return @{
-             @"action":_action,
-             @"digestId":_digestId,
+             @"action":kDigestDetail,
+             @"digestId":[_digestId stringValue],
              };
 }
 @end

@@ -30,31 +30,33 @@
         self.cardType = cellType;
         [self configureUI];
         [self configureFrame];
-        
-        if ([SMTCurrentIsDay currentTimeIsDay]) {
-            self.contentView.backgroundColor = kCOLOR_DAY_SEPARATOR;
-            self.backView.backgroundColor = kCOLOR_DAY_BACKGROUND;
-        }else {
-            self.contentView.backgroundColor = kCOLOR_NIGHT_SEPARATOR;
-            self.backView.backgroundColor = kCOLOR_NIGHT_BACKGROUND;
-        }
-
+    
     }
     return self;
 }
 
 
+- (void)showDifferColorByCurrentTime
+{
+    BOOL currentIsDay = [SMTCurrentIsDay currentTimeIsDay];
+    self.contentView.backgroundColor = currentIsDay?kCOLOR_DAY_SEPARATOR:kCOLOR_NIGHT_SEPARATOR;
+    self.backView.backgroundColor = currentIsDay?kCOLOR_DAY_BACKGROUND:kCOLOR_NIGHT_BACKGROUND;
+    [self.signView showDifferColorByCurrentIsDay:currentIsDay];
+    [self.cardView showDifferColorByCurrentIsDay:currentIsDay];
+
+}
+
 - (void)showDataForCellType:(CardType)type WithDataModel:(DigestModel *)model
 {
 
     self.digestModel = model;
-    [self settingCommonData:model];
+    [self showSignViewDataWithDigestModel:model];
 
     [self.cardView showContentViewWithCardType:type DigestModel:model];
     
 }
 
-- (void)settingCommonData:(DigestModel *)model
+- (void)showSignViewDataWithDigestModel:(DigestModel *)model
 {
     NSArray *authorList = model.authorList;
     AuthorModel *authorModel = authorList[0];

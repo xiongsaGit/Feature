@@ -7,44 +7,68 @@
 //
 
 #import "TitleView.h"
+#import "AuthorModel.h"
 
 @interface TitleView()
 @property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) UILabel *authorLabel;
+@property (nonatomic, strong) UIButton *authorButton;
+@property (nonatomic, copy) TitleViewClickToAuthorListBlock toAuthorListBlock;
+@property (nonatomic, strong) AuthorModel *authorModel;
+
 @end
 
 @implementation TitleView
 
-- (instancetype)initWithFrame:(CGRect)frame
+- (id)initWithToAuthorListBlock:(TitleViewClickToAuthorListBlock)toAuthorListBlock
 {
-    if (self = [super initWithFrame:frame])
-    {
+    if (self = [super init]) {
         [self configureUI];
         [self configureFrame];
+        self.toAuthorListBlock = toAuthorListBlock;
     }
     return self;
 }
 
-- (void)setArticleTitle:(NSString *)title Author:(NSString *)author
+- (void)setTitleViewDataWithDigestDetailModel:(SMTDigestDetailModel *)detailModel {
+    AuthorModel *authorModel = detailModel.authorList[0];
+    self.authorModel = authorModel;
+    
+    self.titleLabel.text = detailModel.cardTitle;
+    [self.authorButton setTitleColor:UIColorFromHex(0x4d81a6) forState:UIControlStateNormal];
+    [self.authorButton setTitle:[NSString stringWithFormat:@"文/%@",authorModel.name] forState:UIControlStateNormal];
+}
+
+- (void)handleAuthorButtonClicked:(UIButton *)button
 {
-    self.titleLabel.text = title;
-    self.authorLabel.text = author;
+    NSLog(@"点击了作者按钮");
+    if (self.toAuthorListBlock) {
+        self.toAuthorListBlock(self.authorModel);
+    }
 }
 
 - (void)configureUI
 {
     [self addSubview:self.titleLabel];
-    [self addSubview:self.authorLabel];
+    [self addSubview:self.authorButton];
 }
 
 - (void)configureFrame
 {
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make){
         make.top.mas_equalTo(kSpaceY/2);
-        make.top.mas_equalTo(kSpaceX);
+        make.left.mas_equalTo(kSpaceX);
         make.right.mas_equalTo(-kSpaceX);
     
     }];
+    
+    [self.authorButton mas_remakeConstraints:^(MASConstraintMaker *make){
+        make.top.mas_equalTo(self.titleLabel.mas_bottom).offset(kSpaceX/2);
+        make.left.mas_equalTo(self.titleLabel.mas_left);
+        make.right.mas_equalTo(self.titleLabel.mas_right);
+        make.height.mas_equalTo(kHEIGHT_OF_LABEL);
+        make.bottom.mas_equalTo(self.mas_bottom).offset(-kSpaceX/2);
+    }];
+    
 }
 
 - (UILabel *)titleLabel
@@ -52,22 +76,26 @@
     if (!_titleLabel)
     {
         _titleLabel = [[UILabel alloc] init];
-        
-        [_titleLabel setFont:kFONT_TITLE];
+        _titleLabel.numberOfLines = 0;
+        _titleLabel.lineBreakMode = NSLineBreakByCharWrapping;
+        [_titleLabel setFont:kCardTitleFont];
     }
     return _titleLabel;
 }
 
-- (UILabel *)authorLabel
+- (UIButton *)authorButton
 {
-    if (!_authorLabel)
+    if (!_authorButton)
     {
-        _authorLabel = [[UILabel alloc] init];
-        [_authorLabel setFont:kFONT_TITLE];
-        [_authorLabel setBackgroundColor:UIColorFromHex(0x7bb1d7)];
+        _authorButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_authorButton.titleLabel setFont:kFONT_TITLE];
+        _authorButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+//        _authorButton.contentEdgeInsets = UIEdgeInsetsMake(0,10, 0, 0);
+        [_authorButton addTarget:self action:@selector(handleAuthorButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     }
-    return _authorLabel;
+    return _authorButton;
 }
+
 
 
 /*

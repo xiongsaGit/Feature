@@ -23,6 +23,8 @@ typedef void(^ToSignPageBlock)();
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier cellType:(CardType)cellType;
 
+- (void)showDifferColorByCurrentTime;
+
 - (void)showDataForCellType:(CardType)type WithDataModel:(DigestModel *)model;
 
 @end

@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		330B109C1C1FE8B300BF39BB /* SMTCurrentIsDay.m in Sources */ = {isa = PBXBuildFile; fileRef = 330B109B1C1FE8B300BF39BB /* SMTCurrentIsDay.m */; };
+		330DC3F91C20FC820085973E /* SMTDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 330DC3F81C20FC820085973E /* SMTDetailModel.m */; };
+		330DC3FC1C20FCC60085973E /* SMTDetailDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 330DC3FB1C20FCC60085973E /* SMTDetailDataModel.m */; };
+		330DC3FF1C2100C80085973E /* SMTDigestDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 330DC3FE1C2100C80085973E /* SMTDigestDetailModel.m */; };
+		330DC4021C2100E00085973E /* SMTUserBaseInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 330DC4011C2100E00085973E /* SMTUserBaseInfoModel.m */; };
+		330DC4051C2103650085973E /* SMTEBookInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 330DC4041C2103650085973E /* SMTEBookInfoModel.m */; };
 		33153B581BA57C14007B6859 /* 001@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 33153B531BA57C14007B6859 /* 001@2x.png */; };
 		33153B591BA57C14007B6859 /* 002@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 33153B541BA57C14007B6859 /* 002@2x.png */; };
 		33153B5A1BA57C14007B6859 /* 003@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 33153B551BA57C14007B6859 /* 003@2x.png */; };
@@ -40,7 +45,6 @@
 		337E5F551BA5783600C83E58 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 337E5F531BA5783600C83E58 /* LaunchScreen.storyboard */; };
 		337E5F601BA5783600C83E58 /* FeatureTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 337E5F5F1BA5783600C83E58 /* FeatureTests.m */; };
 		337E5F6B1BA5783600C83E58 /* FeatureUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 337E5F6A1BA5783600C83E58 /* FeatureUITests.m */; };
-		338AA2F61C1C35C300FBB79C /* SMTListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 338AA2F51C1C35C300FBB79C /* SMTListViewController.m */; };
 		338AA2F91C1C45CB00FBB79C /* SMTContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 338AA2F81C1C45CB00FBB79C /* SMTContentView.m */; };
 		338AA2FC1C1C77C900FBB79C /* UIImage+animatedGIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 338AA2FB1C1C77C900FBB79C /* UIImage+animatedGIF.m */; };
 		33F795441C1AC7BE001556FE /* SMTHomePageListRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F795431C1AC7BE001556FE /* SMTHomePageListRequest.m */; };
@@ -70,6 +74,16 @@
 		0F6DBAEBA6D4637687A93EE5 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "../Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		330B109A1C1FE8B300BF39BB /* SMTCurrentIsDay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTCurrentIsDay.h; sourceTree = "<group>"; };
 		330B109B1C1FE8B300BF39BB /* SMTCurrentIsDay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTCurrentIsDay.m; sourceTree = "<group>"; };
+		330DC3F71C20FC820085973E /* SMTDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTDetailModel.h; sourceTree = "<group>"; };
+		330DC3F81C20FC820085973E /* SMTDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTDetailModel.m; sourceTree = "<group>"; };
+		330DC3FA1C20FCC60085973E /* SMTDetailDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTDetailDataModel.h; sourceTree = "<group>"; };
+		330DC3FB1C20FCC60085973E /* SMTDetailDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTDetailDataModel.m; sourceTree = "<group>"; };
+		330DC3FD1C2100C80085973E /* SMTDigestDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTDigestDetailModel.h; sourceTree = "<group>"; };
+		330DC3FE1C2100C80085973E /* SMTDigestDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTDigestDetailModel.m; sourceTree = "<group>"; };
+		330DC4001C2100E00085973E /* SMTUserBaseInfoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTUserBaseInfoModel.h; sourceTree = "<group>"; };
+		330DC4011C2100E00085973E /* SMTUserBaseInfoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTUserBaseInfoModel.m; sourceTree = "<group>"; };
+		330DC4031C2103650085973E /* SMTEBookInfoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTEBookInfoModel.h; sourceTree = "<group>"; };
+		330DC4041C2103650085973E /* SMTEBookInfoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTEBookInfoModel.m; sourceTree = "<group>"; };
 		33153B531BA57C14007B6859 /* 001@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "001@2x.png"; sourceTree = "<group>"; };
 		33153B541BA57C14007B6859 /* 002@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "002@2x.png"; sourceTree = "<group>"; };
 		33153B551BA57C14007B6859 /* 003@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "003@2x.png"; sourceTree = "<group>"; };
@@ -131,8 +145,6 @@
 		337E5F661BA5783600C83E58 /* FeatureUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FeatureUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		337E5F6A1BA5783600C83E58 /* FeatureUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeatureUITests.m; sourceTree = "<group>"; };
 		337E5F6C1BA5783600C83E58 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		338AA2F41C1C35C300FBB79C /* SMTListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTListViewController.h; sourceTree = "<group>"; };
-		338AA2F51C1C35C300FBB79C /* SMTListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTListViewController.m; sourceTree = "<group>"; };
 		338AA2F71C1C45CB00FBB79C /* SMTContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTContentView.h; sourceTree = "<group>"; };
 		338AA2F81C1C45CB00FBB79C /* SMTContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTContentView.m; sourceTree = "<group>"; };
 		338AA2FA1C1C77C900FBB79C /* UIImage+animatedGIF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+animatedGIF.h"; sourceTree = "<group>"; };
@@ -191,6 +203,23 @@
 			name = Common;
 			sourceTree = "<group>";
 		};
+		330DC3F61C20FC590085973E /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				330DC3F71C20FC820085973E /* SMTDetailModel.h */,
+				330DC3F81C20FC820085973E /* SMTDetailModel.m */,
+				330DC3FA1C20FCC60085973E /* SMTDetailDataModel.h */,
+				330DC3FB1C20FCC60085973E /* SMTDetailDataModel.m */,
+				330DC3FD1C2100C80085973E /* SMTDigestDetailModel.h */,
+				330DC3FE1C2100C80085973E /* SMTDigestDetailModel.m */,
+				330DC4001C2100E00085973E /* SMTUserBaseInfoModel.h */,
+				330DC4011C2100E00085973E /* SMTUserBaseInfoModel.m */,
+				330DC4031C2103650085973E /* SMTEBookInfoModel.h */,
+				330DC4041C2103650085973E /* SMTEBookInfoModel.m */,
+			);
+			name = Detail;
+			sourceTree = "<group>";
+		};
 		33153B511BA57BF0007B6859 /* Image */ = {
 			isa = PBXGroup;
 			children = (
@@ -210,8 +239,6 @@
 				33153B731BA57D1B007B6859 /* MainViewController.m */,
 				3335371A1BA6AC3000B5B353 /* SingleDetailViewController.h */,
 				3335371B1BA6AC3000B5B353 /* SingleDetailViewController.m */,
-				338AA2F41C1C35C300FBB79C /* SMTListViewController.h */,
-				338AA2F51C1C35C300FBB79C /* SMTListViewController.m */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -219,6 +246,7 @@
 		33153B5D1BA57C17007B6859 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				330DC3F61C20FC590085973E /* Detail */,
 				33153B5E1BA57C1B007B6859 /* Main */,
 			);
 			name = Model;
@@ -562,12 +590,12 @@
 				338AA2F91C1C45CB00FBB79C /* SMTContentView.m in Sources */,
 				33153B851BA57DFF007B6859 /* TimerView.m in Sources */,
 				33153B821BA57DFF007B6859 /* SuspendView.m in Sources */,
-				338AA2F61C1C35C300FBB79C /* SMTListViewController.m in Sources */,
 				3335371F1BA6C14D00B5B353 /* TitleView.m in Sources */,
 				336D6D1D1C1BD9EB001F1B33 /* SNLog.m in Sources */,
 				338AA2FC1C1C77C900FBB79C /* UIImage+animatedGIF.m in Sources */,
 				33153B741BA57D1B007B6859 /* MainViewController.m in Sources */,
 				33153B6C1BA57C29007B6859 /* RootModel.m in Sources */,
+				330DC3FC1C20FCC60085973E /* SMTDetailDataModel.m in Sources */,
 				337E5F4A1BA5783600C83E58 /* AppDelegate.m in Sources */,
 				33153B6D1BA57C29007B6859 /* AuthorModel.m in Sources */,
 				337E5F471BA5783500C83E58 /* main.m in Sources */,
@@ -575,8 +603,12 @@
 				33153B831BA57DFF007B6859 /* MenuItem.m in Sources */,
 				334662751C1E9B1B0084F362 /* SMTPageDetatilRequest.m in Sources */,
 				33153B861BA57DFF007B6859 /* CardCell.m in Sources */,
+				330DC4051C2103650085973E /* SMTEBookInfoModel.m in Sources */,
 				33153B701BA57C29007B6859 /* StatusModel.m in Sources */,
 				33153B6E1BA57C29007B6859 /* SignModel.m in Sources */,
+				330DC3F91C20FC820085973E /* SMTDetailModel.m in Sources */,
+				330DC4021C2100E00085973E /* SMTUserBaseInfoModel.m in Sources */,
+				330DC3FF1C2100C80085973E /* SMTDigestDetailModel.m in Sources */,
 				3335371C1BA6AC3000B5B353 /* SingleDetailViewController.m in Sources */,
 				336D6D231C1C2603001F1B33 /* SMTListBySignRequest.m in Sources */,
 			);

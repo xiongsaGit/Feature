@@ -31,19 +31,19 @@
         [self configureUIWithCardType:cardType];
         [self configureFrameWithCardType:cardType];
         
-        if ([SMTCurrentIsDay currentTimeIsDay]) {
-            self.cardTitleLabel.textColor = kTEXT_COLOR_DAY;
-        }else {
-            self.cardTitleLabel.textColor = kTEXT_COLOR_NIGHT;
-        }
     }
     return self;
 }
 
+- (void)showDifferColorByCurrentIsDay:(BOOL)currentIsDay
+{
+    self.cardTitleLabel.textColor = currentIsDay?kTEXT_COLOR_DAY:kTEXT_COLOR_NIGHT;
+}
 
 - (void)showContentViewWithCardType:(CardType)type DigestModel:(DigestModel *)model
 {
     self.cardTitleLabel.text = model.cardTitle;
+    
     if (type == CardTypeText) {
         self.cardRemarkLabel.text = model.cardRemark;
     }else if (type == CardTypeImage) {
@@ -53,6 +53,8 @@
         self.cardRemarkLabel.text = model.cardRemark;
     }else
     {
+        self.cardTitleLabel.text = model.cardTitle;
+
         // 多张图片
         [self downloadToImageView:self.pic1ImageView withPicPath:model.smallPic1Path];
         [self downloadToImageView:self.pic2ImageView withPicPath:model.smallPic2Path];
@@ -115,8 +117,7 @@
             make.width.mas_equalTo(self.mas_width);
             make.bottom.mas_equalTo(self.mas_bottom);
         }];
-    }
-    else if (type == CardTypeMixture) {
+    }else if (type == CardTypeMixture) {
         [self.cardImageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.mas_equalTo(self.cardTitleLabel.mas_bottom).offset(kSpaceY/2);
             make.right.mas_equalTo(self.mas_right).offset(-kSpaceX);

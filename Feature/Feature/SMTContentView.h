@@ -15,4 +15,6 @@
 
 - (void)showContentViewWithCardType:(CardType)type DigestModel:(DigestModel *)model;
 
+- (void)showDifferColorByCurrentIsDay:(BOOL)currentIsDay;
+
 @end

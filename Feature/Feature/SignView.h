@@ -30,4 +30,6 @@ typedef void(^SignLabelTapBlcok)();
  */
 - (void)showSignViewDataWithAuthorName:(NSString *)authorName sign:(NSString *)sign;
 
+- (void)showDifferColorByCurrentIsDay:(BOOL)currentIsDay;
+
 @end

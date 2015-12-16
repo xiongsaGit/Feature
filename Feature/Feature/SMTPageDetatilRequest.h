@@ -11,6 +11,6 @@
 // 主页列表进入详情页
 @interface SMTPageDetatilRequest : SMTBaseRequest
 
-- (id)initWithAction:(NSString *)action digestId:(NSString *)digestId;
+- (id)initWithDigestId:(NSNumber *)digestId;
 
 @end
