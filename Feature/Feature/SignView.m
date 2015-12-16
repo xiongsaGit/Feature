@@ -34,7 +34,7 @@ static CGFloat const kLabelHeight = 20;
 
 - (void)showDifferColorByCurrentIsDay:(BOOL)currentIsDay
 {
-    self.authorNameButton.titleLabel.textColor = currentIsDay?kTEXT_COLOR_DAY:kTEXT_COLOR_NIGHT;
+    [self.authorNameButton setTitleColor:currentIsDay?kTEXT_COLOR_DAY:kTEXT_COLOR_NIGHT forState:UIControlStateNormal];
 }
 
 
@@ -51,17 +51,17 @@ static CGFloat const kLabelHeight = 20;
 
 - (void)handleSignButton
 {
-    if (self.signLabelTapBlock)
+    if (self.signBlock)
     {
-        self.signLabelTapBlock();
+        self.signBlock();
     }
 }
 
 - (void)handleAuthorNameButton
 {
-    if (self.authorNameTapBlock)
+    if (self.authorNameBlock)
     {
-        self.authorNameTapBlock();
+        self.authorNameBlock();
     }
 }
 
@@ -121,34 +121,13 @@ static CGFloat const kLabelHeight = 20;
     {
         _signButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _signButton.layer.cornerRadius = 10;
-        [_signButton setBackgroundColor:[self randomColor]];
+        [_signButton setBackgroundColor:[SMTRandomColor randomColor]];
         _signButton.titleLabel.font = kFONT_MAIN;
         [_signButton addTarget:self action:@selector(handleSignButton) forControlEvents:UIControlEventTouchUpInside];
     }
     return _signButton;
 }
 
-
-/**
- * 文章标签需要不同的颜色 如何随机的分配颜色
- *
- *  @return 标签label
- */
-/**
- *  如何生成一个随机颜色，且不能为白色
- *
- *  @return <#return value description#>
- */
-- (UIColor *) randomColor
-{
-    CGFloat red = (arc4random()%256/255.0);
-    CGFloat green = (arc4random()%256/255.0);
-    CGFloat blue = (arc4random()%256/255.0);
-    if (red == 1.0&&green == 1.0&&blue == 1.0 ) {
-        green = 0.5;
-    }
-    return [UIColor colorWithRed:red green:green blue:blue alpha:1];
-}
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

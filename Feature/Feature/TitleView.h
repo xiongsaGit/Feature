@@ -21,6 +21,4 @@ typedef void(^TitleViewClickToAuthorListBlock)(AuthorModel *authorModel);
 
 - (void)setTitleViewDataWithDigestDetailModel:(SMTDigestDetailModel *)detailModel;
 
-- (void)setArticleTitle:(NSString *)title Author:(NSString *)author;
-
 @end

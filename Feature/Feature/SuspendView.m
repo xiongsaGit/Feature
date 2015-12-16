@@ -44,7 +44,6 @@ static CGFloat const itemWidthHeight = 40;
 {
     NSArray *array = [self subviews];
    
-    
     if (array.count>0)
     {
         UIButton *btn = (UIButton *)array[0];
@@ -55,7 +54,6 @@ static CGFloat const itemWidthHeight = 40;
           make.size.mas_lessThanOrEqualTo(CGSizeMake(itemWidthHeight, itemWidthHeight));
       }];
     }
-    
     
     if (array.count > 1)
     {

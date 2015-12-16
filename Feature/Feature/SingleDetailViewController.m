@@ -12,6 +12,7 @@
 
 #import "SuspendView.h"
 #import "TitleView.h"
+#import "SMTEBookInfoView.h"
 
 #import "SMTDetailModel.h"
 
@@ -22,7 +23,7 @@
 @property (nonatomic, strong) TitleView *titleView;
 @property (nonatomic, strong) UIWebView *contentWebView;
 
-@property (nonatomic, strong) UIView *bookInfoView;
+@property (nonatomic, strong) SMTEBookInfoView *bookInfoView;
 @property (nonatomic, strong) SuspendView *suspendView;
 @end
 
@@ -79,6 +80,7 @@
     self.view.backgroundColor = kCOLOR_DAY_BACKGROUND;
     [self.view addSubview:self.titleView];
     [self.view addSubview:self.contentWebView];
+//    [self.view addSubview:self.bookInfoView];
     [self.view addSubview:self.suspendView];
 }
 
@@ -96,6 +98,7 @@
         make.right.mas_equalTo(self.view.mas_right);
         make.bottom.mas_equalTo(self.view.mas_bottom);
     }];
+    
     [self.suspendView mas_makeConstraints:^(MASConstraintMaker *make){
         make.left.mas_equalTo(self.view.mas_left);
         make.right.mas_equalTo(self.view.mas_right);
@@ -111,8 +114,10 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    
+    float height_str= [[webView stringByEvaluatingJavaScriptFromString: @"document.body.offsetHeight"] floatValue];
+    NSLog(@"height_str:%f",height_str);
 }
+
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
@@ -193,6 +198,13 @@
         _urlRequest = [NSMutableURLRequest requestWithURL:url];
     }
     return _urlRequest;
+}
+
+- (SMTEBookInfoView *)bookInfoView {
+    if (!_bookInfoView) {
+        _bookInfoView = [[SMTEBookInfoView alloc] init];
+    }
+    return _bookInfoView;
 }
 
 - (void)didReceiveMemoryWarning {

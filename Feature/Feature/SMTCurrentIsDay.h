@@ -12,7 +12,7 @@
 
 @interface SMTCurrentIsDay : NSObject
 
-
++ (BOOL)currentTimeActualIsDay;
 
 + (BOOL)currentTimeIsDay;
 

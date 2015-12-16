@@ -68,7 +68,7 @@ alpha:1.0]
 #define kCardRemarkFont       [UIFont systemFontOfSize:14]
 #define kCardTitleTextColor     [UIColor blackColor]
 
-#define kTEXT_COLOR_DAY_CARD_TITLE
+//#define kTEXT_COLOR_DAY_CARD_TITLE
 #define kCardRemarkTextColor     [UIColor lightGrayColor]
 
 

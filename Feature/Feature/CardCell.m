@@ -109,13 +109,13 @@
         _signView = [[SignView alloc] init];
         __weak typeof(self) weakSelf = self;
         
-        _signView.authorNameTapBlock = ^(){
+        _signView.authorNameBlock = ^(){
             if (weakSelf.toAuthorPageBlock)
             {
                 weakSelf.toAuthorPageBlock();
             }
         };
-        _signView.signLabelTapBlock = ^(){
+        _signView.signBlock = ^(){
             if (weakSelf.toSignPageBlock)
             {
                 weakSelf.toSignPageBlock();

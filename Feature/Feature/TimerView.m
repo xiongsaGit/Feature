@@ -8,6 +8,7 @@
 
 #import "TimerView.h"
 #import <QuartzCore/CADisplayLink.h>
+#import "SMTCurrentIsDay.h"
 
 static CGFloat const kLabelWidth = 12;
 static CGFloat const kLabelHeight = 20;
@@ -323,12 +324,32 @@ static CGFloat const kOriginX = 5;
     return array;
 }
 
-
-- (NSInteger)getIntervalBetweenDateNow:(NSString *)dateNow baseDate:(NSString*)baseDate
+- (NSString *)intervalsBetweenMidNightAndTimeNow:(NSString *)timeNow
 {
+    NSString *result;
+    
+    NSArray *timeArray = [timeNow componentsSeparatedByString:@":"];
+    NSMutableArray *mutTimeArray = [NSMutableArray arrayWithArray:timeArray];
+    NSArray *baseArray = [kNIGHT_FROM_TIME componentsSeparatedByString:@":"];
+    if ([timeArray[0] intValue]>[baseArray[0] intValue]) {
+        mutTimeArray[0] = [NSString stringWithFormat:@"%d",24-[timeArray[0] intValue]];
+    }
+    
+//    result = [mutTimeArray ];
+    
+    
+    return result;
+}
+
+
+- (NSInteger)intervalsBetweenBaseDateAndDateNow:(NSString *)dateNow
+{
+    NSString *baseDate = [SMTCurrentIsDay currentTimeActualIsDay]?kNIGHT_FROM_TIME:kDAY_FROM_TIME;
+    
     NSArray *nowArray = [dateNow componentsSeparatedByString:@":"];
     NSArray *baseArray = [baseDate componentsSeparatedByString:@":"];
     
+    // 如果是黑夜，需要改变nowArray
     
     NSInteger nowCounts = 0;
     NSInteger baseCounts = 0;
@@ -350,20 +371,7 @@ static CGFloat const kOriginX = 5;
     
     }
     
-    if (nowCounts<baseCounts)
-    {
-        
-        NSInteger minus = baseCounts-nowCounts;
-        if (minus>3600)
-        {
-//            minus/3600;//时
-//            minus%3600;//分
-        }
-        
-        return baseCounts-nowCounts;
-    }
-    return -1;
-
+    return labs(baseCounts-nowCounts);
 }
 
 - (NSMutableArray *)timeFormatted:(NSInteger)totalSeconds
@@ -404,6 +412,10 @@ static CGFloat const kOriginX = 5;
         [sourceArray addObject:[NSString stringWithFormat:@"%d",seconds]];
     }
     
+    for (int i = 0; i < sourceArray.count; i ++) {
+        NSLog(@"log i = %d,%@",i,sourceArray[i]);
+    }
+    
     return sourceArray;
 }
 
@@ -415,7 +427,7 @@ static CGFloat const kOriginX = 5;
     date = [formatter stringFromDate:[NSDate date]];
     
     
-    [self showTime:[self timeFormatted:[self getIntervalBetweenDateNow:date baseDate:@"20:00:00"]]];
+    [self showTime:[self timeFormatted:[self intervalsBetweenBaseDateAndDateNow:date]]];
     
 }
 

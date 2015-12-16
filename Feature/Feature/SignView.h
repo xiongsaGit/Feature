@@ -9,10 +9,10 @@
 #import <UIKit/UIKit.h>
 
 /**
- *  点击姓名label的响应事件
+ *  点击姓名的响应事件
  */
-typedef void(^AuthorNameLabelTapBlock)();
-typedef void(^SignLabelTapBlcok)();
+typedef void(^AuthorNameButtonClickBlock)();
+typedef void(^SignButtonClickBlcok)();
 
 
 /**
@@ -20,8 +20,8 @@ typedef void(^SignLabelTapBlcok)();
  *  整个view可响应事件
  */
 @interface SignView : UIView
-@property (nonatomic, copy) AuthorNameLabelTapBlock authorNameTapBlock;
-@property (nonatomic, copy) SignLabelTapBlcok signLabelTapBlock;
+@property (nonatomic, copy) AuthorNameButtonClickBlock authorNameBlock;
+@property (nonatomic, copy) SignButtonClickBlcok signBlock;
 /**
  *  设置数据
  *

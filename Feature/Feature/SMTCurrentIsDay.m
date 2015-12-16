@@ -10,7 +10,24 @@
 
 @implementation SMTCurrentIsDay
 
++ (BOOL)currentTimeActualIsDay
+{
+    return [self timeIsDay];
+}
+
 + (BOOL)currentTimeIsDay
+{
+    BOOL currentIsDay = [self timeIsDay];
+
+    if (!currentIsDay) {
+        if (UserDefaultsGetObjectForKey(kDay) &&[UserDefaultsGetObjectForKey(kDay) boolValue] == YES) {
+            currentIsDay = YES;
+        }
+    }
+    return currentIsDay;
+}
+
++ (BOOL)timeIsDay
 {
     BOOL currentIsDay = YES;
     
@@ -28,14 +45,6 @@
     }else {
         currentIsDay = NO;
     }
-    
-    if (!currentIsDay) {
-        if (UserDefaultsGetObjectForKey(kDay) &&[UserDefaultsGetObjectForKey(kDay) boolValue] == YES) {
-            currentIsDay = YES;
-        }
-    }
-
-    
     return currentIsDay;
 }
 
