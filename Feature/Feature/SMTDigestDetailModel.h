@@ -32,6 +32,7 @@
 @property (nonatomic, copy) NSString *pic1Path;
 @property (nonatomic, strong) NSNumber *reviewCnt;
 @property (nonatomic, strong) NSNumber *showStartDate;
+@property (nonatomic, strong) NSNumber *saleId;
 // signList
 @property (nonatomic, strong) NSArray <SignModel>*signList;
 @property (nonatomic, strong) NSNumber *topCnt;

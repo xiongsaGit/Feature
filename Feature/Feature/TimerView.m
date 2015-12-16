@@ -213,118 +213,7 @@ static CGFloat const kOriginX = 5;
 //    [self.timer setFireDate:[NSDate distantPast]];
 }
 
-
-- (NSInteger)getTime:(NSString *)timeString
-{
-    NSInteger sumCount = 0;
-    NSArray *arr = [timeString componentsSeparatedByString:@":"];
-    for (int i = 0;i < arr.count; i ++)
-    {
-        int count = 10*[[arr[i] substringToIndex:1] intValue]+[[arr[i] substringFromIndex:1] intValue];
-        if (i == 0)
-        {
-            sumCount += 3600 *count;
-        }else if (i == 1)
-        {
-            sumCount += 60 *count;
-        }else
-            sumCount += count;
-    }
-    return sumCount;
-}
-
-
-- (NSMutableArray *)getStringTime:(NSInteger)counts
-{
-    NSMutableArray *array = [NSMutableArray array];
-    if (counts >3600)
-    {
-        if (counts/3600>9)
-        {
-            [array addObject:[NSString stringWithFormat:@"%ld",counts/3600/9]];
-            [array addObject:[NSString stringWithFormat:@"%ld",counts/3600%9]];
-        }else
-        {
-            [array addObject:@"0"];
-            [array addObject:[NSString stringWithFormat:@"%ld",counts/3600%9]];
-        }
-        if (counts%3600/60>9)
-        {
-            [array addObject:[NSString stringWithFormat:@"%ld",counts%3600/60/9]];
-            [array addObject:[NSString stringWithFormat:@"%ld",counts%3600/60%9]];
-            
-        }else
-        {
-            [array addObject:@"0"];
-            [array addObject:[NSString stringWithFormat:@"%ld",counts%3600/60%9]];
-            
-        }
-        
-        if (counts%3600%60>9)
-        {
-            [array addObject:[NSString stringWithFormat:@"%ld",counts%3600%60/9]];
-            [array addObject:[NSString stringWithFormat:@"%ld",counts%3600%60%9]];
-            
-        }else
-        {
-            [array addObject:@"0"];
-            [array addObject:[NSString stringWithFormat:@"%ld",counts%3600%60%9]];
-            
-        }
-        
-    }else if (counts>60&&counts<3600)
-    {
-        [array addObject:@"0"];
-        [array addObject:@"0"];
-
-        /**
-         *  这里算的有错无
-         
-         */
-        if (counts/60>9)
-        {
-            [array addObject:[NSString stringWithFormat:@"%ld",counts/60/9]];
-            [array addObject:[NSString stringWithFormat:@"%ld",counts/60%9]];
-        }else
-        {
-            [array addObject:@"0"];
-            [array addObject:[NSString stringWithFormat:@"%ld",counts/60%9]];
-        }
-        
-        if (counts%60>9)
-        {
-            [array addObject:[NSString stringWithFormat:@"%ld",counts%60/9]];
-            [array addObject:[NSString stringWithFormat:@"%ld",counts%60%9]];
-            
-        }else
-        {
-            [array addObject:@"0"];
-            [array addObject:[NSString stringWithFormat:@"%ld",counts%60]];
-            
-        }
-    }else
-    {
-        [array addObject:@"0"];
-        [array addObject:@"0"];
-        [array addObject:@"0"];
-        [array addObject:@"0"];
-        if (counts>9)
-        {
-            [array addObject:[NSString stringWithFormat:@"%ld",counts/9]];
-            [array addObject:[NSString stringWithFormat:@"%ld",counts%9]];
-
-        }else
-        {
-            [array addObject:@"0"];
-
-            [array addObject:[NSString stringWithFormat:@"%ld",counts]];
-
-        }
-    }
-    return array;
-}
-
-- (NSString *)intervalsBetweenMidNightAndTimeNow:(NSString *)timeNow
+- (NSArray *)intervalsBetweenMidNightAndTimeNow:(NSString *)timeNow
 {
     NSString *result;
     
@@ -332,13 +221,12 @@ static CGFloat const kOriginX = 5;
     NSMutableArray *mutTimeArray = [NSMutableArray arrayWithArray:timeArray];
     NSArray *baseArray = [kNIGHT_FROM_TIME componentsSeparatedByString:@":"];
     if ([timeArray[0] intValue]>[baseArray[0] intValue]) {
-        mutTimeArray[0] = [NSString stringWithFormat:@"%d",24-[timeArray[0] intValue]];
+        mutTimeArray[0] = [NSString stringWithFormat:@"%d",23-[timeArray[0] intValue]];
+        mutTimeArray[1] = [NSString stringWithFormat:@"%d",59-[timeArray[1] intValue]];
+        mutTimeArray[2] = [NSString stringWithFormat:@"%d",59-[timeArray[2] intValue]];
     }
-    
-//    result = [mutTimeArray ];
-    
-    
-    return result;
+    NSArray *arr = [NSArray arrayWithObjects:mutTimeArray[0],mutTimeArray[1],mutTimeArray[2], nil];
+    return arr;
 }
 
 
@@ -346,10 +234,8 @@ static CGFloat const kOriginX = 5;
 {
     NSString *baseDate = [SMTCurrentIsDay currentTimeActualIsDay]?kNIGHT_FROM_TIME:kDAY_FROM_TIME;
     
-    NSArray *nowArray = [dateNow componentsSeparatedByString:@":"];
+    NSArray *nowArray = [self intervalsBetweenMidNightAndTimeNow:dateNow];
     NSArray *baseArray = [baseDate componentsSeparatedByString:@":"];
-    
-    // 如果是黑夜，需要改变nowArray
     
     NSInteger nowCounts = 0;
     NSInteger baseCounts = 0;
@@ -370,8 +256,10 @@ static CGFloat const kOriginX = 5;
         }
     
     }
-    
-    return labs(baseCounts-nowCounts);
+    if ([SMTCurrentIsDay currentTimeActualIsDay]) {
+        return baseCounts-nowCounts;
+    }else
+        return baseCounts+nowCounts;
 }
 
 - (NSMutableArray *)timeFormatted:(NSInteger)totalSeconds

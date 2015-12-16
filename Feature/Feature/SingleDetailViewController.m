@@ -16,10 +16,11 @@
 
 #import "SMTDetailModel.h"
 
-@interface SingleDetailViewController ()<UIWebViewDelegate>
+@interface SingleDetailViewController ()<UIWebViewDelegate,UIScrollViewDelegate>
 @property (nonatomic, strong) NSNumber *digestId;
 @property (nonatomic, strong) NSMutableURLRequest *urlRequest;
 
+@property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) TitleView *titleView;
 @property (nonatomic, strong) UIWebView *contentWebView;
 
@@ -44,6 +45,8 @@
     
     [self configureUI];
     [self configureFrame];
+    
+    NSLog(@"urlString:%@",[NSString stringWithFormat:@"%@?action=%@&digestId=%@",kBaseURL,kDigestContentForH5,[self.digestId stringValue]]);
     
     [self requestDigestDetail];
     [self.contentWebView loadRequest:self.urlRequest];
@@ -78,33 +81,43 @@
 - (void)configureUI
 {
     self.view.backgroundColor = kCOLOR_DAY_BACKGROUND;
-    [self.view addSubview:self.titleView];
-    [self.view addSubview:self.contentWebView];
-//    [self.view addSubview:self.bookInfoView];
+    [self.view addSubview:self.scrollView];
+    [self.scrollView addSubview:self.titleView];
+    [self.scrollView addSubview:self.contentWebView];
+    [self.scrollView addSubview:self.bookInfoView];
     [self.view addSubview:self.suspendView];
 }
 
 - (void)configureFrame
 {
-    [self.titleView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.view.mas_top);
-        make.left.mas_equalTo(self.view.mas_left);
-        make.right.mas_equalTo(self.view.mas_right);
-        make.height.mas_equalTo(120);
-    }];
-    [self.contentWebView mas_makeConstraints:^(MASConstraintMaker *make){
-        make.top.mas_equalTo(self.titleView.mas_bottom);
-        make.left.mas_equalTo(self.view.mas_left);
-        make.right.mas_equalTo(self.view.mas_right);
-        make.bottom.mas_equalTo(self.view.mas_bottom);
-    }];
+    self.titleView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 120);
+    self.contentWebView.frame = CGRectMake(0, CGRectGetMaxY(self.titleView.frame), SCREEN_WIDTH, 0);
+    self.bookInfoView.frame = CGRectMake(0, CGRectGetMaxY(self.contentWebView.frame), SCREEN_WIDTH, 180);
+    self.suspendView.frame = CGRectMake(0, SCREEN_HEIGHT-50, SCREEN_WIDTH, 50);
+}
+
+
+- (void)configureFrameWithHeight:(int)height
+{
+   
     
-    [self.suspendView mas_makeConstraints:^(MASConstraintMaker *make){
-        make.left.mas_equalTo(self.view.mas_left);
-        make.right.mas_equalTo(self.view.mas_right);
-        make.height.mas_equalTo(44);
-        make.bottom.mas_equalTo(self.view.mas_bottom);
-    }];
+    CGRect webViewRect = self.contentWebView.frame;
+    webViewRect.size.height = height;
+    self.contentWebView.frame = webViewRect;
+    
+    CGRect bookInfoViewRect = self.bookInfoView.frame;
+    bookInfoViewRect.origin.y = CGRectGetMaxY(self.contentWebView.frame);
+    self.bookInfoView.frame = bookInfoViewRect;
+    
+    self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.view.frame), CGRectGetMaxY(self.bookInfoView.frame));
+
+//    
+//    [self.suspendView mas_makeConstraints:^(MASConstraintMaker *make){
+//        make.left.mas_equalTo(self.view.mas_left);
+//        make.right.mas_equalTo(self.view.mas_right);
+//        make.height.mas_equalTo(44);
+//        make.bottom.mas_equalTo(self.view.mas_bottom);
+//    }];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
@@ -114,8 +127,10 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    float height_str= [[webView stringByEvaluatingJavaScriptFromString: @"document.body.offsetHeight"] floatValue];
+    int height_str = [[webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.scrollHeight"] intValue];
+
     NSLog(@"height_str:%f",height_str);
+    [self configureFrameWithHeight:height_str];
 }
 
 
@@ -141,7 +156,7 @@
         _contentWebView = [[UIWebView alloc] init];
         _contentWebView.delegate = self;
         _contentWebView.scalesPageToFit=YES;
-
+        _contentWebView.scrollView.scrollEnabled = NO;
     }
     return _contentWebView;
 }
@@ -205,6 +220,14 @@
         _bookInfoView = [[SMTEBookInfoView alloc] init];
     }
     return _bookInfoView;
+}
+
+- (UIScrollView *)scrollView {
+    if (!_scrollView) {
+        _scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+        _scrollView.delegate = self;
+    }
+    return _scrollView;
 }
 
 - (void)didReceiveMemoryWarning {
