@@ -16,6 +16,13 @@
 
 #import "SMTDetailModel.h"
 
+// 每次缩放倍数
+#define kSCALE_PER_TIME  10
+// 最大倍数--太大太小无实际意义
+#define kMAX_SCALE   130
+// 最小倍数
+#define kMIN_SCALE   70
+
 @interface SingleDetailViewController ()<UIWebViewDelegate,UIScrollViewDelegate>
 @property (nonatomic, strong) NSNumber *digestId;
 @property (nonatomic, strong) NSMutableURLRequest *urlRequest;
@@ -26,6 +33,9 @@
 
 @property (nonatomic, strong) SMTEBookInfoView *bookInfoView;
 @property (nonatomic, strong) SuspendView *suspendView;
+@property (nonatomic, assign) CGFloat offsetY;
+@property (nonatomic, assign) int currentScale;
+
 @end
 
 @implementation SingleDetailViewController
@@ -42,6 +52,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    self.offsetY = 0;
+    self.currentScale = 100;
     
     [self configureUI];
     [self configureFrame];
@@ -98,7 +111,6 @@
 - (void)configureFrameWithHeight:(int)height
 {
    
-    
     CGRect webViewRect = self.contentWebView.frame;
     webViewRect.size.height = height;
     self.contentWebView.frame = webViewRect;
@@ -108,14 +120,6 @@
     self.bookInfoView.frame = bookInfoViewRect;
     
     self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.view.frame), CGRectGetMaxY(self.bookInfoView.frame));
-
-//    
-//    [self.suspendView mas_makeConstraints:^(MASConstraintMaker *make){
-//        make.left.mas_equalTo(self.view.mas_left);
-//        make.right.mas_equalTo(self.view.mas_right);
-//        make.height.mas_equalTo(44);
-//        make.bottom.mas_equalTo(self.view.mas_bottom);
-//    }];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
@@ -125,9 +129,10 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
+//    [webView stringByEvaluatingJavaScriptFromString:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust = '140%'"];
+    
     int height_str = [[webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.scrollHeight"] intValue];
-
-    NSLog(@"height_str:%f",height_str);
+    NSLog(@"first height_str:%d",height_str);
     [self configureFrameWithHeight:height_str];
 }
 
@@ -140,11 +145,56 @@
 - (void)reduceTextFont
 {
     NSLog(@"%s",__func__);
+    if (self.currentScale-kSCALE_PER_TIME>=kMIN_SCALE) {
+        self.currentScale -= kSCALE_PER_TIME;
+        [self scaleWebViewFontWithScalePercent:self.currentScale];
+    }
+    
+}
+
+- (void)scaleWebViewFontWithScalePercent:(int)percent
+{
+    NSString *sizeAdjust = [NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust = '%d%%'",percent];
+    [self.contentWebView stringByEvaluatingJavaScriptFromString:sizeAdjust];
+    
+    int height_str = [[self.contentWebView stringByEvaluatingJavaScriptFromString:@"document.documentElement.scrollHeight"] intValue];
+    [self configureFrameWithHeight:height_str];
 }
 
 - (void)enlageTextFont
 {
-    NSLog(@"%s",__func__);
+    if (self.currentScale + kSCALE_PER_TIME<=kMAX_SCALE) {
+        self.currentScale += kSCALE_PER_TIME;
+        [self scaleWebViewFontWithScalePercent:self.currentScale];
+    }
+    
+    
+
+    
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+        if (scrollView.contentOffset.y > self.offsetY) {//如果当前位移大于缓存位移，说明scrollView向上滑动
+            
+            [UIView animateWithDuration:.1 animations:^{
+                
+            
+                [self.suspendView setHidden:YES];
+                
+            }];
+            
+        }else
+        {
+            [UIView animateWithDuration:.1 animations:^{
+                
+                [self.suspendView setHidden:NO];
+                
+            }];
+        }
+        
+        self.offsetY = scrollView.contentOffset.y;//将当前位移变成缓存位移
+    
 }
 
 - (UIWebView *)contentWebView
@@ -153,7 +203,8 @@
     {
         _contentWebView = [[UIWebView alloc] init];
         _contentWebView.delegate = self;
-//        _contentWebView.scalesPageToFit=YES;
+        _contentWebView.scalesPageToFit=YES;
+        _contentWebView.userInteractionEnabled = NO;
         _contentWebView.scrollView.scrollEnabled = NO;
         _contentWebView.scrollView.bounces = NO;
         _contentWebView.scrollView.showsVerticalScrollIndicator = NO;
@@ -166,7 +217,7 @@
 {
     if (!_suspendView)
     {
-        _suspendView = [[SuspendView alloc] initWithFrame:CGRectZero menuItemsArray:[NSArray arrayWithObjects:@"001",@"002",@"003",@"004", nil]];
+        _suspendView = [[SuspendView alloc] initWithFrame:CGRectZero menuItemsArray:[NSArray arrayWithObjects:@"icon_return",@"icon_small",@"icon_large",@"icon_share", nil]];
        
         __weak typeof(self)weakSelf = self;
         _suspendView.itemClickBlock = ^(UIButton *itemBtn){

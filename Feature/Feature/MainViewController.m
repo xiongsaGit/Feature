@@ -42,7 +42,6 @@ static CGFloat const kAnimationDuration = .2;
 @property (nonatomic, assign) BOOL isMainList;
 @property (nonatomic, assign) ListType listType;
 @property (nonatomic, strong) NSNumber *listId;
-@property (nonatomic, copy) NSString *title;
 @end
 
 @implementation MainViewController
@@ -278,7 +277,7 @@ static CGFloat const kAnimationDuration = .2;
     self.oldOffsetY = 0;
     
     if (self.isMainList) {
-        NSArray *items = [NSArray arrayWithObjects:@"card_1_03",@"card_1_03", nil];
+        NSArray *items = [NSArray arrayWithObjects:@"icon_leftMenu",@"icon_toTop", nil];
         self.suspendView = [[SuspendView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-60, self.view.frame.size.width, 60) menuItemsArray:items];
         self.suspendView.backgroundColor = [UIColor clearColor];
         
@@ -288,7 +287,6 @@ static CGFloat const kAnimationDuration = .2;
             {
                 case 0:
                 {
-                    
                     [UIView animateWithDuration:kAnimationDuration animations:^{
                         CGRect rect =  weakSelf.leftMenu.frame;
                         rect.origin.x = weakSelf.leftMenu.isOpen?-LEFT_MENU_WIDTH:0;

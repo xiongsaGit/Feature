@@ -88,7 +88,7 @@
 {
     if (!_signImageView)
     {
-        _signImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"type"]];
+        _signImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_type"]];
     }
     return _signImageView;
 }
