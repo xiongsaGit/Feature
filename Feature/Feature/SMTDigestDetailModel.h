@@ -16,23 +16,23 @@
 @end
 
 @interface SMTDigestDetailModel : JSONModel
-@property (nonatomic, strong) NSNumber *alreayMark;
-@property (nonatomic, strong) NSArray <AuthorModel>*authorList;
-@property (nonatomic, copy) NSString *cardRemark;
-@property (nonatomic, copy) NSString *cardTitle;
-@property (nonatomic, strong) NSNumber *cardType;
-@property (nonatomic, copy) NSString *cardUrl;
-@property (nonatomic, strong) NSNumber *clickCnt;
-@property (nonatomic, strong) NSNumber *digestId;
-@property (nonatomic, strong) SMTEBookInfoModel *ebookInfo;
-@property (nonatomic, strong) NSNumber *isPraise;
-@property (nonatomic, strong) NSNumber *isSupportReward;
-@property (nonatomic, strong) NSNumber *mediaId;
-@property (nonatomic, strong) NSNumber *mood;
-@property (nonatomic, copy) NSString *pic1Path;
-@property (nonatomic, strong) NSNumber *reviewCnt;
-@property (nonatomic, strong) NSNumber *showStartDate;
-@property (nonatomic, strong) NSNumber *saleId;
+@property (nonatomic, strong) NSNumber<Optional> *alreayMark;
+@property (nonatomic, strong) NSArray <Optional,AuthorModel>*authorList;
+@property (nonatomic, copy) NSString<Optional> *cardRemark;
+@property (nonatomic, copy) NSString<Optional> *cardTitle;
+@property (nonatomic, strong) NSNumber<Optional> *cardType;
+@property (nonatomic, copy) NSString<Optional> *cardUrl;
+@property (nonatomic, strong) NSNumber<Optional> *clickCnt;
+@property (nonatomic, strong) NSNumber<Optional> *digestId;
+@property (nonatomic, strong) SMTEBookInfoModel<Optional> *ebookInfo;
+@property (nonatomic, strong) NSNumber<Optional> *isPraise;
+@property (nonatomic, strong) NSNumber<Optional> *isSupportReward;
+@property (nonatomic, strong) NSNumber<Optional> *mediaId;
+@property (nonatomic, strong) NSNumber<Optional> *mood;
+@property (nonatomic, copy)   NSString<Optional> *pic1Path;
+@property (nonatomic, strong) NSNumber<Optional> *reviewCnt;
+@property (nonatomic, strong) NSNumber<Optional> *showStartDate;
+@property (nonatomic, strong) NSNumber<Optional> *saleId;
 // signList
 @property (nonatomic, strong) NSArray <SignModel>*signList;
 @property (nonatomic, strong) NSNumber *topCnt;

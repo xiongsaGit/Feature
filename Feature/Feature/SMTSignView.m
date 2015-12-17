@@ -31,6 +31,7 @@
 {
     self.signList = signList;
     [self commonSetting];
+    [self configureUI];
 }
 
 - (void)showSignViewDataWithSignModel:(SignModel *)signModel
@@ -52,8 +53,9 @@
     [self.signImageView mas_remakeConstraints:^(MASConstraintMaker *make){
         make.top.mas_equalTo(self.mas_top);
         make.left.mas_equalTo(self.mas_left).offset(kSpaceX/2);
-        make.width.mas_equalTo(kSpaceX);
         make.bottom.mas_equalTo(self.mas_bottom);
+        make.width.mas_equalTo(self.signImageView.mas_height);
+
     }];
 
 }
@@ -66,8 +68,8 @@
         [self addSubview:button];
       
         [button mas_remakeConstraints:^(MASConstraintMaker *make){
-            make.top.mas_equalTo(self.signImageView.mas_top);
-            make.bottom.mas_equalTo(self.mas_bottom);
+            make.top.mas_equalTo(self.signImageView.mas_top).offset(kSpaceX/4);
+            make.bottom.mas_equalTo(self.mas_bottom).offset(-kSpaceX/4);
             if (i == 0) {
                 make.left.mas_equalTo(self.signImageView.mas_right).offset(kSpaceX/2);
             }else
@@ -77,7 +79,8 @@
             lastButton = button;
         }
         SignModel *signModel = self.signList[i];
-        [button setTitle:signModel.name forState:UIControlStateNormal];
+        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [button setTitle:[NSString stringWithFormat:@"  %@  ",signModel.name] forState:UIControlStateNormal];
     }
 }
 
@@ -85,8 +88,7 @@
 {
     if (!_signImageView)
     {
-        _signImageView = [[UIImageView alloc] init];
-        [_signImageView setBackgroundColor:[UIColor redColor]];
+        _signImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"type"]];
     }
     return _signImageView;
 }
@@ -94,7 +96,10 @@
 - (UIButton *)factoryForSignButtonWithTag:(NSInteger)tag
 {
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    btn.tag = tag+1000;
+    [btn setTag:tag+1000];
+    [btn.titleLabel setFont:kFONT_MAIN];
+    [btn.layer setCornerRadius:10];
+    [btn setBackgroundColor:[SMTRandomColor randomColor]];
     [btn addTarget:self action:@selector(handleSignButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     return btn;
 }

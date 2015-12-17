@@ -14,5 +14,6 @@ typedef void(^SignViewClickToSignListBlock)(SignModel *signModel);
 @interface SMTSignView : UIView
 
 - (id)initWithClickToSignListBlock:(SignViewClickToSignListBlock)toSignListBlock;
+- (void)showSignViewDataWithSignList:(NSArray *)signList;
 
 @end

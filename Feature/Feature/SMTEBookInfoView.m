@@ -16,12 +16,15 @@
 @property (nonatomic, strong) UILabel *bookTitleLabel;
 @property (nonatomic, strong) UILabel *bookAuthorLabel;
 @property (nonatomic, strong) UILabel *bookRemarkLabel;
+@property (nonatomic, copy)   EBookInfoViewClickToTypeListBlock toTypeListBlock;
+
 @end
 
 @implementation SMTEBookInfoView
 
-- (id)init {
+- (id)initWithToTypeListBlock:(EBookInfoViewClickToTypeListBlock)toTypeListBlock {
     if (self = [super init]) {
+        self.toTypeListBlock = toTypeListBlock;
         [self configureUI];
         [self configureFrame];
     }
@@ -30,6 +33,8 @@
 
 - (void)showBookInfoWithDigestModel:(SMTDigestDetailModel *)digestModel
 {
+    [self.signView showSignViewDataWithSignList:digestModel.signList];
+    
     SMTEBookInfoModel *bookInfo = digestModel.ebookInfo;
    [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:bookInfo.bookImgUrl] placeholderImage:[UIImage imageNamed:@""] options:SDWebImageProgressiveDownload];
     
@@ -59,6 +64,7 @@
 {
     [self.signView mas_remakeConstraints:^(MASConstraintMaker *make){
         make.top.mas_equalTo(self.mas_top);
+        make.left.mas_equalTo(self.mas_left);
         make.width.mas_equalTo(self.mas_width);
         make.height.mas_equalTo(kHEIGHT_OF_LABEL);
     }];
@@ -70,9 +76,10 @@
     }];
     
     [self.coverImageView mas_remakeConstraints:^(MASConstraintMaker *make){
-        make.left.mas_equalTo(self.mas_left).offset(kSpaceX/2);
         make.top.mas_equalTo(self.lineLabel.mas_bottom).offset(kSpaceX);
-        make.bottom.mas_equalTo(self.mas_bottom);
+        make.left.mas_equalTo(self.mas_left).offset(kSpaceX/2);
+        make.bottom.mas_equalTo(self.mas_bottom).offset(-2*kSpaceX);
+        make.width.mas_equalTo(100);
     }];
     
     [self.bookTitleLabel mas_remakeConstraints:^(MASConstraintMaker *make){
@@ -82,14 +89,14 @@
     }];
     
     [self.bookAuthorLabel mas_remakeConstraints:^(MASConstraintMaker *make){
-        make.top.mas_equalTo(self.bookTitleLabel.mas_bottom).offset(kSpaceX/2);
+        make.top.mas_equalTo(self.bookTitleLabel.mas_bottom).offset(kSpaceX/4);
         make.left.mas_equalTo(self.bookTitleLabel.mas_left);
         make.right.mas_equalTo(self.bookTitleLabel.mas_right);
         make.height.mas_equalTo(kHEIGHT_OF_LABEL);
     }];
     
     [self.bookRemarkLabel mas_remakeConstraints:^(MASConstraintMaker *make){
-        make.top.mas_equalTo(self.bookTitleLabel.mas_bottom).offset(kSpaceX/2);
+        make.top.mas_equalTo(self.bookAuthorLabel.mas_bottom).offset(kSpaceX/4);
         make.left.mas_equalTo(self.bookTitleLabel.mas_left);
         make.right.mas_equalTo(self.bookTitleLabel.mas_right);
         make.bottom.mas_equalTo(self.mas_bottom).offset(-kSpaceX/2);
@@ -101,8 +108,12 @@
 
 - (SMTSignView *)signView {
     if (!_signView) {
+        __weak typeof(self)weakSelf = self;
         _signView = [[SMTSignView alloc] initWithClickToSignListBlock:^(SignModel *signModel) {
             NSLog(@"click sign name:%@",signModel.name);
+            if (weakSelf.toTypeListBlock) {
+                weakSelf.toTypeListBlock(signModel);
+            }
         }];
     }
     return _signView;
@@ -120,6 +131,8 @@
 - (UILabel *)factoryForLabelWithFont:(UIFont *)font textColor:(UIColor *)textColor
 {
     UILabel *label = [[UILabel alloc] init];
+    label.numberOfLines = 0;
+    label.lineBreakMode = NSLineBreakByCharWrapping;
     label.font = font;
     label.textColor = textColor;
     return label;

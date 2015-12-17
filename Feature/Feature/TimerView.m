@@ -314,7 +314,6 @@ static CGFloat const kOriginX = 5;
     [formatter setDateFormat:@"HH:mm:ss"];
     date = [formatter stringFromDate:[NSDate date]];
     
-    
     [self showTime:[self timeFormatted:[self intervalsBetweenBaseDateAndDateNow:date]]];
     
 }

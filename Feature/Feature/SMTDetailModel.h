@@ -13,5 +13,5 @@
 @interface SMTDetailModel : JSONModel
 @property (nonatomic, strong) SMTDetailDataModel *data;
 @property (nonatomic, strong) StatusModel *status;
-@property (nonatomic, copy) NSString *systemDate;
+@property (nonatomic, copy)   NSString *systemDate;
 @end

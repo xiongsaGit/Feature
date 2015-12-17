@@ -9,7 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "SMTDigestDetailModel.h"
 
+typedef void(^EBookInfoViewClickToTypeListBlock)(SignModel *signModel);
+
 @interface SMTEBookInfoView : UIView
 
+- (id)initWithToTypeListBlock:(EBookInfoViewClickToTypeListBlock)toTypeListBlock;
+
 - (void)showBookInfoWithDigestModel:(SMTDigestDetailModel *)digestModel;
+
 @end

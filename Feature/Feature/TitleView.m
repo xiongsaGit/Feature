@@ -36,12 +36,10 @@
     self.titleLabel.text = detailModel.cardTitle;
     [self.authorButton setTitleColor:UIColorFromHex(0x4d81a6) forState:UIControlStateNormal];
     [self.authorButton setTitle:[NSString stringWithFormat:@"文/%@",authorModel.name] forState:UIControlStateNormal];
-    NSLog(@"author name:%@",authorModel.name);
 }
 
 - (void)handleAuthorButtonClicked:(UIButton *)button
 {
-    NSLog(@"点击了作者按钮");
     if (self.toAuthorListBlock) {
         self.toAuthorListBlock(self.authorModel);
     }

@@ -67,10 +67,8 @@
         
         NSError* err = nil;
         SMTDetailModel *detailModel = [[SMTDetailModel alloc] initWithString:request.responseString error:&err];
-        
-    
         [weakSelf.titleView setTitleViewDataWithDigestDetailModel:detailModel.data.digestDetail];
-        
+        [weakSelf.bookInfoView showBookInfoWithDigestModel:detailModel.data.digestDetail];
         
     } failure:^(YTKBaseRequest *request) {
         [SvGifView stopGifForView:self.view];
@@ -92,7 +90,7 @@
 {
     self.titleView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 120);
     self.contentWebView.frame = CGRectMake(0, CGRectGetMaxY(self.titleView.frame), SCREEN_WIDTH, 0);
-    self.bookInfoView.frame = CGRectMake(0, CGRectGetMaxY(self.contentWebView.frame), SCREEN_WIDTH, 180);
+    self.bookInfoView.frame = CGRectMake(0, CGRectGetMaxY(self.contentWebView.frame), SCREEN_WIDTH, 250);
     self.suspendView.frame = CGRectMake(0, SCREEN_HEIGHT-50, SCREEN_WIDTH, 50);
 }
 
@@ -155,8 +153,11 @@
     {
         _contentWebView = [[UIWebView alloc] init];
         _contentWebView.delegate = self;
-        _contentWebView.scalesPageToFit=YES;
+//        _contentWebView.scalesPageToFit=YES;
         _contentWebView.scrollView.scrollEnabled = NO;
+        _contentWebView.scrollView.bounces = NO;
+        _contentWebView.scrollView.showsVerticalScrollIndicator = NO;
+        [_contentWebView sizeToFit];
     }
     return _contentWebView;
 }
@@ -217,7 +218,11 @@
 
 - (SMTEBookInfoView *)bookInfoView {
     if (!_bookInfoView) {
-        _bookInfoView = [[SMTEBookInfoView alloc] init];
+        __weak typeof(self)weakSelf = self;
+        _bookInfoView = [[SMTEBookInfoView alloc] initWithToTypeListBlock:^(SignModel *signModel) {
+            MainViewController *mainViewCtrl = [[MainViewController alloc] initWithListType:ListTypeBySign listId:signModel.id title:signModel.name];
+            [weakSelf.navigationController pushViewController:mainViewCtrl animated:YES];
+        }];
     }
     return _bookInfoView;
 }
