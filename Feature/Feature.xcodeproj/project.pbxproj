@@ -28,7 +28,7 @@
 		33153B851BA57DFF007B6859 /* TimerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 33153B7D1BA57DFF007B6859 /* TimerView.m */; };
 		33153B861BA57DFF007B6859 /* CardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 33153B7F1BA57DFF007B6859 /* CardCell.m */; };
 		33153B871BA57DFF007B6859 /* SignView.m in Sources */ = {isa = PBXBuildFile; fileRef = 33153B811BA57DFF007B6859 /* SignView.m */; };
-		3335371C1BA6AC3000B5B353 /* SingleDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3335371B1BA6AC3000B5B353 /* SingleDetailViewController.m */; };
+		3335371C1BA6AC3000B5B353 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3335371B1BA6AC3000B5B353 /* DetailViewController.m */; };
 		3335371F1BA6C14D00B5B353 /* TitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3335371E1BA6C14C00B5B353 /* TitleView.m */; };
 		334662751C1E9B1B0084F362 /* SMTPageDetatilRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 334662741C1E9B1B0084F362 /* SMTPageDetatilRequest.m */; };
 		336D6D201C1C24EC001F1B33 /* SMTListByAuthorRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 336D6D1F1C1C24EC001F1B33 /* SMTListByAuthorRequest.m */; };
@@ -112,8 +112,8 @@
 		33153B801BA57DFF007B6859 /* SignView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignView.h; sourceTree = "<group>"; };
 		33153B811BA57DFF007B6859 /* SignView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignView.m; sourceTree = "<group>"; };
 		333537161BA6945500B5B353 /* Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
-		3335371A1BA6AC3000B5B353 /* SingleDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SingleDetailViewController.h; sourceTree = "<group>"; };
-		3335371B1BA6AC3000B5B353 /* SingleDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SingleDetailViewController.m; sourceTree = "<group>"; };
+		3335371A1BA6AC3000B5B353 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
+		3335371B1BA6AC3000B5B353 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		3335371D1BA6C14C00B5B353 /* TitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleView.h; sourceTree = "<group>"; };
 		3335371E1BA6C14C00B5B353 /* TitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitleView.m; sourceTree = "<group>"; };
 		334662731C1E9B1B0084F362 /* SMTPageDetatilRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTPageDetatilRequest.h; sourceTree = "<group>"; };
@@ -266,8 +266,8 @@
 			children = (
 				33153B721BA57D1B007B6859 /* MainViewController.h */,
 				33153B731BA57D1B007B6859 /* MainViewController.m */,
-				3335371A1BA6AC3000B5B353 /* SingleDetailViewController.h */,
-				3335371B1BA6AC3000B5B353 /* SingleDetailViewController.m */,
+				3335371A1BA6AC3000B5B353 /* DetailViewController.h */,
+				3335371B1BA6AC3000B5B353 /* DetailViewController.m */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -619,7 +619,7 @@
 				330DC4021C2100E00085973E /* SMTUserBaseInfoModel.m in Sources */,
 				330DC4121C2137900085973E /* SMTSignView.m in Sources */,
 				330DC3FF1C2100C80085973E /* SMTDigestDetailModel.m in Sources */,
-				3335371C1BA6AC3000B5B353 /* SingleDetailViewController.m in Sources */,
+				3335371C1BA6AC3000B5B353 /* DetailViewController.m in Sources */,
 				336D6D231C1C2603001F1B33 /* SMTListBySignRequest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

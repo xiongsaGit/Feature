@@ -1,12 +1,12 @@
 //
-//  SingleDetailViewController.m
+//  DetailViewController.m
 //  Feature
 //
 //  Created by sa.xiong on 15/9/14.
 //  Copyright © 2015年 sa.xiong. All rights reserved.
 //
 
-#import "SingleDetailViewController.h"
+#import "DetailViewController.h"
 #import "MainViewController.h"
 #import "SMTPageDetatilRequest.h"
 
@@ -23,7 +23,8 @@
 // 最小倍数
 #define kMIN_SCALE   70
 
-@interface SingleDetailViewController ()<UIWebViewDelegate,UIScrollViewDelegate>
+@interface DetailViewController ()<UIWebViewDelegate,UIScrollViewDelegate>
+@property (nonatomic, strong) NSArray *digestList;
 @property (nonatomic, strong) NSNumber *digestId;
 @property (nonatomic, strong) NSMutableURLRequest *urlRequest;
 
@@ -38,13 +39,14 @@
 
 @end
 
-@implementation SingleDetailViewController
+@implementation DetailViewController
 
 
-- (id)initWithDigestId:(NSNumber *)digestId
+- (id)initWithDigestId:(NSNumber *)digestId digestList:(NSArray *)digestArray
 {
     if (self = [super init]) {
         self.digestId = digestId;
+        self.digestList = digestArray;
     }
     return self;
 }

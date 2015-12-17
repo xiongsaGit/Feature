@@ -7,7 +7,7 @@
 //
 
 #import "MainViewController.h"
-#import "SingleDetailViewController.h"
+#import "DetailViewController.h"
 
 #import "SuspendView.h"
 #import "LeftMenuView.h"
@@ -238,7 +238,8 @@ static CGFloat const kAnimationDuration = .2;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DigestModel *digestModel = [self.tableData objectAtIndex:indexPath.row];
-    SingleDetailViewController *viewCtrl = [[SingleDetailViewController alloc] initWithDigestId:digestModel.id];
+    DetailViewController *viewCtrl = [[DetailViewController alloc] initWithDigestId:digestModel.id digestList:self.tableData];
+
     [self.navigationController pushViewController:viewCtrl animated:YES];
 }
 
