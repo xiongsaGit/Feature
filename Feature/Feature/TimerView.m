@@ -64,49 +64,19 @@ static CGFloat const kOriginX = 5;
         self.minuteSepLabel.text = @":";
         self.hourSepLabel.backgroundColor = [UIColor clearColor];
         self.minuteSepLabel.backgroundColor = [UIColor clearColor];
-
-        
-        
+ 
         [self configureFrame];
-//        [self refreshTime];
-       
-            
+        
         _theTimer = [CADisplayLink displayLinkWithTarget:self selector:@selector(MyTask)];
         _theTimer.paused = YES;
 
         _theTimer.frameInterval = 1;
             
         [_theTimer addToRunLoop: [NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
-            
-  
-//        //停用
-//        
-//        [theTimer invalidate];
-//        
-//        theTimer = nil;
-        
     }
     return self;
 }
 
-
-/*
- 
- self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateTextColor)];
- self.displayLink.paused = YES;
- [self.displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
- -(void)updateTextColor{}
- - (void)startAnimation{
- self.beginTime = CACurrentMediaTime();
- self.displayLink.paused = NO;
- }
- - (void)stopAnimation{
- self.displayLink.paused = YES;
- [self.displayLink invalidate];
- self.displayLink = nil;
- }
- 
- */
 - (void)MyTask
 {
     [self refreshTime];
@@ -179,8 +149,6 @@ static CGFloat const kOriginX = 5;
         make.size.mas_equalTo(CGSizeMake(kLabelWidth, kLabelHeight)).priorityHigh();
         
     }];
-    
-
 }
 
 - (void)handleTimerRefresh
@@ -188,35 +156,18 @@ static CGFloat const kOriginX = 5;
     [self refreshTime];
 }
 
-/*
-- (void)startAnimation{
-    self.beginTime = CACurrentMediaTime();
-    self.displayLink.paused = NO;
-}
-- (void)stopAnimation{
-    self.displayLink.paused = YES;
-    [self.displayLink invalidate];
-    self.displayLink = nil;
-}
-*/
 - (void)closeTimer
 {
-
     self.theTimer.paused = YES;
-    
-//    [self.timer setFireDate:[NSDate distantFuture]];
 }
 
 - (void)openTimer
 {
     self.theTimer.paused = NO;
-//    [self.timer setFireDate:[NSDate distantPast]];
 }
 
 - (NSArray *)intervalsBetweenMidNightAndTimeNow:(NSString *)timeNow
 {
-    NSString *result;
-    
     NSArray *timeArray = [timeNow componentsSeparatedByString:@":"];
     NSMutableArray *mutTimeArray = [NSMutableArray arrayWithArray:timeArray];
     NSArray *baseArray = [kNIGHT_FROM_TIME componentsSeparatedByString:@":"];
@@ -272,12 +223,12 @@ static CGFloat const kOriginX = 5;
     
     if (hours >9)
     {
-        [sourceArray addObject:[NSString stringWithFormat:@"%ld",hours/10]];
-        [sourceArray addObject:[NSString stringWithFormat:@"%ld",hours%10]];
+        [sourceArray addObject:[NSString stringWithFormat:@"%d",(int)(hours/10)]];
+        [sourceArray addObject:[NSString stringWithFormat:@"%d",(int)(hours%10)]];
     }else
     {
         [sourceArray addObject:@"0"];
-        [sourceArray addObject:[NSString stringWithFormat:@"%ld",hours]];
+        [sourceArray addObject:[NSString stringWithFormat:@"%d",(int)hours]];
     }
     
     if (minutes >9)
@@ -299,11 +250,6 @@ static CGFloat const kOriginX = 5;
         [sourceArray addObject:[NSString stringWithFormat:@"%d",0]];
         [sourceArray addObject:[NSString stringWithFormat:@"%d",seconds]];
     }
-    
-    for (int i = 0; i < sourceArray.count; i ++) {
-        NSLog(@"log i = %d,%@",i,sourceArray[i]);
-    }
-    
     return sourceArray;
 }
 

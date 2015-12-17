@@ -14,6 +14,12 @@
 #define kDAY_FROM_TIME       @"05:59:59"
 #define kNIGHT_FROM_TIME   @"19:59:59"
 
+#ifdef DEBUG
+#define DLog( s, ... ) NSLog( @"<%@:(%d)> %@", [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__] )
+#else
+#define DLog( s, ... )
+#endif
+
 
 #define UserDefaultsSetObjectForKey(object,key)  [[NSUserDefaults standardUserDefaults] setObject:object forKey:key];  [[NSUserDefaults standardUserDefaults] synchronize];
 

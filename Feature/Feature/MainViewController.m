@@ -157,7 +157,7 @@ static CGFloat const kAnimationDuration = .2;
         
     } failure:^(YTKBaseRequest *request) {
         [SvGifView stopGifForView:self.view];
-        [SNLog Log:@"request fail"];
+
     }];
 }
 
@@ -383,9 +383,9 @@ static CGFloat const kAnimationDuration = .2;
         _leftMenu.buttonClickBlock = ^(UIButton *btn){
             
             if (btn.tag == kBUTTON_FEEDBACK_TAG) {
-                NSLog(@"click feedback");
+                DLog(@"click feedback");
             }else {
-                NSLog(@"click return day");
+                DLog(@"click return day");
 
                 [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
                 

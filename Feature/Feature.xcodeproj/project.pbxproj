@@ -16,11 +16,6 @@
 		330DC40C1C21361E0085973E /* SMTEBookInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 330DC40B1C21361E0085973E /* SMTEBookInfoView.m */; };
 		330DC4121C2137900085973E /* SMTSignView.m in Sources */ = {isa = PBXBuildFile; fileRef = 330DC4111C2137900085973E /* SMTSignView.m */; };
 		330DC4151C2138D00085973E /* SMTRandomColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 330DC4141C2138D00085973E /* SMTRandomColor.m */; };
-		33153B581BA57C14007B6859 /* 001@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 33153B531BA57C14007B6859 /* 001@2x.png */; };
-		33153B591BA57C14007B6859 /* 002@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 33153B541BA57C14007B6859 /* 002@2x.png */; };
-		33153B5A1BA57C14007B6859 /* 003@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 33153B551BA57C14007B6859 /* 003@2x.png */; };
-		33153B5B1BA57C14007B6859 /* 004@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 33153B561BA57C14007B6859 /* 004@2x.png */; };
-		33153B5C1BA57C14007B6859 /* 005@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 33153B571BA57C14007B6859 /* 005@2x.png */; };
 		33153B6B1BA57C29007B6859 /* DigestModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 33153B601BA57C29007B6859 /* DigestModel.m */; };
 		33153B6C1BA57C29007B6859 /* RootModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 33153B621BA57C29007B6859 /* RootModel.m */; };
 		33153B6D1BA57C29007B6859 /* AuthorModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 33153B641BA57C29007B6859 /* AuthorModel.m */; };
@@ -36,7 +31,6 @@
 		3335371C1BA6AC3000B5B353 /* SingleDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3335371B1BA6AC3000B5B353 /* SingleDetailViewController.m */; };
 		3335371F1BA6C14D00B5B353 /* TitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3335371E1BA6C14C00B5B353 /* TitleView.m */; };
 		334662751C1E9B1B0084F362 /* SMTPageDetatilRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 334662741C1E9B1B0084F362 /* SMTPageDetatilRequest.m */; };
-		336D6D1D1C1BD9EB001F1B33 /* SNLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 336D6D1C1C1BD9EB001F1B33 /* SNLog.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		336D6D201C1C24EC001F1B33 /* SMTListByAuthorRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 336D6D1F1C1C24EC001F1B33 /* SMTListByAuthorRequest.m */; };
 		336D6D231C1C2603001F1B33 /* SMTListBySignRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 336D6D221C1C2603001F1B33 /* SMTListBySignRequest.m */; };
 		337E5F471BA5783500C83E58 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 337E5F461BA5783500C83E58 /* main.m */; };
@@ -92,11 +86,6 @@
 		330DC4111C2137900085973E /* SMTSignView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTSignView.m; sourceTree = "<group>"; };
 		330DC4131C2138D00085973E /* SMTRandomColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTRandomColor.h; sourceTree = "<group>"; };
 		330DC4141C2138D00085973E /* SMTRandomColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTRandomColor.m; sourceTree = "<group>"; };
-		33153B531BA57C14007B6859 /* 001@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "001@2x.png"; sourceTree = "<group>"; };
-		33153B541BA57C14007B6859 /* 002@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "002@2x.png"; sourceTree = "<group>"; };
-		33153B551BA57C14007B6859 /* 003@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "003@2x.png"; sourceTree = "<group>"; };
-		33153B561BA57C14007B6859 /* 004@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "004@2x.png"; sourceTree = "<group>"; };
-		33153B571BA57C14007B6859 /* 005@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "005@2x.png"; sourceTree = "<group>"; };
 		33153B5F1BA57C29007B6859 /* DigestModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DigestModel.h; sourceTree = "<group>"; };
 		33153B601BA57C29007B6859 /* DigestModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DigestModel.m; sourceTree = "<group>"; };
 		33153B611BA57C29007B6859 /* RootModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootModel.h; sourceTree = "<group>"; };
@@ -129,8 +118,6 @@
 		3335371E1BA6C14C00B5B353 /* TitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitleView.m; sourceTree = "<group>"; };
 		334662731C1E9B1B0084F362 /* SMTPageDetatilRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTPageDetatilRequest.h; sourceTree = "<group>"; };
 		334662741C1E9B1B0084F362 /* SMTPageDetatilRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTPageDetatilRequest.m; sourceTree = "<group>"; };
-		336D6D1B1C1BD9EB001F1B33 /* SNLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNLog.h; sourceTree = "<group>"; };
-		336D6D1C1C1BD9EB001F1B33 /* SNLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNLog.m; sourceTree = "<group>"; };
 		336D6D1E1C1C24EC001F1B33 /* SMTListByAuthorRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTListByAuthorRequest.h; sourceTree = "<group>"; };
 		336D6D1F1C1C24EC001F1B33 /* SMTListByAuthorRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTListByAuthorRequest.m; sourceTree = "<group>"; };
 		336D6D211C1C2603001F1B33 /* SMTListBySignRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTListBySignRequest.h; sourceTree = "<group>"; };
@@ -274,18 +261,6 @@
 			name = OperateView;
 			sourceTree = "<group>";
 		};
-		33153B511BA57BF0007B6859 /* Image */ = {
-			isa = PBXGroup;
-			children = (
-				33153B531BA57C14007B6859 /* 001@2x.png */,
-				33153B541BA57C14007B6859 /* 002@2x.png */,
-				33153B551BA57C14007B6859 /* 003@2x.png */,
-				33153B561BA57C14007B6859 /* 004@2x.png */,
-				33153B571BA57C14007B6859 /* 005@2x.png */,
-			);
-			name = Image;
-			sourceTree = "<group>";
-		};
 		33153B521BA57BF7007B6859 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -367,7 +342,6 @@
 				33153B751BA57DF2007B6859 /* View */,
 				33153B5D1BA57C17007B6859 /* Model */,
 				33153B521BA57BF7007B6859 /* ViewController */,
-				33153B511BA57BF0007B6859 /* Image */,
 				337E5F481BA5783500C83E58 /* AppDelegate.h */,
 				337E5F491BA5783600C83E58 /* AppDelegate.m */,
 				337E5F4B1BA5783600C83E58 /* ViewController.h */,
@@ -434,8 +408,6 @@
 				5693635D1C1F197D0051DB6F /* SvGifView.m */,
 				338AA2FA1C1C77C900FBB79C /* UIImage+animatedGIF.h */,
 				338AA2FB1C1C77C900FBB79C /* UIImage+animatedGIF.m */,
-				336D6D1B1C1BD9EB001F1B33 /* SNLog.h */,
-				336D6D1C1C1BD9EB001F1B33 /* SNLog.m */,
 			);
 			path = ThirdParty;
 			sourceTree = "<group>";
@@ -555,13 +527,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				33153B581BA57C14007B6859 /* 001@2x.png in Resources */,
 				337E5F551BA5783600C83E58 /* LaunchScreen.storyboard in Resources */,
 				337E5F521BA5783600C83E58 /* Assets.xcassets in Resources */,
-				33153B591BA57C14007B6859 /* 002@2x.png in Resources */,
-				33153B5C1BA57C14007B6859 /* 005@2x.png in Resources */,
-				33153B5B1BA57C14007B6859 /* 004@2x.png in Resources */,
-				33153B5A1BA57C14007B6859 /* 003@2x.png in Resources */,
 				337E5F501BA5783600C83E58 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -634,7 +601,6 @@
 				330DC4151C2138D00085973E /* SMTRandomColor.m in Sources */,
 				33153B821BA57DFF007B6859 /* SuspendView.m in Sources */,
 				3335371F1BA6C14D00B5B353 /* TitleView.m in Sources */,
-				336D6D1D1C1BD9EB001F1B33 /* SNLog.m in Sources */,
 				338AA2FC1C1C77C900FBB79C /* UIImage+animatedGIF.m in Sources */,
 				33153B741BA57D1B007B6859 /* MainViewController.m in Sources */,
 				33153B6C1BA57C29007B6859 /* RootModel.m in Sources */,

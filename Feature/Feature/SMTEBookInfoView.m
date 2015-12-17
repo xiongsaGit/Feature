@@ -110,7 +110,6 @@
     if (!_signView) {
         __weak typeof(self)weakSelf = self;
         _signView = [[SMTSignView alloc] initWithClickToSignListBlock:^(SignModel *signModel) {
-            NSLog(@"click sign name:%@",signModel.name);
             if (weakSelf.toTypeListBlock) {
                 weakSelf.toTypeListBlock(signModel);
             }

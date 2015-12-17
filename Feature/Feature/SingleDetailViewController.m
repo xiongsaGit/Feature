@@ -59,7 +59,7 @@
     [self configureUI];
     [self configureFrame];
     
-    NSLog(@"urlString:%@",[NSString stringWithFormat:@"%@?action=%@&digestId=%@",kBaseURL,kDigestContentForH5,[self.digestId stringValue]]);
+    DLog(@"urlString:%@",[NSString stringWithFormat:@"%@?action=%@&digestId=%@",kBaseURL,kDigestContentForH5,[self.digestId stringValue]]);
     
     [self requestDigestDetail];
     [self.contentWebView loadRequest:self.urlRequest];
@@ -129,10 +129,7 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-//    [webView stringByEvaluatingJavaScriptFromString:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust = '140%'"];
-    
     int height_str = [[webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.scrollHeight"] intValue];
-    NSLog(@"first height_str:%d",height_str);
     [self configureFrameWithHeight:height_str];
 }
 
@@ -144,7 +141,6 @@
 
 - (void)reduceTextFont
 {
-    NSLog(@"%s",__func__);
     if (self.currentScale-kSCALE_PER_TIME>=kMIN_SCALE) {
         self.currentScale -= kSCALE_PER_TIME;
         [self scaleWebViewFontWithScalePercent:self.currentScale];

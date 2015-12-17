@@ -20,7 +20,6 @@
 
 #import "Util.h"
 #import "CommonURL.h"
-#import "SNLog.h"
 #import "SvGifView.h"
 #import "SMTRandomColor.h"
 // Include any system framework and library headers here that should be included in all compilation units.
