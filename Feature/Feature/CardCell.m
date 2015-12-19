@@ -34,20 +34,10 @@
     }
     return self;
 }
-
-
-- (void)showDifferColorByCurrentTime
-{
-    BOOL currentIsDay = [SMTCurrentIsDay currentTimeIsDay];
-    self.contentView.backgroundColor = currentIsDay?kCOLOR_DAY_SEPARATOR:kCOLOR_NIGHT_SEPARATOR;
-    self.backView.backgroundColor = currentIsDay?kCOLOR_DAY_BACKGROUND:kCOLOR_NIGHT_BACKGROUND;
-    [self.signView showDifferColorByCurrentIsDay:currentIsDay];
-    [self.cardView showDifferColorByCurrentIsDay:currentIsDay];
-
-}
-
 - (void)showDataForCellType:(CardType)type WithDataModel:(DigestModel *)model
 {
+    self.contentView.backgroundColor = [SMTTheme cellContentViewColor];
+    self.backView.backgroundColor = [SMTTheme viewBackgroundColor];
 
     self.digestModel = model;
     [self showSignViewDataWithDigestModel:model];
@@ -76,7 +66,7 @@
 {
     [self.backView mas_makeConstraints:^(MASConstraintMaker *make) {
   
-        make.edges.mas_equalTo(UIEdgeInsetsMake(kSpaceY/8, 0, kSpaceY/8, 0));
+        make.edges.mas_equalTo(UIEdgeInsetsMake(kSpaceY/4, 0, kSpaceY/4, 0));
     }];
     
     [self.signView mas_makeConstraints:^(MASConstraintMaker *make){

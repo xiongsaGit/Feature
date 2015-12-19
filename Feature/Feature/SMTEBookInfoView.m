@@ -27,6 +27,10 @@
         self.toTypeListBlock = toTypeListBlock;
         [self configureUI];
         [self configureFrame];
+        
+        self.bookAuthorLabel.textColor = [SMTTheme detailBookAuthorColor];
+        self.bookTitleLabel.textColor = [SMTTheme detailBookTitleColor];
+        self.bookRemarkLabel.textColor = [SMTTheme detailBookRemarkColor];
     }
     return self;
 }
@@ -41,6 +45,7 @@
     self.bookTitleLabel.text = bookInfo.bookName;
     self.bookAuthorLabel.text = bookInfo.bookAuthor;
     self.bookRemarkLabel.text = digestModel.cardRemark;
+
 }
 
 - (void)configureUI

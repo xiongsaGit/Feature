@@ -16,6 +16,8 @@
 		330DC40C1C21361E0085973E /* SMTEBookInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 330DC40B1C21361E0085973E /* SMTEBookInfoView.m */; };
 		330DC4121C2137900085973E /* SMTSignView.m in Sources */ = {isa = PBXBuildFile; fileRef = 330DC4111C2137900085973E /* SMTSignView.m */; };
 		330DC4151C2138D00085973E /* SMTRandomColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 330DC4141C2138D00085973E /* SMTRandomColor.m */; };
+		330DC5A71C258E1400F86CA9 /* SMTDetailScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 330DC5A61C258E1400F86CA9 /* SMTDetailScrollView.m */; };
+		330DC5AA1C2592FC00F86CA9 /* SMTDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 330DC5A91C2592FC00F86CA9 /* SMTDetailView.m */; };
 		33153B6B1BA57C29007B6859 /* DigestModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 33153B601BA57C29007B6859 /* DigestModel.m */; };
 		33153B6C1BA57C29007B6859 /* RootModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 33153B621BA57C29007B6859 /* RootModel.m */; };
 		33153B6D1BA57C29007B6859 /* AuthorModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 33153B641BA57C29007B6859 /* AuthorModel.m */; };
@@ -45,6 +47,10 @@
 		338AA2FC1C1C77C900FBB79C /* UIImage+animatedGIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 338AA2FB1C1C77C900FBB79C /* UIImage+animatedGIF.m */; };
 		33F795441C1AC7BE001556FE /* SMTHomePageListRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F795431C1AC7BE001556FE /* SMTHomePageListRequest.m */; };
 		33F795481C1AD751001556FE /* SMTBaseRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F795471C1AD751001556FE /* SMTBaseRequest.m */; };
+		33FC8D0F1C2401B10089A24A /* SMTBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 33FC8D0E1C2401B10089A24A /* SMTBaseView.m */; };
+		33FC8D121C2401C20089A24A /* SMTBaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 33FC8D111C2401C20089A24A /* SMTBaseCell.m */; };
+		33FC8D151C2402370089A24A /* SMTTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 33FC8D141C2402370089A24A /* SMTTheme.m */; };
+		33FC8D181C240AE90089A24A /* SMTBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33FC8D171C240AE90089A24A /* SMTBaseViewController.m */; };
 		5693635E1C1F197D0051DB6F /* SvGifView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5693635D1C1F197D0051DB6F /* SvGifView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		EE0A2730A8BD34E14634E46C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 60F81D4E499FC6183799C50E /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -86,6 +92,10 @@
 		330DC4111C2137900085973E /* SMTSignView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTSignView.m; sourceTree = "<group>"; };
 		330DC4131C2138D00085973E /* SMTRandomColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTRandomColor.h; sourceTree = "<group>"; };
 		330DC4141C2138D00085973E /* SMTRandomColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTRandomColor.m; sourceTree = "<group>"; };
+		330DC5A51C258E1400F86CA9 /* SMTDetailScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTDetailScrollView.h; sourceTree = "<group>"; };
+		330DC5A61C258E1400F86CA9 /* SMTDetailScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTDetailScrollView.m; sourceTree = "<group>"; };
+		330DC5A81C2592FC00F86CA9 /* SMTDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTDetailView.h; sourceTree = "<group>"; };
+		330DC5A91C2592FC00F86CA9 /* SMTDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTDetailView.m; sourceTree = "<group>"; };
 		33153B5F1BA57C29007B6859 /* DigestModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DigestModel.h; sourceTree = "<group>"; };
 		33153B601BA57C29007B6859 /* DigestModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DigestModel.m; sourceTree = "<group>"; };
 		33153B611BA57C29007B6859 /* RootModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootModel.h; sourceTree = "<group>"; };
@@ -147,6 +157,15 @@
 		33F795451C1AD6C3001556FE /* CommonURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonURL.h; sourceTree = "<group>"; };
 		33F795461C1AD751001556FE /* SMTBaseRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTBaseRequest.h; sourceTree = "<group>"; };
 		33F795471C1AD751001556FE /* SMTBaseRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTBaseRequest.m; sourceTree = "<group>"; };
+		33FC8D0B1C23FEAD0089A24A /* singleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = singleton.h; sourceTree = "<group>"; };
+		33FC8D0D1C2401B10089A24A /* SMTBaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTBaseView.h; sourceTree = "<group>"; };
+		33FC8D0E1C2401B10089A24A /* SMTBaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTBaseView.m; sourceTree = "<group>"; };
+		33FC8D101C2401C20089A24A /* SMTBaseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTBaseCell.h; sourceTree = "<group>"; };
+		33FC8D111C2401C20089A24A /* SMTBaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTBaseCell.m; sourceTree = "<group>"; };
+		33FC8D131C2402370089A24A /* SMTTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTTheme.h; sourceTree = "<group>"; };
+		33FC8D141C2402370089A24A /* SMTTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTTheme.m; sourceTree = "<group>"; };
+		33FC8D161C240AE90089A24A /* SMTBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTBaseViewController.h; sourceTree = "<group>"; };
+		33FC8D171C240AE90089A24A /* SMTBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTBaseViewController.m; sourceTree = "<group>"; };
 		5693635C1C1F197D0051DB6F /* SvGifView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SvGifView.h; sourceTree = "<group>"; };
 		5693635D1C1F197D0051DB6F /* SvGifView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SvGifView.m; sourceTree = "<group>"; };
 		60F81D4E499FC6183799C50E /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -190,10 +209,13 @@
 		330B10991C1FE89000BF39BB /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				33FC8D0C1C24019D0089A24A /* Base */,
 				330B109A1C1FE8B300BF39BB /* SMTCurrentIsDay.h */,
 				330B109B1C1FE8B300BF39BB /* SMTCurrentIsDay.m */,
 				330DC4131C2138D00085973E /* SMTRandomColor.h */,
 				330DC4141C2138D00085973E /* SMTRandomColor.m */,
+				33FC8D131C2402370089A24A /* SMTTheme.h */,
+				33FC8D141C2402370089A24A /* SMTTheme.m */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -248,6 +270,10 @@
 				330DC40B1C21361E0085973E /* SMTEBookInfoView.m */,
 				330DC4101C2137900085973E /* SMTSignView.h */,
 				330DC4111C2137900085973E /* SMTSignView.m */,
+				330DC5A51C258E1400F86CA9 /* SMTDetailScrollView.h */,
+				330DC5A61C258E1400F86CA9 /* SMTDetailScrollView.m */,
+				330DC5A81C2592FC00F86CA9 /* SMTDetailView.h */,
+				330DC5A91C2592FC00F86CA9 /* SMTDetailView.m */,
 			);
 			name = Detail;
 			sourceTree = "<group>";
@@ -268,6 +294,8 @@
 				33153B731BA57D1B007B6859 /* MainViewController.m */,
 				3335371A1BA6AC3000B5B353 /* DetailViewController.h */,
 				3335371B1BA6AC3000B5B353 /* DetailViewController.m */,
+				33FC8D161C240AE90089A24A /* SMTBaseViewController.h */,
+				33FC8D171C240AE90089A24A /* SMTBaseViewController.m */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -354,6 +382,7 @@
 				33153B711BA57C42007B6859 /* FeaturePCH.pch */,
 				333537161BA6945500B5B353 /* Util.h */,
 				33F795451C1AD6C3001556FE /* CommonURL.h */,
+				33FC8D0B1C23FEAD0089A24A /* singleton.h */,
 			);
 			path = Feature;
 			sourceTree = "<group>";
@@ -410,6 +439,17 @@
 				338AA2FB1C1C77C900FBB79C /* UIImage+animatedGIF.m */,
 			);
 			path = ThirdParty;
+			sourceTree = "<group>";
+		};
+		33FC8D0C1C24019D0089A24A /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				33FC8D0D1C2401B10089A24A /* SMTBaseView.h */,
+				33FC8D0E1C2401B10089A24A /* SMTBaseView.m */,
+				33FC8D101C2401C20089A24A /* SMTBaseCell.h */,
+				33FC8D111C2401C20089A24A /* SMTBaseCell.m */,
+			);
+			name = Base;
 			sourceTree = "<group>";
 		};
 		CF8A94FA50BCA97B200F7539 /* Pods */ = {
@@ -588,8 +628,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				5693635E1C1F197D0051DB6F /* SvGifView.m in Sources */,
+				330DC5A71C258E1400F86CA9 /* SMTDetailScrollView.m in Sources */,
 				337E5F4D1BA5783600C83E58 /* ViewController.m in Sources */,
+				33FC8D0F1C2401B10089A24A /* SMTBaseView.m in Sources */,
 				33153B871BA57DFF007B6859 /* SignView.m in Sources */,
+				33FC8D181C240AE90089A24A /* SMTBaseViewController.m in Sources */,
 				33153B841BA57DFF007B6859 /* LeftMenuView.m in Sources */,
 				33153B6F1BA57C29007B6859 /* DataModel.m in Sources */,
 				336D6D201C1C24EC001F1B33 /* SMTListByAuthorRequest.m in Sources */,
@@ -603,6 +646,8 @@
 				3335371F1BA6C14D00B5B353 /* TitleView.m in Sources */,
 				338AA2FC1C1C77C900FBB79C /* UIImage+animatedGIF.m in Sources */,
 				33153B741BA57D1B007B6859 /* MainViewController.m in Sources */,
+				33FC8D151C2402370089A24A /* SMTTheme.m in Sources */,
+				330DC5AA1C2592FC00F86CA9 /* SMTDetailView.m in Sources */,
 				33153B6C1BA57C29007B6859 /* RootModel.m in Sources */,
 				330DC40C1C21361E0085973E /* SMTEBookInfoView.m in Sources */,
 				330DC3FC1C20FCC60085973E /* SMTDetailDataModel.m in Sources */,
@@ -617,6 +662,7 @@
 				33153B6E1BA57C29007B6859 /* SignModel.m in Sources */,
 				330DC3F91C20FC820085973E /* SMTDetailModel.m in Sources */,
 				330DC4021C2100E00085973E /* SMTUserBaseInfoModel.m in Sources */,
+				33FC8D121C2401C20089A24A /* SMTBaseCell.m in Sources */,
 				330DC4121C2137900085973E /* SMTSignView.m in Sources */,
 				330DC3FF1C2100C80085973E /* SMTDigestDetailModel.m in Sources */,
 				3335371C1BA6AC3000B5B353 /* DetailViewController.m in Sources */,

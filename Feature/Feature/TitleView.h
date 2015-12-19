@@ -6,7 +6,8 @@
 //  Copyright © 2015年 sa.xiong. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "SMTBaseView.h"
+
 #import "AuthorModel.h"
 #import "SMTDigestDetailModel.h"
 
@@ -15,10 +16,10 @@ typedef void(^TitleViewClickToAuthorListBlock)(AuthorModel *authorModel);
 /**
  *  SingleDetailViewController中使用，页面顶端展示标题和作者的view
  */
-@interface TitleView : UIView
+@interface TitleView : SMTBaseView
 
 - (id)initWithToAuthorListBlock:(TitleViewClickToAuthorListBlock)toAuthorListBlock;
 
-- (void)setTitleViewDataWithDigestDetailModel:(SMTDigestDetailModel *)detailModel;
+- (void)titleViewDataWithDigestDetailModel:(SMTDigestDetailModel *)detailModel;
 
 @end

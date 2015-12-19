@@ -6,15 +6,13 @@
 //  Copyright © 2015年 sa.xiong. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "SMTBaseView.h"
 
 @class DigestModel;
-@interface SMTContentView : UIView
+@interface SMTContentView : SMTBaseView
 
 - (id)initWithCardType:(CardType)cardType;
 
 - (void)showContentViewWithCardType:(CardType)type DigestModel:(DigestModel *)model;
-
-- (void)showDifferColorByCurrentIsDay:(BOOL)currentIsDay;
 
 @end

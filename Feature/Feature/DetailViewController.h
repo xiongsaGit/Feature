@@ -6,9 +6,9 @@
 //  Copyright © 2015年 sa.xiong. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "SMTBaseViewController.h"
 
-@interface DetailViewController : UIViewController
+@interface DetailViewController : SMTBaseViewController
 
 - (id)initWithDigestId:(NSNumber *)digestId digestList:(NSArray *)digestArray;
 

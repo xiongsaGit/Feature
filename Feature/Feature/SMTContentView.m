@@ -30,18 +30,15 @@
     if (self = [super init]) {
         [self configureUIWithCardType:cardType];
         [self configureFrameWithCardType:cardType];
-        
     }
     return self;
 }
 
-- (void)showDifferColorByCurrentIsDay:(BOOL)currentIsDay
-{
-    self.cardTitleLabel.textColor = currentIsDay?kTEXT_COLOR_DAY:kTEXT_COLOR_NIGHT;
-}
-
 - (void)showContentViewWithCardType:(CardType)type DigestModel:(DigestModel *)model
 {
+    self.backgroundColor = [SMTTheme viewBackgroundColor];
+    self.cardTitleLabel.textColor = [SMTTheme cardTitleColor];
+   
     self.cardTitleLabel.text = model.cardTitle;
     
     if (type == CardTypeText) {
@@ -53,8 +50,6 @@
         self.cardRemarkLabel.text = model.cardRemark;
     }else
     {
-        self.cardTitleLabel.text = model.cardTitle;
-
         // 多张图片
         [self downloadToImageView:self.pic1ImageView withPicPath:model.smallPic1Path];
         [self downloadToImageView:self.pic2ImageView withPicPath:model.smallPic2Path];

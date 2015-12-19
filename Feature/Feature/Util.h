@@ -9,10 +9,8 @@
 #ifndef Util_h
 #define Util_h
 
-
-
 #define kDAY_FROM_TIME       @"05:59:59"
-#define kNIGHT_FROM_TIME   @"19:59:59"
+#define kNIGHT_FROM_TIME     @"19:59:59"
 
 #ifdef DEBUG
 #define DLog( s, ... ) NSLog( @"<%@:(%d)> %@", [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__] )
@@ -49,15 +47,38 @@ blue:((float)(rgbValue & 0x0000FF))/255.0 \
 alpha:1.0]
 
 #define kCOLOR_DAY_BACKGROUND    UIColorFromHex(0xffffff)
-#define kCOLOR_NIGHT_BACKGROUND  UIColorFromHex(0x222222)
-
-#define kCOLOR_DAY_SEPARATOR        UIColorFromHex(0xf2f2f2)
-#define kCOLOR_NIGHT_SEPARATOR       UIColorFromHex(0x232323)
-
-#define kTEXT_COLOR_DAY        UIColorFromHex(0x444444)
-#define kTEXT_COLOR_NIGHT      kCOLOR_DAY_BACKGROUND
 
 #define kCOLOR_MENU_BACKGROUND   UIColorFromHex(0x2c2c2c)
+
+#define kNIGHT_WEBVIEW_CONTENT @"#ffffff"
+#define kNIGHT_WEBVIEW_BACKGROUND @"#222222"
+
+#define kDAY_COLOR_CARD_BACKGROUND    UIColorFromHex(0xffffff)
+#define kNIGHT_COLOR_CARD_BACKGROUND  UIColorFromHex(0x222222)
+
+#define kDAY_COLOR_CELL_BACKGROUND        UIColorFromHex(0xf2f2f2)
+#define kNIGHT_COLOR_CELL_BACKGROUND      UIColorFromHex(0x232323)
+
+#define kDAY_COLOR_CARD_TITLE   UIColorFromHex(0x444444)
+#define kDAY_COLOR_CARD_REMARK  UIColorFromHex(0x8f8f8f)
+#define kDAY_COLOR_CARD_AUTHOR  UIColorFromHex(0x444444)
+
+#define kNIGHT_COLOR_CARD_TITLE   UIColorFromHex(0xf2f2f2)
+#define kNIGHT_COLOR_CARD_REMARK  UIColorFromHex(0xf2f2f2)
+#define kNIGHT_COLOR_CARD_AUTHOR  UIColorFromHex(0xf2f2f2)
+
+#define kDAY_COLOR_DETAIL_TITLE      UIColorFromHex(0x444444)
+#define kNIGHT_COLOR_DETAIL_TITLE    UIColorFromHex(0xf2f2f2)
+
+#define kDAY_COLOR_DETAIL_BOOKTITLE      UIColorFromHex(0x444444)
+#define kDAY_COLOR_DETAIL_BOOKAUTHOR      UIColorFromHex(0x8f8f8f)
+#define kDAY_COLOR_DETAIL_BOOKREMARK      UIColorFromHex(0x8f8f8f)
+
+#define kNIGHT_COLOR_DETAIL_BOOKTITLE      UIColorFromHex(0xf2f2f2)
+#define kNIGHT_COLOR_DETAIL_BOOKAUTHOR      UIColorFromHex(0xf2f2f2)
+#define kNIGHT_COLOR_DETAIL_BOOKREMARK      UIColorFromHex(0xf2f2f2)
+
+
 
 
 /****************************************************************************/
@@ -74,7 +95,6 @@ alpha:1.0]
 #define kCardRemarkFont       [UIFont systemFontOfSize:14]
 #define kCardTitleTextColor     [UIColor blackColor]
 
-//#define kTEXT_COLOR_DAY_CARD_TITLE
 #define kCardRemarkTextColor     [UIColor lightGrayColor]
 
 

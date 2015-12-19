@@ -116,7 +116,6 @@ static CGFloat const itemWidthHeight = 40;
 {
     UIButton *tempButton = [UIButton buttonWithType:UIButtonTypeCustom];
     tempButton.tag = btnTag;
-    [tempButton setBackgroundColor:[UIColor yellowColor]];
     [tempButton addTarget:self action:@selector(handleButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     return tempButton;
 }

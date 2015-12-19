@@ -6,8 +6,7 @@
 //  Copyright © 2015年 sa.xiong. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
+#import "SMTBaseView.h"
 /**
  *  点击姓名的响应事件
  */
@@ -19,7 +18,7 @@ typedef void(^SignButtonClickBlcok)();
  *  cell上方显示：作者名称和文章标签的view
  *  整个view可响应事件
  */
-@interface SignView : UIView
+@interface SignView : SMTBaseView
 @property (nonatomic, copy) AuthorNameButtonClickBlock authorNameBlock;
 @property (nonatomic, copy) SignButtonClickBlcok signBlock;
 /**
@@ -29,7 +28,5 @@ typedef void(^SignButtonClickBlcok)();
  *  @param sign       文章标签
  */
 - (void)showSignViewDataWithAuthorName:(NSString *)authorName sign:(NSString *)sign;
-
-- (void)showDifferColorByCurrentIsDay:(BOOL)currentIsDay;
 
 @end

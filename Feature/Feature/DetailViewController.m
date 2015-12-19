@@ -15,6 +15,9 @@
 #import "SMTEBookInfoView.h"
 
 #import "SMTDetailModel.h"
+#import "SMTDetailScrollView.h"
+#import "SMTDetailView.h"
+
 
 // 每次缩放倍数
 #define kSCALE_PER_TIME  10
@@ -28,12 +31,14 @@
 @property (nonatomic, strong) NSNumber *digestId;
 @property (nonatomic, strong) NSMutableURLRequest *urlRequest;
 
+@property (nonatomic, strong) SMTDetailView *detailView;
 @property (nonatomic, strong) UIScrollView *scrollView;
-@property (nonatomic, strong) TitleView *titleView;
-@property (nonatomic, strong) UIWebView *contentWebView;
+//@property (nonatomic, strong) TitleView *titleView;
+//@property (nonatomic, strong) UIWebView *contentWebView;
+//@property (nonatomic, strong) SMTEBookInfoView *bookInfoView;
 
-@property (nonatomic, strong) SMTEBookInfoView *bookInfoView;
 @property (nonatomic, strong) SuspendView *suspendView;
+
 @property (nonatomic, assign) CGFloat offsetY;
 @property (nonatomic, assign) int currentScale;
 
@@ -41,6 +46,16 @@
 
 @implementation DetailViewController
 
+- (SMTDetailView *)detailView {
+    if (!_detailView) {
+        _detailView = [[SMTDetailView alloc] initWithAuthorBlock:^(AuthorModel *authorModel) {
+            
+        } typeBlock:^(SignModel *signModel) {
+            
+        }];
+    }
+    return _detailView;
+}
 
 - (id)initWithDigestId:(NSNumber *)digestId digestList:(NSArray *)digestArray
 {
@@ -62,9 +77,10 @@
     [self configureFrame];
     
     DLog(@"urlString:%@",[NSString stringWithFormat:@"%@?action=%@&digestId=%@",kBaseURL,kDigestContentForH5,[self.digestId stringValue]]);
-    
-    [self requestDigestDetail];
-    [self.contentWebView loadRequest:self.urlRequest];
+
+    [self requestDigestDetailWithDigestId:self.digestId];
+    [self loadWebViewRequestWithDigestId:self.digestId];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -73,59 +89,81 @@
     self.navigationController.navigationBarHidden = YES;
 }
 
-- (void)requestDigestDetail {
+- (NSURL *)urlWithDigestId:(NSNumber *)digestId {
+    NSString *urlString = [NSString stringWithFormat:@"%@?action=%@&digestId=%@",kBaseURL,kDigestContentForH5,[digestId stringValue]];
+    return [NSURL URLWithString:urlString];
+}
+
+// 调用这两个方法
+- (void)loadWebViewRequestWithDigestId:(NSNumber *)digestId {
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[self urlWithDigestId:self.digestId]];
+    [self.detailView.contentWebView loadRequest:request];
+}
+
+- (void)requestDigestDetailWithDigestId:(NSNumber *)digestId {
     __weak typeof(self)weakSelf = self;
     [SvGifView startGifAddedToView:self.view];
-    SMTPageDetatilRequest *detailRequest = [[SMTPageDetatilRequest alloc] initWithDigestId:self.digestId];
+    SMTPageDetatilRequest *detailRequest = [[SMTPageDetatilRequest alloc] initWithDigestId:digestId];
     [detailRequest startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
-        [SvGifView stopGifForView:self.view];
+//        [SvGifView stopGifForView:self.view];
         
         NSError* err = nil;
         SMTDetailModel *detailModel = [[SMTDetailModel alloc] initWithString:request.responseString error:&err];
-        [weakSelf.titleView setTitleViewDataWithDigestDetailModel:detailModel.data.digestDetail];
-        [weakSelf.bookInfoView showBookInfoWithDigestModel:detailModel.data.digestDetail];
+        [weakSelf.detailView.titleView titleViewDataWithDigestDetailModel:detailModel.data.digestDetail];
+        [weakSelf.detailView.bookInfoView showBookInfoWithDigestModel:detailModel.data.digestDetail];
         
     } failure:^(YTKBaseRequest *request) {
-        [SvGifView stopGifForView:self.view];
+//        [SvGifView stopGifForView:self.view];
     }];
     
 }
 
 - (void)configureUI
 {
-    self.view.backgroundColor = kCOLOR_DAY_BACKGROUND;
     [self.view addSubview:self.scrollView];
-    [self.scrollView addSubview:self.titleView];
-    [self.scrollView addSubview:self.contentWebView];
-    [self.scrollView addSubview:self.bookInfoView];
+//    [self.scrollView addSubview:self.titleView];
+//    [self.scrollView addSubview:self.contentWebView];
+//    [self.scrollView addSubview:self.bookInfoView];
+//    
+
+    [self.scrollView addSubview:self.detailView];
+    self.detailView.contentWebView.delegate = self;
     [self.view addSubview:self.suspendView];
+
 }
 
 - (void)configureFrame
 {
-    self.titleView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 120);
-    self.contentWebView.frame = CGRectMake(0, CGRectGetMaxY(self.titleView.frame), SCREEN_WIDTH, 0);
-    self.bookInfoView.frame = CGRectMake(0, CGRectGetMaxY(self.contentWebView.frame), SCREEN_WIDTH, 250);
+//    self.titleView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 120);
+//    self.contentWebView.frame = CGRectMake(0, CGRectGetMaxY(self.titleView.frame), SCREEN_WIDTH, 0);
+//    self.bookInfoView.frame = CGRectMake(0, CGRectGetMaxY(self.contentWebView.frame), SCREEN_WIDTH, 250);
+    self.detailView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 370);
     self.suspendView.frame = CGRectMake(0, SCREEN_HEIGHT-50, SCREEN_WIDTH, 50);
+
 }
 
 
 - (void)configureFrameWithHeight:(int)height
 {
    
-    CGRect webViewRect = self.contentWebView.frame;
+    CGRect webViewRect = self.detailView.contentWebView.frame;
     webViewRect.size.height = height;
-    self.contentWebView.frame = webViewRect;
+    self.detailView.contentWebView.frame = webViewRect;
     
-    CGRect bookInfoViewRect = self.bookInfoView.frame;
-    bookInfoViewRect.origin.y = CGRectGetMaxY(self.contentWebView.frame);
-    self.bookInfoView.frame = bookInfoViewRect;
+    CGRect bookInfoViewRect = self.detailView.bookInfoView.frame;
+    bookInfoViewRect.origin.y = CGRectGetMaxY(self.detailView.contentWebView.frame);
+    self.detailView.bookInfoView.frame = bookInfoViewRect;
     
-    self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.view.frame), CGRectGetMaxY(self.bookInfoView.frame));
+    CGRect detailViewRect = self.detailView.frame;
+    detailViewRect.size.height = CGRectGetMaxY(self.detailView.bookInfoView.frame);
+    self.detailView.frame = detailViewRect;
+    
+    self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.view.frame), CGRectGetMaxY(self.detailView.frame));
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
+    [SvGifView stopGifForView:self.view];
 
 }
 
@@ -133,6 +171,21 @@
 {
     int height_str = [[webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.scrollHeight"] intValue];
     [self configureFrameWithHeight:height_str];
+
+    [self showDifferentColorWithCurrentTime];
+    [SvGifView stopGifForView:self.view];
+}
+
+- (void)showDifferentColorWithCurrentTime {
+    
+    if (![SMTCurrentIsDay currentTimeIsDay]) {
+        NSString *textColorString = [NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextFillColor= '%@'",kNIGHT_WEBVIEW_CONTENT];
+        [self.detailView.contentWebView stringByEvaluatingJavaScriptFromString:textColorString];
+        
+        NSString *backgroundColorString = [NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.background='%@'",kNIGHT_WEBVIEW_BACKGROUND];
+        [self.detailView.contentWebView stringByEvaluatingJavaScriptFromString:backgroundColorString];
+    }
+
 }
 
 
@@ -153,9 +206,9 @@
 - (void)scaleWebViewFontWithScalePercent:(int)percent
 {
     NSString *sizeAdjust = [NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust = '%d%%'",percent];
-    [self.contentWebView stringByEvaluatingJavaScriptFromString:sizeAdjust];
+    [self.detailView.contentWebView stringByEvaluatingJavaScriptFromString:sizeAdjust];
     
-    int height_str = [[self.contentWebView stringByEvaluatingJavaScriptFromString:@"document.documentElement.scrollHeight"] intValue];
+    int height_str = [[self.detailView.contentWebView stringByEvaluatingJavaScriptFromString:@"document.documentElement.scrollHeight"] intValue];
     [self configureFrameWithHeight:height_str];
 }
 
@@ -195,21 +248,21 @@
     
 }
 
-- (UIWebView *)contentWebView
-{
-    if (!_contentWebView)
-    {
-        _contentWebView = [[UIWebView alloc] init];
-        _contentWebView.delegate = self;
-        _contentWebView.scalesPageToFit=YES;
-        _contentWebView.userInteractionEnabled = NO;
-        _contentWebView.scrollView.scrollEnabled = NO;
-        _contentWebView.scrollView.bounces = NO;
-        _contentWebView.scrollView.showsVerticalScrollIndicator = NO;
-        [_contentWebView sizeToFit];
-    }
-    return _contentWebView;
-}
+//- (UIWebView *)contentWebView
+//{
+//    if (!_contentWebView)
+//    {
+//        _contentWebView = [[UIWebView alloc] init];
+//        _contentWebView.delegate = self;
+//        _contentWebView.scalesPageToFit=YES;
+//        _contentWebView.userInteractionEnabled = NO;
+//        _contentWebView.scrollView.scrollEnabled = NO;
+//        _contentWebView.scrollView.bounces = NO;
+//        _contentWebView.scrollView.showsVerticalScrollIndicator = NO;
+//        [_contentWebView sizeToFit];
+//    }
+//    return _contentWebView;
+//}
 
 - (SuspendView *)suspendView
 {
@@ -240,42 +293,39 @@
     }
     return _suspendView;
 }
-
-- (TitleView *)titleView
-{
-    if (!_titleView)
-    {
-        __weak typeof(self)weakSelf = self;
-        _titleView = [[TitleView alloc] initWithToAuthorListBlock:^(AuthorModel *authorModel) {
-            MainViewController *mainViewCtrl = [[MainViewController alloc] initWithListType:ListTypeByAuthor listId:authorModel.authorId title:authorModel.name];
-            [weakSelf.navigationController pushViewController:mainViewCtrl animated:YES];
-        }];
-    }
-    return _titleView;
-}
+//
+//- (TitleView *)titleView
+//{
+//    if (!_titleView)
+//    {
+//        __weak typeof(self)weakSelf = self;
+//        _titleView = [[TitleView alloc] initWithToAuthorListBlock:^(AuthorModel *authorModel) {
+//            MainViewController *mainViewCtrl = [[MainViewController alloc] initWithListType:ListTypeByAuthor listId:authorModel.authorId title:authorModel.name];
+//            [weakSelf.navigationController pushViewController:mainViewCtrl animated:YES];
+//        }];
+//    }
+//    return _titleView;
+//}
 
 - (NSMutableURLRequest *)urlRequest
 {
     if (!_urlRequest) {
-        
-        NSString *urlString = [NSString stringWithFormat:@"%@?action=%@&digestId=%@",kBaseURL,kDigestContentForH5,[self.digestId stringValue]];
-        NSURL *url = [NSURL URLWithString:urlString];
-        _urlRequest = [NSMutableURLRequest requestWithURL:url];
+        _urlRequest = [NSMutableURLRequest requestWithURL:[self urlWithDigestId:self.digestId]];
     }
     return _urlRequest;
 }
 
-- (SMTEBookInfoView *)bookInfoView {
-    if (!_bookInfoView) {
-        __weak typeof(self)weakSelf = self;
-        _bookInfoView = [[SMTEBookInfoView alloc] initWithToTypeListBlock:^(SignModel *signModel) {
-            MainViewController *mainViewCtrl = [[MainViewController alloc] initWithListType:ListTypeBySign listId:signModel.id title:signModel.name];
-            [weakSelf.navigationController pushViewController:mainViewCtrl animated:YES];
-        }];
-    }
-    return _bookInfoView;
-}
-
+//- (SMTEBookInfoView *)bookInfoView {
+//    if (!_bookInfoView) {
+//        __weak typeof(self)weakSelf = self;
+//        _bookInfoView = [[SMTEBookInfoView alloc] initWithToTypeListBlock:^(SignModel *signModel) {
+//            MainViewController *mainViewCtrl = [[MainViewController alloc] initWithListType:ListTypeBySign listId:signModel.id title:signModel.name];
+//            [weakSelf.navigationController pushViewController:mainViewCtrl animated:YES];
+//        }];
+//    }
+//    return _bookInfoView;
+//}
+//
 - (UIScrollView *)scrollView {
     if (!_scrollView) {
         _scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];

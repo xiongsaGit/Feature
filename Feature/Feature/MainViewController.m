@@ -164,10 +164,10 @@ static CGFloat const kAnimationDuration = .2;
 //  刷新列表数据
 - (void)refreshDataInTableView
 {
-        NSString *dayOrNight =  [SMTCurrentIsDay currentTimeIsDay]?@"day":@"night";
-        DigestModel *digestModel = self.tableData[0];
+    NSString *dayOrNight =  [SMTCurrentIsDay currentTimeIsDay]?@"day":@"night";
+    DigestModel *digestModel = self.tableData[0];
     
-        [self requestHomePageListWithAct:@"new" dayOrNight:dayOrNight sortPage:digestModel.sortPage requestType:HomePageListRequestTypeRefresh];
+    [self requestHomePageListWithAct:@"new" dayOrNight:dayOrNight sortPage:digestModel.sortPage requestType:HomePageListRequestTypeRefresh];
 }
 
 //  加载更多数据
@@ -193,10 +193,10 @@ static CGFloat const kAnimationDuration = .2;
     if (theType == CardTypeImage)
     {
         return 300;
-    }else if (theType == CardTypeMutilImages)
+    }else if (theType == CardTypeMutilImages||theType == CardTypeText)
         return 200;
     else
-        return 220;
+        return 250;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -226,7 +226,6 @@ static CGFloat const kAnimationDuration = .2;
         cell = [[CardCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[NSString stringWithFormat:@"%d",(int)theType] cellType:theType];
         cell.selectionStyle = UITableViewCellSeparatorStyleNone;
     }
-    [cell showDifferColorByCurrentTime];
     [cell showDataForCellType:theType WithDataModel:model];
 
     [self blockForCell:cell withModel:model];

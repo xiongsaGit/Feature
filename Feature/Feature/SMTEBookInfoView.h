@@ -6,12 +6,13 @@
 //  Copyright © 2015年 sa.xiong. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "SMTBaseView.h"
+
 #import "SMTDigestDetailModel.h"
 
 typedef void(^EBookInfoViewClickToTypeListBlock)(SignModel *signModel);
 
-@interface SMTEBookInfoView : UIView
+@interface SMTEBookInfoView : SMTBaseView
 
 - (id)initWithToTypeListBlock:(EBookInfoViewClickToTypeListBlock)toTypeListBlock;
 

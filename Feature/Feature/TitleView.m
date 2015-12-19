@@ -25,17 +25,19 @@
         [self configureUI];
         [self configureFrame];
         self.toAuthorListBlock = toAuthorListBlock;
+        self.titleLabel.textColor = [SMTTheme detailTitleColor];
     }
     return self;
 }
 
-- (void)setTitleViewDataWithDigestDetailModel:(SMTDigestDetailModel *)detailModel {
+- (void)titleViewDataWithDigestDetailModel:(SMTDigestDetailModel *)detailModel {
     AuthorModel *authorModel = detailModel.authorList[0];
     self.authorModel = authorModel;
     
     self.titleLabel.text = detailModel.cardTitle;
     [self.authorButton setTitleColor:UIColorFromHex(0x4d81a6) forState:UIControlStateNormal];
     [self.authorButton setTitle:[NSString stringWithFormat:@"文/%@",authorModel.name] forState:UIControlStateNormal];
+    
 }
 
 - (void)handleAuthorButtonClicked:(UIButton *)button
