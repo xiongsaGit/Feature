@@ -8,6 +8,7 @@
 
 #import "DetailViewController.h"
 #import "MainViewController.h"
+#import "MainViewController.h"
 #import "SMTPageDetatilRequest.h"
 
 #import "SuspendView.h"
@@ -17,7 +18,8 @@
 #import "SMTDetailModel.h"
 #import "SMTDetailScrollView.h"
 #import "SMTDetailView.h"
-
+#import "MJRefresh.h"
+#import "UIScrollView+MJRefresh.h"
 
 // 每次缩放倍数
 #define kSCALE_PER_TIME  10
@@ -42,16 +44,28 @@
 @property (nonatomic, assign) CGFloat offsetY;
 @property (nonatomic, assign) int currentScale;
 
+
+@property (nonatomic, strong) MJRefreshNormalHeader *refreshHeader;
+@property (nonatomic, strong) MJRefreshAutoNormalFooter *refreshFooter;
+
 @end
 
 @implementation DetailViewController
 
+
 - (SMTDetailView *)detailView {
     if (!_detailView) {
+        __weak typeof(self)weakSelf = self;
+
         _detailView = [[SMTDetailView alloc] initWithAuthorBlock:^(AuthorModel *authorModel) {
             
-        } typeBlock:^(SignModel *signModel) {
+            MainViewController *mainViewCtrl = [[MainViewController alloc] initWithListType:ListTypeByAuthor listId:authorModel.authorId title:authorModel.name];
+            [weakSelf.navigationController pushViewController:mainViewCtrl animated:YES];
             
+        } typeBlock:^(SignModel *signModel) {
+            MainViewController *mainViewCtrl = [[MainViewController alloc] initWithListType:ListTypeBySign listId:signModel.id title:signModel.name];
+            [weakSelf.navigationController pushViewController:mainViewCtrl animated:YES];
+        
         }];
     }
     return _detailView;
@@ -218,10 +232,6 @@
         self.currentScale += kSCALE_PER_TIME;
         [self scaleWebViewFontWithScalePercent:self.currentScale];
     }
-    
-    
-
-    
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -302,6 +312,10 @@
 //        _titleView = [[TitleView alloc] initWithToAuthorListBlock:^(AuthorModel *authorModel) {
 //            MainViewController *mainViewCtrl = [[MainViewController alloc] initWithListType:ListTypeByAuthor listId:authorModel.authorId title:authorModel.name];
 //            [weakSelf.navigationController pushViewController:mainViewCtrl animated:YES];
+//        }];//        __weak typeof(self)weakSelf = self;
+//        _bookInfoView = [[SMTEBookInfoView alloc] initWithToTypeListBlock:^(SignModel *signModel) {
+//            MainViewController *mainViewCtrl = [[MainViewController alloc] initWithListType:ListTypeBySign listId:signModel.id title:signModel.name];
+//            [weakSelf.navigationController pushViewController:mainViewCtrl animated:YES];
 //        }];
 //    }
 //    return _titleView;
@@ -326,13 +340,58 @@
 //    return _bookInfoView;
 //}
 //
+
+- (void)mj_headerRefresh {
+    NSLog(@"dafdsf");
+}
+
+- (void)mj_footerRefresh {
+    NSLog(@"footer");
+}
+
+
 - (UIScrollView *)scrollView {
     if (!_scrollView) {
         _scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
         _scrollView.delegate = self;
+        _scrollView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(mj_headerRefresh)];
+        _scrollView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(mj_footerRefresh)];
     }
     return _scrollView;
+
 }
+
+- (MJRefreshNormalHeader *)refreshHeader {
+    if (!_refreshHeader) {
+        _refreshHeader = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:<#(SEL)#>];
+    }
+    return _refreshHeader;
+}
+
+/*
+ MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+ 
+ // 设置文字
+ [header setTitle:@"Pull down to refresh" forState:MJRefreshStateIdle];
+ [header setTitle:@"Release to refresh" forState:MJRefreshStatePulling];
+ [header setTitle:@"Loading ..." forState:MJRefreshStateRefreshing];
+ 
+ // 设置字体
+ header.stateLabel.font = [UIFont systemFontOfSize:15];
+ header.lastUpdatedTimeLabel.font = [UIFont systemFontOfSize:14];
+ 
+ // 设置颜色
+ header.stateLabel.textColor = [UIColor redColor];
+ header.lastUpdatedTimeLabel.textColor = [UIColor blueColor];
+ 
+ // 马上进入刷新状态
+ [header beginRefreshing];
+ 
+ // 设置刷新控件
+ self.tableView.mj_header = header;
+ 
+ */
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

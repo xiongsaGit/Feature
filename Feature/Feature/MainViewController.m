@@ -12,8 +12,9 @@
 #import "SuspendView.h"
 #import "LeftMenuView.h"
 #import "CardCell.h"
-#import "SMTCurrentIsDay.h"
+#import "SMTNetworkErrorView.h"
 
+#import "SMTCurrentIsDay.h"
 #import "RootModel.h"
 
 #import "SMTHomePageListRequest.h"
@@ -31,6 +32,7 @@ typedef NS_ENUM(NSInteger,HomePageListRequestType)
 static CGFloat const kAnimationDuration = .2;
 
 @interface MainViewController()<UITableViewDataSource,UITableViewDelegate>
+@property (nonatomic, strong) SMTNetworkErrorView *networkErrorView;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *tableData;
@@ -102,6 +104,9 @@ static CGFloat const kAnimationDuration = .2;
     if (listType == ListTypeByAuthor) {
         SMTListByAuthorRequest *authorRequest = [[SMTListByAuthorRequest alloc] initWithAuthorId:listId];
         [authorRequest startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
+            [SMTNetworkErrorView hideNetworkErrorViewToView:self.view];
+            
+            
             [SvGifView stopGifForView:self.view];
             NSError* err = nil;
             RootModel *rootModel = [[RootModel alloc] initWithString:request.responseString error:&err];
@@ -113,6 +118,9 @@ static CGFloat const kAnimationDuration = .2;
     }else {
         SMTListBySignRequest *signRequest = [[SMTListBySignRequest alloc] initWithSignId:listId];
         [signRequest startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
+            
+            [SMTNetworkErrorView hideNetworkErrorViewToView:self.view];
+
             [SvGifView stopGifForView:self.view];
             
             NSError* err = nil;
@@ -121,6 +129,7 @@ static CGFloat const kAnimationDuration = .2;
             [weakSelf.tableView reloadData];
             
         } failure:^(YTKBaseRequest *request) {
+            [self networkErrorShow];
             [SvGifView stopGifForView:self.view];
         }];
     }
@@ -134,6 +143,8 @@ static CGFloat const kAnimationDuration = .2;
     SMTHomePageListRequest *homePageListRequest = [[SMTHomePageListRequest alloc] initWithAct:act dayOrNight:dayOrNight sortPage:sortPage];
     [homePageListRequest startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
         [SvGifView stopGifForView:self.view];
+
+        [SMTNetworkErrorView hideNetworkErrorViewToView:self.view];
 
         NSError* err = nil;
         RootModel *rootModel = [[RootModel alloc] initWithString:request.responseString error:&err];
@@ -157,9 +168,16 @@ static CGFloat const kAnimationDuration = .2;
         
     } failure:^(YTKBaseRequest *request) {
         [SvGifView stopGifForView:self.view];
-
+        [self networkErrorShow];
     }];
 }
+
+- (void)networkErrorShow {
+    [SMTNetworkErrorView showNetworkErrorViewWithReloadBlock:^{
+        NSLog(@"行不行呢");
+    } toView:self.view];
+}
+
 
 //  刷新列表数据
 - (void)refreshDataInTableView

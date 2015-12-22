@@ -121,7 +121,7 @@
         }];
         
         [self.cardRemarkLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(self.cardImageView.mas_top);
+            make.top.mas_equalTo(self.cardTitleLabel.mas_bottom).offset(kSpaceY/2);
             make.right.mas_equalTo(self.cardImageView.mas_left).offset(-kSpaceX);
             make.left.mas_equalTo(self.mas_left).offset(kSpaceX);
             make.bottom.mas_equalTo(self.mas_bottom);
@@ -130,7 +130,9 @@
     }
     else {
         [self.pic1ImageView mas_remakeConstraints:^(MASConstraintMaker *make){
-            make.top.mas_equalTo(self.cardTitleLabel.mas_bottom).offset(kSpaceY/2);
+//            make.top.mas_equalTo(self.cardTitleLabel.mas_bottom).offset(kSpaceY/2);
+            make.height.height.mas_equalTo(100);
+
             make.bottom.mas_equalTo(self.mas_bottom);
             make.left.mas_equalTo(self.mas_left).offset(kSpaceX/2);
             make.right.mas_equalTo(self.pic2ImageView.mas_left).offset(-kSpaceX/2);
@@ -138,14 +140,18 @@
             
         }];
         [self.pic2ImageView mas_remakeConstraints:^(MASConstraintMaker *make){
-            make.top.mas_equalTo(self.pic1ImageView.mas_top);
+//            make.top.mas_equalTo(self.pic1ImageView.mas_top);
             make.bottom.mas_equalTo(self.mas_bottom);
+            make.height.height.mas_equalTo(100);
+
             make.left.mas_equalTo(self.pic1ImageView.mas_right).offset(kSpaceX/2);
             make.right.mas_equalTo(self.pic3ImageView.mas_left).offset(-kSpaceX/2);
             make.width.mas_equalTo(self.pic3ImageView.mas_width);
         }];
         [self.pic3ImageView mas_remakeConstraints:^(MASConstraintMaker *make){
-            make.top.mas_equalTo(self.pic1ImageView.mas_top);
+//            make.top.mas_equalTo(self.pic1ImageView.mas_top);
+            make.height.height.mas_equalTo(100);
+
             make.bottom.mas_equalTo(self.mas_bottom);
             make.left.mas_equalTo(self.pic2ImageView.mas_right).offset(kSpaceX/2);
             make.right.mas_equalTo(self.mas_right).offset(-kSpaceX/2);

@@ -45,6 +45,7 @@
 		337E5F6B1BA5783600C83E58 /* FeatureUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 337E5F6A1BA5783600C83E58 /* FeatureUITests.m */; };
 		338AA2F91C1C45CB00FBB79C /* SMTContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 338AA2F81C1C45CB00FBB79C /* SMTContentView.m */; };
 		338AA2FC1C1C77C900FBB79C /* UIImage+animatedGIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 338AA2FB1C1C77C900FBB79C /* UIImage+animatedGIF.m */; };
+		33AF6DC11C294A470001A52E /* SMTNetworkErrorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 33AF6DC01C294A470001A52E /* SMTNetworkErrorView.m */; };
 		33F795441C1AC7BE001556FE /* SMTHomePageListRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F795431C1AC7BE001556FE /* SMTHomePageListRequest.m */; };
 		33F795481C1AD751001556FE /* SMTBaseRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F795471C1AD751001556FE /* SMTBaseRequest.m */; };
 		33FC8D0F1C2401B10089A24A /* SMTBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 33FC8D0E1C2401B10089A24A /* SMTBaseView.m */; };
@@ -152,6 +153,8 @@
 		338AA2F81C1C45CB00FBB79C /* SMTContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTContentView.m; sourceTree = "<group>"; };
 		338AA2FA1C1C77C900FBB79C /* UIImage+animatedGIF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+animatedGIF.h"; sourceTree = "<group>"; };
 		338AA2FB1C1C77C900FBB79C /* UIImage+animatedGIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+animatedGIF.m"; sourceTree = "<group>"; };
+		33AF6DBF1C294A470001A52E /* SMTNetworkErrorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTNetworkErrorView.h; sourceTree = "<group>"; };
+		33AF6DC01C294A470001A52E /* SMTNetworkErrorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTNetworkErrorView.m; sourceTree = "<group>"; };
 		33F795421C1AC7BE001556FE /* SMTHomePageListRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTHomePageListRequest.h; sourceTree = "<group>"; };
 		33F795431C1AC7BE001556FE /* SMTHomePageListRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTHomePageListRequest.m; sourceTree = "<group>"; };
 		33F795451C1AD6C3001556FE /* CommonURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonURL.h; sourceTree = "<group>"; };
@@ -335,6 +338,8 @@
 				330DC4061C2134910085973E /* LeftMenu */,
 				330DC4071C2134EE0085973E /* Cell */,
 				330DC4081C2135660085973E /* Detail */,
+				33AF6DBF1C294A470001A52E /* SMTNetworkErrorView.h */,
+				33AF6DC01C294A470001A52E /* SMTNetworkErrorView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -632,6 +637,7 @@
 				337E5F4D1BA5783600C83E58 /* ViewController.m in Sources */,
 				33FC8D0F1C2401B10089A24A /* SMTBaseView.m in Sources */,
 				33153B871BA57DFF007B6859 /* SignView.m in Sources */,
+				33AF6DC11C294A470001A52E /* SMTNetworkErrorView.m in Sources */,
 				33FC8D181C240AE90089A24A /* SMTBaseViewController.m in Sources */,
 				33153B841BA57DFF007B6859 /* LeftMenuView.m in Sources */,
 				33153B6F1BA57C29007B6859 /* DataModel.m in Sources */,
