@@ -64,17 +64,20 @@
         arrowCenterX -= 100;
     }
     CGFloat arrowCenterY = self.mj_h * 0.5;
-    CGPoint arrowCenter = CGPointMake(arrowCenterX, arrowCenterY);
+//    CGPoint arrowCenter = CGPointMake(arrowCenterX, arrowCenterY);
     
     // 箭头
     if (self.arrowView.constraints.count == 0) {
         self.arrowView.mj_size = self.arrowView.image.size;
-        self.arrowView.center = arrowCenter;
+//        self.arrowView.center = arrowCenter;
+        self.arrowView.center = CGPointMake(self.mj_w*0.1, arrowCenterY);
     }
         
     // 圈圈
     if (self.loadingView.constraints.count == 0) {
-        self.loadingView.center = arrowCenter;
+//        self.loadingView.center = arrowCenter;
+        self.loadingView.center = CGPointMake(self.mj_w*0.1, arrowCenterY);
+
     }
 }
 

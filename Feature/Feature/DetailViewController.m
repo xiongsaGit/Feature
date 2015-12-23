@@ -16,6 +16,7 @@
 #import "SMTEBookInfoView.h"
 
 #import "SMTDetailModel.h"
+#import "DigestModel.h"
 #import "SMTDetailScrollView.h"
 #import "SMTDetailView.h"
 #import "MJRefresh.h"
@@ -30,20 +31,15 @@
 
 @interface DetailViewController ()<UIWebViewDelegate,UIScrollViewDelegate>
 @property (nonatomic, strong) NSArray *digestList;
-@property (nonatomic, strong) NSNumber *digestId;
+@property (nonatomic, strong) NSNumber *curDigestId;
 @property (nonatomic, strong) NSMutableURLRequest *urlRequest;
 
 @property (nonatomic, strong) SMTDetailView *detailView;
 @property (nonatomic, strong) UIScrollView *scrollView;
-//@property (nonatomic, strong) TitleView *titleView;
-//@property (nonatomic, strong) UIWebView *contentWebView;
-//@property (nonatomic, strong) SMTEBookInfoView *bookInfoView;
-
 @property (nonatomic, strong) SuspendView *suspendView;
 
 @property (nonatomic, assign) CGFloat offsetY;
 @property (nonatomic, assign) int currentScale;
-
 
 @property (nonatomic, strong) MJRefreshNormalHeader *refreshHeader;
 @property (nonatomic, strong) MJRefreshAutoNormalFooter *refreshFooter;
@@ -74,7 +70,7 @@
 - (id)initWithDigestId:(NSNumber *)digestId digestList:(NSArray *)digestArray
 {
     if (self = [super init]) {
-        self.digestId = digestId;
+        self.curDigestId = digestId;
         self.digestList = digestArray;
     }
     return self;
@@ -90,10 +86,10 @@
     [self configureUI];
     [self configureFrame];
     
-    DLog(@"urlString:%@",[NSString stringWithFormat:@"%@?action=%@&digestId=%@",kBaseURL,kDigestContentForH5,[self.digestId stringValue]]);
+    DLog(@"urlString:%@",[NSString stringWithFormat:@"%@?action=%@&digestId=%@",kBaseURL,kDigestContentForH5,[self.curDigestId stringValue]]);
 
-    [self requestDigestDetailWithDigestId:self.digestId];
-    [self loadWebViewRequestWithDigestId:self.digestId];
+    [self requestDigestDetailWithDigestId:self.curDigestId requestType:ListRequestTypeDefault];
+    [self loadWebViewRequestWithDigestId:self.curDigestId requestType:ListRequestTypeDefault];
 
 }
 
@@ -109,17 +105,25 @@
 }
 
 // 调用这两个方法
-- (void)loadWebViewRequestWithDigestId:(NSNumber *)digestId {
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[self urlWithDigestId:self.digestId]];
+- (void)loadWebViewRequestWithDigestId:(NSNumber *)digestId requestType:(ListRequestType)requestType {
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[self urlWithDigestId:digestId]];
+     CGRect detailRect = self.detailView.frame;
+    detailRect.size.height = 0;
+    self.detailView.frame = detailRect;
     [self.detailView.contentWebView loadRequest:request];
 }
 
-- (void)requestDigestDetailWithDigestId:(NSNumber *)digestId {
+- (void)requestDigestDetailWithDigestId:(NSNumber *)digestId requestType:(ListRequestType)requestType {
     __weak typeof(self)weakSelf = self;
     [SvGifView startGifAddedToView:self.view];
     SMTPageDetatilRequest *detailRequest = [[SMTPageDetatilRequest alloc] initWithDigestId:digestId];
     [detailRequest startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
 //        [SvGifView stopGifForView:self.view];
+        if (requestType == ListRequestTypeRefresh) {
+            [self.refreshHeader endRefreshing];
+        }else {
+            [self.refreshFooter endRefreshing];
+        }
         
         NSError* err = nil;
         SMTDetailModel *detailModel = [[SMTDetailModel alloc] initWithString:request.responseString error:&err];
@@ -135,10 +139,6 @@
 - (void)configureUI
 {
     [self.view addSubview:self.scrollView];
-//    [self.scrollView addSubview:self.titleView];
-//    [self.scrollView addSubview:self.contentWebView];
-//    [self.scrollView addSubview:self.bookInfoView];
-//    
 
     [self.scrollView addSubview:self.detailView];
     self.detailView.contentWebView.delegate = self;
@@ -148,10 +148,7 @@
 
 - (void)configureFrame
 {
-//    self.titleView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 120);
-//    self.contentWebView.frame = CGRectMake(0, CGRectGetMaxY(self.titleView.frame), SCREEN_WIDTH, 0);
-//    self.bookInfoView.frame = CGRectMake(0, CGRectGetMaxY(self.contentWebView.frame), SCREEN_WIDTH, 250);
-    self.detailView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 370);
+   self.detailView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 370);
     self.suspendView.frame = CGRectMake(0, SCREEN_HEIGHT-50, SCREEN_WIDTH, 50);
 
 }
@@ -178,7 +175,6 @@
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
     [SvGifView stopGifForView:self.view];
-
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
@@ -258,22 +254,6 @@
     
 }
 
-//- (UIWebView *)contentWebView
-//{
-//    if (!_contentWebView)
-//    {
-//        _contentWebView = [[UIWebView alloc] init];
-//        _contentWebView.delegate = self;
-//        _contentWebView.scalesPageToFit=YES;
-//        _contentWebView.userInteractionEnabled = NO;
-//        _contentWebView.scrollView.scrollEnabled = NO;
-//        _contentWebView.scrollView.bounces = NO;
-//        _contentWebView.scrollView.showsVerticalScrollIndicator = NO;
-//        [_contentWebView sizeToFit];
-//    }
-//    return _contentWebView;
-//}
-
 - (SuspendView *)suspendView
 {
     if (!_suspendView)
@@ -303,50 +283,44 @@
     }
     return _suspendView;
 }
-//
-//- (TitleView *)titleView
-//{
-//    if (!_titleView)
-//    {
-//        __weak typeof(self)weakSelf = self;
-//        _titleView = [[TitleView alloc] initWithToAuthorListBlock:^(AuthorModel *authorModel) {
-//            MainViewController *mainViewCtrl = [[MainViewController alloc] initWithListType:ListTypeByAuthor listId:authorModel.authorId title:authorModel.name];
-//            [weakSelf.navigationController pushViewController:mainViewCtrl animated:YES];
-//        }];//        __weak typeof(self)weakSelf = self;
-//        _bookInfoView = [[SMTEBookInfoView alloc] initWithToTypeListBlock:^(SignModel *signModel) {
-//            MainViewController *mainViewCtrl = [[MainViewController alloc] initWithListType:ListTypeBySign listId:signModel.id title:signModel.name];
-//            [weakSelf.navigationController pushViewController:mainViewCtrl animated:YES];
-//        }];
-//    }
-//    return _titleView;
-//}
 
 - (NSMutableURLRequest *)urlRequest
 {
     if (!_urlRequest) {
-        _urlRequest = [NSMutableURLRequest requestWithURL:[self urlWithDigestId:self.digestId]];
+        _urlRequest = [NSMutableURLRequest requestWithURL:[self urlWithDigestId:self.curDigestId]];
     }
     return _urlRequest;
 }
 
-//- (SMTEBookInfoView *)bookInfoView {
-//    if (!_bookInfoView) {
-//        __weak typeof(self)weakSelf = self;
-//        _bookInfoView = [[SMTEBookInfoView alloc] initWithToTypeListBlock:^(SignModel *signModel) {
-//            MainViewController *mainViewCtrl = [[MainViewController alloc] initWithListType:ListTypeBySign listId:signModel.id title:signModel.name];
-//            [weakSelf.navigationController pushViewController:mainViewCtrl animated:YES];
-//        }];
-//    }
-//    return _bookInfoView;
-//}
+- (void)mj_headerRefresh {
+    
+//    - (void)loadWebViewRequestWithDigestId:(NSNumber *)digestId {
+//
+//    - (void)requestDigestDetailWithDigestId:(NSNumber *)digestId {
 //
 
-- (void)mj_headerRefresh {
-    NSLog(@"dafdsf");
+        [self refreshOrLoadMore:NO];
+   
 }
 
 - (void)mj_footerRefresh {
     NSLog(@"footer");
+    
+    [self refreshOrLoadMore:YES];
+}
+
+- (void)refreshOrLoadMore:(BOOL)isLoadMore {
+    
+    NSNumber *refreshId = [self digestModelLocatedByCurrentDigestId:self.curDigestId forNextPage:isLoadMore].id;
+    if (refreshId!=nil) {
+        if (self.curDigestId != refreshId) {
+            self.curDigestId = refreshId;
+            [self loadWebViewRequestWithDigestId:refreshId requestType:isLoadMore?ListRequestTypeLoadMore:ListRequestTypeRefresh];
+            [self requestDigestDetailWithDigestId:refreshId requestType:isLoadMore?ListRequestTypeLoadMore:ListRequestTypeRefresh];
+        }
+   
+    }
+   
 }
 
 
@@ -354,44 +328,74 @@
     if (!_scrollView) {
         _scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
         _scrollView.delegate = self;
-        _scrollView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(mj_headerRefresh)];
-        _scrollView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(mj_footerRefresh)];
+        _scrollView.mj_header = self.refreshHeader;
+        _scrollView.mj_footer = self.refreshFooter;
     }
     return _scrollView;
-
 }
 
 - (MJRefreshNormalHeader *)refreshHeader {
     if (!_refreshHeader) {
-        _refreshHeader = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:<#(SEL)#>];
-    }
+        _refreshHeader = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(mj_headerRefresh)];
+    }else
+        [self titleWithRefreshOrLoadMore:NO];
     return _refreshHeader;
 }
 
-/*
- MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
- 
- // 设置文字
- [header setTitle:@"Pull down to refresh" forState:MJRefreshStateIdle];
- [header setTitle:@"Release to refresh" forState:MJRefreshStatePulling];
- [header setTitle:@"Loading ..." forState:MJRefreshStateRefreshing];
- 
- // 设置字体
- header.stateLabel.font = [UIFont systemFontOfSize:15];
- header.lastUpdatedTimeLabel.font = [UIFont systemFontOfSize:14];
- 
- // 设置颜色
- header.stateLabel.textColor = [UIColor redColor];
- header.lastUpdatedTimeLabel.textColor = [UIColor blueColor];
- 
- // 马上进入刷新状态
- [header beginRefreshing];
- 
- // 设置刷新控件
- self.tableView.mj_header = header;
- 
- */
+- (MJRefreshAutoNormalFooter *)refreshFooter {
+    if (!_refreshFooter) {
+        _refreshFooter = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(mj_footerRefresh)];
+    }else
+        [self titleWithRefreshOrLoadMore:YES];
+    return _refreshFooter;
+}
 
+- (void)titleWithRefreshOrLoadMore:(BOOL)isLoadMore {
+    DigestModel *digestModel = [self digestModelLocatedByCurrentDigestId:self.curDigestId forNextPage:isLoadMore];
+    
+    if (digestModel.cardTitle == nil||[digestModel.id isEqualToNumber:self.curDigestId]) {
+        
+        [_refreshHeader setTitle:@"没有了" forState:MJRefreshStateNoMoreData];
+    }else {
+        if (isLoadMore) {
+            [_refreshFooter setTitle:digestModel.cardTitle forState:MJRefreshStateIdle];
+            [_refreshFooter setTitle:digestModel.cardTitle forState:MJRefreshStatePulling];
+            [_refreshFooter setTitle:digestModel.cardTitle forState:MJRefreshStateRefreshing];
+        }else {
+            [_refreshHeader setTitle:digestModel.cardTitle forState:MJRefreshStateIdle];
+            [_refreshHeader setTitle:digestModel.cardTitle forState:MJRefreshStatePulling];
+            [_refreshHeader setTitle:digestModel.cardTitle forState:MJRefreshStateRefreshing];
+        }
+    }
+}
+
+- (DigestModel *)digestModelLocatedByCurrentDigestId:(NSNumber *)curId forNextPage:(BOOL)isNextPage {
+    __block DigestModel *resultModel = nil;
+    __weak NSArray *tempList = self.digestList;
+    
+    [tempList enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        DigestModel *model = (DigestModel *)obj;
+        if ([model.id isEqualToNumber:self.curDigestId]) {
+            *stop = YES;
+                if (isNextPage) {
+                    if (idx < tempList.count-1) {
+                         DigestModel *result = tempList[idx+1];
+                        resultModel= [result copy];
+                        resultModel.cardTitle = [NSString stringWithFormat:@"下一篇:%@",resultModel.cardTitle];
+                    }
+                }else {
+                    if (idx>=1) {
+                        DigestModel *result = tempList[idx-1];
+                        resultModel= [result copy];
+                        resultModel.cardTitle = [NSString stringWithFormat:@"上一篇:%@",resultModel.cardTitle];
+                    }
+                    
+                }
+            }
+    }];
+    
+    return resultModel;
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

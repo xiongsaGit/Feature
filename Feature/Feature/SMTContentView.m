@@ -50,6 +50,7 @@
         self.cardRemarkLabel.text = model.cardRemark;
     }else
     {
+        self.cardRemarkLabel.text = model.cardRemark;
         // 多张图片
         [self downloadToImageView:self.pic1ImageView withPicPath:model.smallPic1Path];
         [self downloadToImageView:self.pic2ImageView withPicPath:model.smallPic2Path];
@@ -74,6 +75,7 @@
         self.cardImageView = [self factoryForImageView];
         [self addSubview:self.cardImageView];
     }else {
+        [self addCardRemarkLabel];
         self.pic1ImageView = [self factoryForImageView];
         self.pic2ImageView = [self factoryForImageView];
         self.pic3ImageView = [self factoryForImageView];
@@ -88,7 +90,6 @@
  *  CardTypeMutilImages时，标题不展示，连标题背景色也没有
  *
  */
-
 - (void)configureFrameWithCardType:(CardType)type
 {
     [self.cardTitleLabel mas_remakeConstraints:^(MASConstraintMaker *make){
@@ -129,8 +130,14 @@
         }];
     }
     else {
+        [self.cardRemarkLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(self.cardTitleLabel.mas_bottom).offset(kSpaceY/2);
+            make.right.mas_equalTo(self.mas_right).offset(-kSpaceX);
+            make.left.mas_equalTo(self.mas_left).offset(kSpaceX);
+        }];
+        
         [self.pic1ImageView mas_remakeConstraints:^(MASConstraintMaker *make){
-//            make.top.mas_equalTo(self.cardTitleLabel.mas_bottom).offset(kSpaceY/2);
+            make.top.mas_equalTo(self.cardRemarkLabel.mas_bottom).offset(kSpaceY/2);
             make.height.height.mas_equalTo(100);
 
             make.bottom.mas_equalTo(self.mas_bottom);
@@ -140,7 +147,7 @@
             
         }];
         [self.pic2ImageView mas_remakeConstraints:^(MASConstraintMaker *make){
-//            make.top.mas_equalTo(self.pic1ImageView.mas_top);
+            make.top.mas_equalTo(self.cardRemarkLabel.mas_bottom).offset(kSpaceY/2);
             make.bottom.mas_equalTo(self.mas_bottom);
             make.height.height.mas_equalTo(100);
 
@@ -149,7 +156,7 @@
             make.width.mas_equalTo(self.pic3ImageView.mas_width);
         }];
         [self.pic3ImageView mas_remakeConstraints:^(MASConstraintMaker *make){
-//            make.top.mas_equalTo(self.pic1ImageView.mas_top);
+            make.top.mas_equalTo(self.cardRemarkLabel.mas_bottom).offset(kSpaceY/2);
             make.height.height.mas_equalTo(100);
 
             make.bottom.mas_equalTo(self.mas_bottom);

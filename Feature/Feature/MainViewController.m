@@ -22,12 +22,12 @@
 #import "SMTListBySignRequest.h"
 
 
-typedef NS_ENUM(NSInteger,HomePageListRequestType)
-{
-    HomePageListRequestTypeDefault,
-    HomePageListRequestTypeRefresh,
-    HomePageListRequestTypeLoadMore
-};
+//typedef NS_ENUM(NSInteger,HomePageListRequestType)
+//{
+//    HomePageListRequestTypeDefault,
+//    HomePageListRequestTypeRefresh,
+//    HomePageListRequestTypeLoadMore
+//};
 
 static CGFloat const kAnimationDuration = .2;
 
@@ -79,7 +79,7 @@ static CGFloat const kAnimationDuration = .2;
         
         UserDefaultsRemoveObjectForKey(kDay);
        NSString *dayOrNight =  [SMTCurrentIsDay currentTimeIsDay]?@"day":@"night";
-        [self requestHomePageListWithAct:@"new" dayOrNight:dayOrNight sortPage:nil requestType:HomePageListRequestTypeDefault];
+        [self requestHomePageListWithAct:@"new" dayOrNight:dayOrNight sortPage:nil requestType:ListRequestTypeDefault];
     }else {
         [self requestListDataByListType:self.listType listId:self.listId];
     }
@@ -136,7 +136,7 @@ static CGFloat const kAnimationDuration = .2;
 }
 
 //  主页列表数据请求
-- (void)requestHomePageListWithAct:(NSString *)act dayOrNight:(NSString *)dayOrNight sortPage:(NSNumber *)sortPage requestType:(HomePageListRequestType)requestType
+- (void)requestHomePageListWithAct:(NSString *)act dayOrNight:(NSString *)dayOrNight sortPage:(NSNumber *)sortPage requestType:(ListRequestType)requestType
 {
     [SvGifView startGifAddedToView:self.view];
 
@@ -149,14 +149,14 @@ static CGFloat const kAnimationDuration = .2;
         NSError* err = nil;
         RootModel *rootModel = [[RootModel alloc] initWithString:request.responseString error:&err];
         
-        if (requestType == HomePageListRequestTypeLoadMore) {
+        if (requestType == ListRequestTypeLoadMore) {
             [self.tableView.mj_footer endRefreshing];
         }else
             [self.tableView.mj_header endRefreshing];
 
         
         if (rootModel != nil) {
-            if (requestType == HomePageListRequestTypeLoadMore) {
+            if (requestType == ListRequestTypeLoadMore) {
                 [self.tableData addObjectsFromArray:rootModel.data.digestList];
             }else {
                 if (rootModel.data.digestList.count>0) {
@@ -183,19 +183,22 @@ static CGFloat const kAnimationDuration = .2;
 - (void)refreshDataInTableView
 {
     NSString *dayOrNight =  [SMTCurrentIsDay currentTimeIsDay]?@"day":@"night";
-    DigestModel *digestModel = self.tableData[0];
-    
-    [self requestHomePageListWithAct:@"new" dayOrNight:dayOrNight sortPage:digestModel.sortPage requestType:HomePageListRequestTypeRefresh];
+    if (self.tableData.count > 0) {
+        DigestModel *digestModel = self.tableData[0];
+        
+        [self requestHomePageListWithAct:@"new" dayOrNight:dayOrNight sortPage:digestModel.sortPage requestType:ListRequestTypeRefresh];
+    }
 }
 
 //  加载更多数据
 - (void)loadMoreDataInTableView
 {
     NSString *dayOrNight =  [SMTCurrentIsDay currentTimeIsDay]?@"day":@"night";
-
+    if (self.tableData.count>1) {
         DigestModel *digestModel = self.tableData[self.tableData.count-1];
-        [self requestHomePageListWithAct:@"old" dayOrNight:dayOrNight sortPage:digestModel.sortPage requestType:HomePageListRequestTypeLoadMore];
- }
+        [self requestHomePageListWithAct:@"old" dayOrNight:dayOrNight sortPage:digestModel.sortPage requestType:ListRequestTypeLoadMore];
+    }
+}
 
 #pragma mark - tableView
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -211,7 +214,9 @@ static CGFloat const kAnimationDuration = .2;
     if (theType == CardTypeImage)
     {
         return 300;
-    }else if (theType == CardTypeMutilImages||theType == CardTypeText)
+    }else if (theType == CardTypeMutilImages)
+        return 250;
+    else if (theType == CardTypeText)
         return 200;
     else
         return 250;
@@ -412,10 +417,10 @@ static CGFloat const kAnimationDuration = .2;
                 weakSelf.tableView.frame = rect;
                 if (btn.tag == kBUTTON_RETURN_DAY_TAG) {
 
-                    [weakSelf requestHomePageListWithAct:@"new" dayOrNight:@"night" sortPage:nil requestType:HomePageListRequestTypeDefault];
+                    [weakSelf requestHomePageListWithAct:@"new" dayOrNight:@"night" sortPage:nil requestType:ListRequestTypeDefault];
                 }else {
                         // 进入黑夜
-                    [weakSelf requestHomePageListWithAct:@"new" dayOrNight:@"day" sortPage:nil requestType:HomePageListRequestTypeDefault];
+                    [weakSelf requestHomePageListWithAct:@"new" dayOrNight:@"day" sortPage:nil requestType:ListRequestTypeDefault];
                         
                     }
                 }

@@ -219,7 +219,7 @@
     label.font = MJRefreshLabelFont;
     label.textColor = MJRefreshLabelTextColor;
     label.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    label.textAlignment = NSTextAlignmentCenter;
+    label.textAlignment = NSTextAlignmentLeft;//NSTextAlignmentCenter;
     label.backgroundColor = [UIColor clearColor];
     return label;
 }
