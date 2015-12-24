@@ -6,8 +6,7 @@
 //  Copyright © 2015年 sa.xiong. All rights reserved.
 //
 
-#import "SMTBaseCell.h"
-
+#import <UIKit/UIKit.h>
 @class DigestModel;
 
 
@@ -15,7 +14,7 @@ typedef void(^ToAuthorNamePageBlock)();
 typedef void(^ToSignPageBlock)();
 
 
-@interface CardCell : SMTBaseCell
+@interface CardCell : UITableViewCell
 @property (nonatomic, copy) ToAuthorNamePageBlock toAuthorPageBlock;
 @property (nonatomic, copy) ToSignPageBlock toSignPageBlock;
 @property (nonatomic, assign) CardType cardType;

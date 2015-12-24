@@ -25,6 +25,8 @@
 @property (nonatomic, strong) NSNumber<Optional> *clickCnt;
 @property (nonatomic, strong) NSNumber<Optional> *digestId;
 @property (nonatomic, strong) SMTEBookInfoModel<Optional> *ebookInfo;
+//@property (nonatomic, strong) NSDictionary<Optional,SMTEBookInfoModel> *ebookInfo;
+
 @property (nonatomic, strong) NSNumber<Optional> *isPraise;
 @property (nonatomic, strong) NSNumber<Optional> *isSupportReward;
 @property (nonatomic, strong) NSNumber<Optional> *mediaId;
@@ -37,10 +39,5 @@
 @property (nonatomic, strong) NSArray <SignModel>*signList;
 @property (nonatomic, strong) NSNumber *topCnt;
 @property (nonatomic, strong) NSNumber *type;
-
-
-
-
-
 
 @end

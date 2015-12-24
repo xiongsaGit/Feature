@@ -40,12 +40,14 @@
     [self.signView showSignViewDataWithSignList:digestModel.signList];
     
     SMTEBookInfoModel *bookInfo = digestModel.ebookInfo;
-   [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:bookInfo.bookImgUrl] placeholderImage:[UIImage imageNamed:@""] options:SDWebImageProgressiveDownload];
+   [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:bookInfo.bookImgUrl] placeholderImage:nil options:SDWebImageProgressiveDownload];
     
     self.bookTitleLabel.text = bookInfo.bookName;
     self.bookAuthorLabel.text = bookInfo.bookAuthor;
     self.bookRemarkLabel.text = digestModel.cardRemark;
 
+    
+    
 }
 
 - (void)configureUI

@@ -12,7 +12,6 @@
 
 - (id)init {
     if (self = [super init]) {
-        NSLog(@"SMTBaseView");
         self.backgroundColor = [SMTTheme viewBackgroundColor];
     }
     return self;

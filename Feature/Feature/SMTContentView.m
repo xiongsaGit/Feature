@@ -171,7 +171,7 @@
 #pragma mark - 下载图片
 - (void)downloadToImageView:(UIImageView *)imageView withPicPath:(NSString *)picPath
 {
-    [imageView sd_setImageWithURL:[NSURL URLWithString:picPath] placeholderImage:[UIImage imageNamed:@""] options:SDWebImageProgressiveDownload];
+    [imageView sd_setImageWithURL:[NSURL URLWithString:picPath] placeholderImage:nil options:SDWebImageProgressiveDownload];
 }
 
 #pragma mark - 添加配文说明

@@ -12,7 +12,6 @@
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        NSLog(@"LOG BASE CELL");
 //        self.contentView.backgroundColor = [SMTTheme cellContentViewColor];
     }
     return self;

@@ -48,25 +48,6 @@
 
 @implementation DetailViewController
 
-
-- (SMTDetailView *)detailView {
-    if (!_detailView) {
-        __weak typeof(self)weakSelf = self;
-
-        _detailView = [[SMTDetailView alloc] initWithAuthorBlock:^(AuthorModel *authorModel) {
-            
-            MainViewController *mainViewCtrl = [[MainViewController alloc] initWithListType:ListTypeByAuthor listId:authorModel.authorId title:authorModel.name];
-            [weakSelf.navigationController pushViewController:mainViewCtrl animated:YES];
-            
-        } typeBlock:^(SignModel *signModel) {
-            MainViewController *mainViewCtrl = [[MainViewController alloc] initWithListType:ListTypeBySign listId:signModel.id title:signModel.name];
-            [weakSelf.navigationController pushViewController:mainViewCtrl animated:YES];
-        
-        }];
-    }
-    return _detailView;
-}
-
 - (id)initWithDigestId:(NSNumber *)digestId digestList:(NSArray *)digestArray
 {
     if (self = [super init]) {
@@ -86,8 +67,6 @@
     [self configureUI];
     [self configureFrame];
     
-    DLog(@"urlString:%@",[NSString stringWithFormat:@"%@?action=%@&digestId=%@",kBaseURL,kDigestContentForH5,[self.curDigestId stringValue]]);
-
     [self requestDigestDetailWithDigestId:self.curDigestId requestType:ListRequestTypeDefault];
     [self loadWebViewRequestWithDigestId:self.curDigestId requestType:ListRequestTypeDefault];
 
@@ -107,9 +86,6 @@
 // 调用这两个方法
 - (void)loadWebViewRequestWithDigestId:(NSNumber *)digestId requestType:(ListRequestType)requestType {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[self urlWithDigestId:digestId]];
-     CGRect detailRect = self.detailView.frame;
-    detailRect.size.height = 0;
-    self.detailView.frame = detailRect;
     [self.detailView.contentWebView loadRequest:request];
 }
 
@@ -118,7 +94,6 @@
     [SvGifView startGifAddedToView:self.view];
     SMTPageDetatilRequest *detailRequest = [[SMTPageDetatilRequest alloc] initWithDigestId:digestId];
     [detailRequest startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
-//        [SvGifView stopGifForView:self.view];
         if (requestType == ListRequestTypeRefresh) {
             [self.refreshHeader endRefreshing];
         }else {
@@ -129,11 +104,12 @@
         SMTDetailModel *detailModel = [[SMTDetailModel alloc] initWithString:request.responseString error:&err];
         [weakSelf.detailView.titleView titleViewDataWithDigestDetailModel:detailModel.data.digestDetail];
         [weakSelf.detailView.bookInfoView showBookInfoWithDigestModel:detailModel.data.digestDetail];
-        
+
     } failure:^(YTKBaseRequest *request) {
 //        [SvGifView stopGifForView:self.view];
     }];
     
+
 }
 
 - (void)configureUI
@@ -153,10 +129,8 @@
 
 }
 
-
 - (void)configureFrameWithHeight:(int)height
 {
-   
     CGRect webViewRect = self.detailView.contentWebView.frame;
     webViewRect.size.height = height;
     self.detailView.contentWebView.frame = webViewRect;
@@ -179,11 +153,17 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
+    [self configureFrameWithHeight:0];
     int height_str = [[webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.scrollHeight"] intValue];
     [self configureFrameWithHeight:height_str];
 
     [self showDifferentColorWithCurrentTime];
     [SvGifView stopGifForView:self.view];
+    
+    [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"WebKitCacheModelPreferenceKey"];
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"WebKitDiskImageCacheEnabled"];//自己添加的，原文没有提到。
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"WebKitOfflineWebApplicationCacheEnabled"];//自己添加的，原文没有提到。
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)showDifferentColorWithCurrentTime {
@@ -197,7 +177,6 @@
     }
 
 }
-
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
@@ -293,34 +272,37 @@
 }
 
 - (void)mj_headerRefresh {
-    
-//    - (void)loadWebViewRequestWithDigestId:(NSNumber *)digestId {
-//
-//    - (void)requestDigestDetailWithDigestId:(NSNumber *)digestId {
-//
+    [self refreshOrLoadMore:NO];
 
-        [self refreshOrLoadMore:NO];
-   
 }
 
 - (void)mj_footerRefresh {
-    NSLog(@"footer");
-    
-    [self refreshOrLoadMore:YES];
+//    [self refreshOrLoadMore:YES];
 }
 
 - (void)refreshOrLoadMore:(BOOL)isLoadMore {
-    
     NSNumber *refreshId = [self digestModelLocatedByCurrentDigestId:self.curDigestId forNextPage:isLoadMore].id;
+    
     if (refreshId!=nil) {
         if (self.curDigestId != refreshId) {
             self.curDigestId = refreshId;
+            
+//            [self remove];
             [self loadWebViewRequestWithDigestId:refreshId requestType:isLoadMore?ListRequestTypeLoadMore:ListRequestTypeRefresh];
             [self requestDigestDetailWithDigestId:refreshId requestType:isLoadMore?ListRequestTypeLoadMore:ListRequestTypeRefresh];
         }
-   
     }
-   
+}
+
+- (void)remove {
+        [self.detailView removeFromSuperview];
+    for (UIView *view in self.view.subviews) {
+        if ([view isKindOfClass:[SMTDetailView class]]) {
+            NSLog(@"还存在");
+        }
+    }
+        [self.scrollView addSubview:self.detailView];
+        self.detailView.contentWebView.delegate = self;
 }
 
 
@@ -337,23 +319,23 @@
 - (MJRefreshNormalHeader *)refreshHeader {
     if (!_refreshHeader) {
         _refreshHeader = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(mj_headerRefresh)];
-    }else
-        [self titleWithRefreshOrLoadMore:NO];
+    }
+    [self titleWithRefreshOrLoadMore:NO];
     return _refreshHeader;
 }
 
 - (MJRefreshAutoNormalFooter *)refreshFooter {
     if (!_refreshFooter) {
         _refreshFooter = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(mj_footerRefresh)];
-    }else
-        [self titleWithRefreshOrLoadMore:YES];
+    }
+    [self titleWithRefreshOrLoadMore:YES];
     return _refreshFooter;
 }
 
 - (void)titleWithRefreshOrLoadMore:(BOOL)isLoadMore {
     DigestModel *digestModel = [self digestModelLocatedByCurrentDigestId:self.curDigestId forNextPage:isLoadMore];
     
-    if (digestModel.cardTitle == nil||[digestModel.id isEqualToNumber:self.curDigestId]) {
+    if (digestModel == nil||[digestModel.id isEqualToNumber:self.curDigestId]) {
         
         [_refreshHeader setTitle:@"没有了" forState:MJRefreshStateNoMoreData];
     }else {
@@ -371,30 +353,66 @@
 
 - (DigestModel *)digestModelLocatedByCurrentDigestId:(NSNumber *)curId forNextPage:(BOOL)isNextPage {
     __block DigestModel *resultModel = nil;
-    __weak NSArray *tempList = self.digestList;
+    if (self.digestList.count == 1) {
+        return resultModel;
+    }
     
+    __weak NSArray *tempList = self.digestList;
+    __block NSUInteger index = -1;
+    
+    if (self.curDigestId) {
+
     [tempList enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        DigestModel *model = (DigestModel *)obj;
-        if ([model.id isEqualToNumber:self.curDigestId]) {
-            *stop = YES;
-                if (isNextPage) {
-                    if (idx < tempList.count-1) {
-                         DigestModel *result = tempList[idx+1];
-                        resultModel= [result copy];
-                        resultModel.cardTitle = [NSString stringWithFormat:@"下一篇:%@",resultModel.cardTitle];
-                    }
-                }else {
-                    if (idx>=1) {
-                        DigestModel *result = tempList[idx-1];
-                        resultModel= [result copy];
-                        resultModel.cardTitle = [NSString stringWithFormat:@"上一篇:%@",resultModel.cardTitle];
-                    }
-                    
-                }
+            DigestModel *model = (DigestModel *)obj;
+            if ([model.id isEqualToNumber:self.curDigestId]) {
+                index = idx;
+                *stop = YES;
             }
     }];
+    }else
+        return resultModel;
     
+    if (index == -1) {
+        return resultModel;
+    }
+    NSString *directionString = @"";
+    if (isNextPage) {
+        if (index < self.digestList.count-1) {
+            index ++;
+            directionString = @"下";
+        }else
+            return resultModel;
+    }else {
+        if (index >=1) {
+            index --;
+            directionString = @"上";
+        }else
+            return resultModel;
+    }
+
+    DigestModel *result = self.digestList[index];
+    resultModel = [result copy];
+    resultModel.cardTitle = [NSString stringWithFormat:@"%@一页:%@",directionString,resultModel.cardTitle];
     return resultModel;
+}
+
+- (SMTDetailView *)detailView {
+    if (!_detailView) {
+        __weak typeof(self)weakSelf = self;
+        
+        _detailView = [[SMTDetailView alloc] initWithAuthorBlock:^(AuthorModel *authorModel) {
+            
+            MainViewController *mainViewCtrl = [[MainViewController alloc] initWithListType:ListTypeByAuthor listId:authorModel.authorId title:authorModel.name];
+            [weakSelf.navigationController pushViewController:mainViewCtrl animated:YES];
+            
+        } typeBlock:^(SignModel *signModel) {
+            MainViewController *mainViewCtrl = [[MainViewController alloc] initWithListType:ListTypeBySign listId:signModel.id title:signModel.name];
+            [weakSelf.navigationController pushViewController:mainViewCtrl animated:YES];
+            
+        }];
+    }
+    return _detailView;
+    
 }
 
 - (void)didReceiveMemoryWarning {

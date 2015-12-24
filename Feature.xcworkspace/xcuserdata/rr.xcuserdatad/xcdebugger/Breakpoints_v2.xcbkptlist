@@ -10,28 +10,60 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Feature/Feature/DetailViewController.m"
-            timestampString = "472563450.963986"
+            timestampString = "472650621.230749"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "341"
-            endingLineNumber = "341"
-            landmarkName = "-refreshHeader"
+            startingLineNumber = "291"
+            endingLineNumber = "291"
+            landmarkName = "-refreshOrLoadMore:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Feature/Feature/DetailViewController.m"
-            timestampString = "472563479.644514"
+            timestampString = "472650621.230749"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "354"
-            endingLineNumber = "354"
-            landmarkName = "-titleWithRefreshOrLoadMore:"
+            startingLineNumber = "304"
+            endingLineNumber = "304"
+            landmarkName = "-remove"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Feature/Feature/DetailViewController.m"
+            timestampString = "472650621.230749"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "146"
+            endingLineNumber = "146"
+            landmarkName = "-configureFrameWithHeight:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Feature/Feature/DetailViewController.m"
+            timestampString = "472650613.784116"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "134"
+            endingLineNumber = "134"
+            landmarkName = "-configureFrameWithHeight:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
