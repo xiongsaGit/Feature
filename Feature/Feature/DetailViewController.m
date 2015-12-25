@@ -126,7 +126,6 @@
 {
    self.detailView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 370);
     self.suspendView.frame = CGRectMake(0, SCREEN_HEIGHT-50, SCREEN_WIDTH, 50);
-
 }
 
 - (void)configureFrameWithHeight:(int)height
@@ -153,13 +152,13 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    [self configureFrameWithHeight:0];
     int height_str = [[webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.scrollHeight"] intValue];
     [self configureFrameWithHeight:height_str];
 
     [self showDifferentColorWithCurrentTime];
     [SvGifView stopGifForView:self.view];
     
+    // 据说是不缓存webview内容？？
     [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"WebKitCacheModelPreferenceKey"];
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"WebKitDiskImageCacheEnabled"];//自己添加的，原文没有提到。
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"WebKitOfflineWebApplicationCacheEnabled"];//自己添加的，原文没有提到。
@@ -189,7 +188,6 @@
         self.currentScale -= kSCALE_PER_TIME;
         [self scaleWebViewFontWithScalePercent:self.currentScale];
     }
-    
 }
 
 - (void)scaleWebViewFontWithScalePercent:(int)percent
@@ -199,6 +197,7 @@
     
     int height_str = [[self.detailView.contentWebView stringByEvaluatingJavaScriptFromString:@"document.documentElement.scrollHeight"] intValue];
     [self configureFrameWithHeight:height_str];
+
 }
 
 - (void)enlageTextFont
@@ -211,64 +210,18 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-        if (scrollView.contentOffset.y > self.offsetY) {//如果当前位移大于缓存位移，说明scrollView向上滑动
-            
-            [UIView animateWithDuration:.1 animations:^{
-                
-            
-                [self.suspendView setHidden:YES];
-                
-            }];
-            
-        }else
-        {
-            [UIView animateWithDuration:.1 animations:^{
-                
-                [self.suspendView setHidden:NO];
-                
-            }];
-        }
-        
-        self.offsetY = scrollView.contentOffset.y;//将当前位移变成缓存位移
-    
-}
-
-- (SuspendView *)suspendView
-{
-    if (!_suspendView)
+    if (scrollView.contentOffset.y > self.offsetY) {//如果当前位移大于缓存位移，说明scrollView向上滑动
+        [UIView animateWithDuration:.1 animations:^{
+            [self.suspendView setHidden:YES];
+        }];
+    }else
     {
-        _suspendView = [[SuspendView alloc] initWithFrame:CGRectZero menuItemsArray:[NSArray arrayWithObjects:@"icon_return",@"icon_small",@"icon_large",@"icon_share", nil]];
-       
-        __weak typeof(self)weakSelf = self;
-        _suspendView.itemClickBlock = ^(UIButton *itemBtn){
-            NSInteger btnTag = itemBtn.tag;
-            if (btnTag == 0) {
-                
-                [weakSelf.navigationController popViewControllerAnimated:YES];
-                
-            }else if (btnTag == 1)
-            {
-                // 缩小文字
-                [weakSelf reduceTextFont];
-            }else if (btnTag == 2)
-            {
-                // 放大文字
-                [weakSelf enlageTextFont];
-            }else
-            {
-                // 分享
-            }
-        };
+        [UIView animateWithDuration:.1 animations:^{
+            [self.suspendView setHidden:NO];
+        }];
     }
-    return _suspendView;
-}
-
-- (NSMutableURLRequest *)urlRequest
-{
-    if (!_urlRequest) {
-        _urlRequest = [NSMutableURLRequest requestWithURL:[self urlWithDigestId:self.curDigestId]];
-    }
-    return _urlRequest;
+    
+    self.offsetY = scrollView.contentOffset.y;//将当前位移变成缓存位移
 }
 
 - (void)mj_headerRefresh {
@@ -277,7 +230,7 @@
 }
 
 - (void)mj_footerRefresh {
-//    [self refreshOrLoadMore:YES];
+    [self refreshOrLoadMore:YES];
 }
 
 - (void)refreshOrLoadMore:(BOOL)isLoadMore {
@@ -286,51 +239,12 @@
     if (refreshId!=nil) {
         if (self.curDigestId != refreshId) {
             self.curDigestId = refreshId;
-            
-//            [self remove];
             [self loadWebViewRequestWithDigestId:refreshId requestType:isLoadMore?ListRequestTypeLoadMore:ListRequestTypeRefresh];
             [self requestDigestDetailWithDigestId:refreshId requestType:isLoadMore?ListRequestTypeLoadMore:ListRequestTypeRefresh];
         }
     }
 }
 
-- (void)remove {
-        [self.detailView removeFromSuperview];
-    for (UIView *view in self.view.subviews) {
-        if ([view isKindOfClass:[SMTDetailView class]]) {
-            NSLog(@"还存在");
-        }
-    }
-        [self.scrollView addSubview:self.detailView];
-        self.detailView.contentWebView.delegate = self;
-}
-
-
-- (UIScrollView *)scrollView {
-    if (!_scrollView) {
-        _scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
-        _scrollView.delegate = self;
-        _scrollView.mj_header = self.refreshHeader;
-        _scrollView.mj_footer = self.refreshFooter;
-    }
-    return _scrollView;
-}
-
-- (MJRefreshNormalHeader *)refreshHeader {
-    if (!_refreshHeader) {
-        _refreshHeader = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(mj_headerRefresh)];
-    }
-    [self titleWithRefreshOrLoadMore:NO];
-    return _refreshHeader;
-}
-
-- (MJRefreshAutoNormalFooter *)refreshFooter {
-    if (!_refreshFooter) {
-        _refreshFooter = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(mj_footerRefresh)];
-    }
-    [self titleWithRefreshOrLoadMore:YES];
-    return _refreshFooter;
-}
 
 - (void)titleWithRefreshOrLoadMore:(BOOL)isLoadMore {
     DigestModel *digestModel = [self digestModelLocatedByCurrentDigestId:self.curDigestId forNextPage:isLoadMore];
@@ -412,8 +326,74 @@
         }];
     }
     return _detailView;
-    
 }
+
+- (SuspendView *)suspendView
+{
+    if (!_suspendView)
+    {
+        _suspendView = [[SuspendView alloc] initWithFrame:CGRectZero menuItemsArray:[NSArray arrayWithObjects:@"icon_return",@"icon_small",@"icon_large",@"icon_share", nil]];
+        
+        __weak typeof(self)weakSelf = self;
+        _suspendView.itemClickBlock = ^(UIButton *itemBtn){
+            NSInteger btnTag = itemBtn.tag;
+            if (btnTag == 0) {
+                
+                [weakSelf.navigationController popViewControllerAnimated:YES];
+                
+            }else if (btnTag == 1)
+            {
+                // 缩小文字
+                [weakSelf reduceTextFont];
+            }else if (btnTag == 2)
+            {
+                // 放大文字
+                [weakSelf enlageTextFont];
+            }else
+            {
+                // 分享
+            }
+        };
+    }
+    return _suspendView;
+}
+
+- (NSMutableURLRequest *)urlRequest
+{
+    if (!_urlRequest) {
+        _urlRequest = [NSMutableURLRequest requestWithURL:[self urlWithDigestId:self.curDigestId]];
+    }
+    return _urlRequest;
+}
+
+
+- (UIScrollView *)scrollView {
+    if (!_scrollView) {
+        _scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+        _scrollView.delegate = self;
+#warning 加上下拉 加载上一篇，下一篇
+//        _scrollView.mj_header = self.refreshHeader;
+//        _scrollView.mj_footer = self.refreshFooter;
+    }
+    return _scrollView;
+}
+
+- (MJRefreshNormalHeader *)refreshHeader {
+    if (!_refreshHeader) {
+        _refreshHeader = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(mj_headerRefresh)];
+    }
+    [self titleWithRefreshOrLoadMore:NO];
+    return _refreshHeader;
+}
+
+- (MJRefreshAutoNormalFooter *)refreshFooter {
+    if (!_refreshFooter) {
+        _refreshFooter = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(mj_footerRefresh)];
+    }
+    [self titleWithRefreshOrLoadMore:YES];
+    return _refreshFooter;
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

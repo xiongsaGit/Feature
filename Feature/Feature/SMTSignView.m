@@ -58,6 +58,8 @@
 
     }];
 
+    [self.signImageView setFrame:CGRectMake(kSpaceX/2, 0, 2*kSpaceX, CGRectGetHeight(self.frame))];
+    
 }
 
 - (void)configureUI
@@ -67,13 +69,16 @@
         UIButton *button = [self factoryForSignButtonWithTag:i];
         [self addSubview:button];
       
+        [button setFrame:CGRectMake(CGRectGetMaxX(self.signImageView.frame)+kSpaceX/2+i*(100+kSpaceX/2), 0, 100, CGRectGetHeight(self.frame))];
+        
         [button mas_remakeConstraints:^(MASConstraintMaker *make){
             make.top.mas_equalTo(self.signImageView.mas_top).offset(kSpaceX/4);
             make.bottom.mas_equalTo(self.mas_bottom).offset(-kSpaceX/4);
             if (i == 0) {
                 make.left.mas_equalTo(self.signImageView.mas_right).offset(kSpaceX/2);
-            }else
+            }else {
                 make.left.mas_equalTo(lastButton.mas_right).offset(kSpaceX/2);
+            }
         }];
         if (i != 0) {
             lastButton = button;

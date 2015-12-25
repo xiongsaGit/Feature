@@ -174,7 +174,7 @@ static CGFloat const kAnimationDuration = .2;
 
 - (void)networkErrorShow {
     [SMTNetworkErrorView showNetworkErrorViewWithReloadBlock:^{
-        NSLog(@"行不行呢");
+
     } toView:self.view];
 }
 
@@ -206,7 +206,8 @@ static CGFloat const kAnimationDuration = .2;
     return self.tableData.count;
 }
 
-// - 这个地方要如何根据数据计算高度呢
+
+#warning // - 这个地方要如何根据数据计算高度呢
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DigestModel *model = self.tableData[indexPath.row];
@@ -214,9 +215,7 @@ static CGFloat const kAnimationDuration = .2;
     if (theType == CardTypeImage)
     {
         return 300;
-    }else if (theType == CardTypeMutilImages)
-        return 250;
-    else if (theType == CardTypeText)
+    }else if (theType == CardTypeText)
         return 200;
     else
         return 250;

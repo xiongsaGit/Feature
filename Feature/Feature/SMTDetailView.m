@@ -59,8 +59,6 @@
     {
         __weak typeof(self)weakSelf = self;
         _titleView = [[TitleView alloc] initWithToAuthorListBlock:^(AuthorModel *authorModel) {
-            //            MainViewController *mainViewCtrl = [[MainViewController alloc] initWithListType:ListTypeByAuthor listId:authorModel.authorId title:authorModel.name];
-            //            [weakSelf.navigationController pushViewController:mainViewCtrl animated:YES];
             if (weakSelf.toAuthorListBlock) {
                 weakSelf.toAuthorListBlock(authorModel);
             }
@@ -76,8 +74,6 @@
             if (weakSelf.toTypeListBlock) {
                 weakSelf.toTypeListBlock(signModel);
             }
-            //            MainViewController *mainViewCtrl = [[MainViewController alloc] initWithListType:ListTypeBySign listId:signModel.id title:signModel.name];
-            //            [weakSelf.navigationController pushViewController:mainViewCtrl animated:YES];
         }];
     }
     return _bookInfoView;
