@@ -34,6 +34,12 @@
     }
     return self;
 }
+
+//- (void)setDigestModel:(DigestModel *)digestModel {
+//    _digestModel = digestModel;
+//    [self showDataForCellType:(CardType)digestModel.cardType WithDataModel:digestModel];
+//}
+
 - (void)showDataForCellType:(CardType)type WithDataModel:(DigestModel *)model
 {
     self.contentView.backgroundColor = [SMTTheme cellContentViewColor];

@@ -43,7 +43,7 @@
 
 @property (nonatomic, strong) MJRefreshNormalHeader *refreshHeader;
 @property (nonatomic, strong) MJRefreshAutoNormalFooter *refreshFooter;
-
+@property (nonatomic, assign) int count;
 @end
 
 @implementation DetailViewController
@@ -69,7 +69,7 @@
     
     [self requestDigestDetailWithDigestId:self.curDigestId requestType:ListRequestTypeDefault];
     [self loadWebViewRequestWithDigestId:self.curDigestId requestType:ListRequestTypeDefault];
-
+    self.count = -1;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -106,7 +106,7 @@
         [weakSelf.detailView.bookInfoView showBookInfoWithDigestModel:detailModel.data.digestDetail];
 
     } failure:^(YTKBaseRequest *request) {
-//        [SvGifView stopGifForView:self.view];
+        [SvGifView stopGifForView:self.view];
     }];
     
 
@@ -124,7 +124,7 @@
 
 - (void)configureFrame
 {
-   self.detailView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 370);
+    self.detailView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 370);
     self.suspendView.frame = CGRectMake(0, SCREEN_HEIGHT-50, SCREEN_WIDTH, 50);
 }
 
@@ -152,17 +152,17 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    int height_str = [[webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.scrollHeight"] intValue];
-    [self configureFrameWithHeight:height_str];
-
-    [self showDifferentColorWithCurrentTime];
-    [SvGifView stopGifForView:self.view];
-    
     // 据说是不缓存webview内容？？
     [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"WebKitCacheModelPreferenceKey"];
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"WebKitDiskImageCacheEnabled"];//自己添加的，原文没有提到。
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"WebKitOfflineWebApplicationCacheEnabled"];//自己添加的，原文没有提到。
     [[NSUserDefaults standardUserDefaults] synchronize];
+
+    int height_str = [[webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.scrollHeight"] intValue];
+    [self configureFrameWithHeight:height_str];
+
+    [self showDifferentColorWithCurrentTime];
+    [SvGifView stopGifForView:self.view];
 }
 
 - (void)showDifferentColorWithCurrentTime {
@@ -225,11 +225,15 @@
 }
 
 - (void)mj_headerRefresh {
+    self.offsetY = 0;
+    self.currentScale = 100;
     [self refreshOrLoadMore:NO];
 
 }
 
 - (void)mj_footerRefresh {
+    self.offsetY = 0;
+    self.currentScale = 100;
     [self refreshOrLoadMore:YES];
 }
 
@@ -254,7 +258,7 @@
         [_refreshHeader setTitle:@"没有了" forState:MJRefreshStateNoMoreData];
     }else {
         if (isLoadMore) {
-            [_refreshFooter setTitle:digestModel.cardTitle forState:MJRefreshStateIdle];
+            [ _refreshFooter setTitle:digestModel.cardTitle forState:MJRefreshStateIdle];
             [_refreshFooter setTitle:digestModel.cardTitle forState:MJRefreshStatePulling];
             [_refreshFooter setTitle:digestModel.cardTitle forState:MJRefreshStateRefreshing];
         }else {
@@ -266,23 +270,22 @@
 }
 
 - (DigestModel *)digestModelLocatedByCurrentDigestId:(NSNumber *)curId forNextPage:(BOOL)isNextPage {
-    __block DigestModel *resultModel = nil;
+     DigestModel *resultModel = nil;
+
     if (self.digestList.count == 1) {
         return resultModel;
     }
     
-    __weak NSArray *tempList = self.digestList;
     __block NSUInteger index = -1;
     
     if (self.curDigestId) {
-
-    [tempList enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [self.digestList enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             DigestModel *model = (DigestModel *)obj;
             if ([model.id isEqualToNumber:self.curDigestId]) {
                 index = idx;
                 *stop = YES;
             }
-    }];
+        }];
     }else
         return resultModel;
     
@@ -352,11 +355,67 @@
             }else
             {
                 // 分享
+                if (self.count == -1) {
+                    [weakSelf changeTextFillColor];
+                    weakSelf.count = 0;
+                }else if (weakSelf.count == 0)
+                {
+                    [weakSelf changeBackgroundColor];
+                    weakSelf.count = 1;
+                }else {
+                    [weakSelf resizeImage];
+                    weakSelf.count = -1;
+                }
+                
             }
         };
     }
     return _suspendView;
 }
+
+- (void)changeTextFillColor {
+   
+//    NSString *textColorString = [NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextFillColor= '%@'",kNIGHT_WEBVIEW_CONTENT];//@"#ffffff"
+    
+    NSString *textColorString = [NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextFillColor= '#fe812c'"];//@"#ffffff"
+
+    [self.detailView.contentWebView stringByEvaluatingJavaScriptFromString:textColorString];
+//    
+    NSString *backgroundColorString = [NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.background='%@'",kNIGHT_WEBVIEW_BACKGROUND];
+    [self.detailView.contentWebView stringByEvaluatingJavaScriptFromString:backgroundColorString];
+    
+
+}
+
+- (void)resizeImage {
+    
+    [self.detailView.contentWebView stringByEvaluatingJavaScriptFromString:
+     @"var script = document.createElement('script');"
+     "script.type = 'text/javascript';"
+     "script.text = \"function ResizeImages() { "
+     "var myimg,oldwidth;"
+     "var maxwidth = 150.0;" // UIWebView中显示的图片宽度
+     "for(i=0;i <document.images.length;i++){"
+     "myimg = document.images[i];"
+     "if(myimg.width > maxwidth){"
+     "oldwidth = myimg.width;"
+     "myimg.width = maxwidth;"
+     "}"
+     "}"
+     "}\";"
+     "document.getElementsByTagName('head')[0].appendChild(script);"];
+    [self.detailView.contentWebView stringByEvaluatingJavaScriptFromString:@"ResizeImages();"];
+    
+
+}
+
+
+- (void)changeBackgroundColor {
+
+    NSString *backgroundColorString = [NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.background='%@'",kNIGHT_WEBVIEW_CONTENT];
+    [self.detailView.contentWebView stringByEvaluatingJavaScriptFromString:backgroundColorString];
+}
+
 
 - (NSMutableURLRequest *)urlRequest
 {
@@ -372,8 +431,8 @@
         _scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
         _scrollView.delegate = self;
 #warning 加上下拉 加载上一篇，下一篇
-//        _scrollView.mj_header = self.refreshHeader;
-//        _scrollView.mj_footer = self.refreshFooter;
+        _scrollView.mj_header = self.refreshHeader;
+        _scrollView.mj_footer = self.refreshFooter;
     }
     return _scrollView;
 }

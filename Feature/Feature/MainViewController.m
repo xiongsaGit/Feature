@@ -151,7 +151,7 @@ static CGFloat const kAnimationDuration = .2;
         
         if (requestType == ListRequestTypeLoadMore) {
             [self.tableView.mj_footer endRefreshing];
-        }else
+        }else if (requestType == ListRequestTypeRefresh)
             [self.tableView.mj_header endRefreshing];
 
         
@@ -294,7 +294,7 @@ static CGFloat const kAnimationDuration = .2;
     _tableData = [NSMutableArray array];
     
     [self.view addSubview:self.tableView];
-    [self.tableView setFrame:self.view.bounds];
+//    [self.tableView setFrame:self.view.bounds];
     
     self.oldOffsetY = 0;
     
@@ -372,7 +372,7 @@ static CGFloat const kAnimationDuration = .2;
 {
     if (!_tableView)
     {
-        _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+        _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
         _tableView.dataSource = self;
         _tableView.delegate = self;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;

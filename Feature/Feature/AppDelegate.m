@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import "MainViewController.h"
-
+#import "SMTMainTableViewController.h"
 
 @interface AppDelegate ()
 
@@ -23,6 +23,8 @@
     [application setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
     
     MainViewController *mainViewCtrl = [[MainViewController alloc] init];
+
+//    SMTMainTableViewController *mainViewCtrl = [[SMTMainTableViewController alloc] init];
     UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:mainViewCtrl];
     self.window.rootViewController = navCtrl;//[[MainViewController alloc] init];
     return YES;

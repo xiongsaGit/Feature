@@ -80,9 +80,9 @@
                 make.left.mas_equalTo(lastButton.mas_right).offset(kSpaceX/2);
             }
         }];
-        if (i != 0) {
-            lastButton = button;
-        }
+
+        lastButton = button;
+        
         SignModel *signModel = self.signList[i];
         [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [button setTitle:[NSString stringWithFormat:@"  %@  ",signModel.name] forState:UIControlStateNormal];

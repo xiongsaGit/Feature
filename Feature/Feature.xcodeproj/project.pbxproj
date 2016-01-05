@@ -48,6 +48,11 @@
 		33AF6DC11C294A470001A52E /* SMTNetworkErrorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 33AF6DC01C294A470001A52E /* SMTNetworkErrorView.m */; };
 		33F795441C1AC7BE001556FE /* SMTHomePageListRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F795431C1AC7BE001556FE /* SMTHomePageListRequest.m */; };
 		33F795481C1AD751001556FE /* SMTBaseRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F795471C1AD751001556FE /* SMTBaseRequest.m */; };
+		33F927661C2D5B6C002EEE36 /* SMTMainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F927651C2D5B6C002EEE36 /* SMTMainTableViewController.m */; };
+		33F9276F1C2D5F61002EEE36 /* UITableView+FDIndexPathHeightCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F927681C2D5F61002EEE36 /* UITableView+FDIndexPathHeightCache.m */; };
+		33F927701C2D5F61002EEE36 /* UITableView+FDKeyedHeightCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F9276A1C2D5F61002EEE36 /* UITableView+FDKeyedHeightCache.m */; };
+		33F927711C2D5F61002EEE36 /* UITableView+FDTemplateLayoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F9276C1C2D5F61002EEE36 /* UITableView+FDTemplateLayoutCell.m */; };
+		33F927721C2D5F61002EEE36 /* UITableView+FDTemplateLayoutCellDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F9276E1C2D5F61002EEE36 /* UITableView+FDTemplateLayoutCellDebug.m */; };
 		33FC8D0F1C2401B10089A24A /* SMTBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 33FC8D0E1C2401B10089A24A /* SMTBaseView.m */; };
 		33FC8D121C2401C20089A24A /* SMTBaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 33FC8D111C2401C20089A24A /* SMTBaseCell.m */; };
 		33FC8D151C2402370089A24A /* SMTTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 33FC8D141C2402370089A24A /* SMTTheme.m */; };
@@ -160,6 +165,16 @@
 		33F795451C1AD6C3001556FE /* CommonURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonURL.h; sourceTree = "<group>"; };
 		33F795461C1AD751001556FE /* SMTBaseRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTBaseRequest.h; sourceTree = "<group>"; };
 		33F795471C1AD751001556FE /* SMTBaseRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTBaseRequest.m; sourceTree = "<group>"; };
+		33F927641C2D5B6C002EEE36 /* SMTMainTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTMainTableViewController.h; sourceTree = "<group>"; };
+		33F927651C2D5B6C002EEE36 /* SMTMainTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTMainTableViewController.m; sourceTree = "<group>"; };
+		33F927671C2D5F61002EEE36 /* UITableView+FDIndexPathHeightCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+FDIndexPathHeightCache.h"; sourceTree = "<group>"; };
+		33F927681C2D5F61002EEE36 /* UITableView+FDIndexPathHeightCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+FDIndexPathHeightCache.m"; sourceTree = "<group>"; };
+		33F927691C2D5F61002EEE36 /* UITableView+FDKeyedHeightCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+FDKeyedHeightCache.h"; sourceTree = "<group>"; };
+		33F9276A1C2D5F61002EEE36 /* UITableView+FDKeyedHeightCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+FDKeyedHeightCache.m"; sourceTree = "<group>"; };
+		33F9276B1C2D5F61002EEE36 /* UITableView+FDTemplateLayoutCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+FDTemplateLayoutCell.h"; sourceTree = "<group>"; };
+		33F9276C1C2D5F61002EEE36 /* UITableView+FDTemplateLayoutCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+FDTemplateLayoutCell.m"; sourceTree = "<group>"; };
+		33F9276D1C2D5F61002EEE36 /* UITableView+FDTemplateLayoutCellDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+FDTemplateLayoutCellDebug.h"; sourceTree = "<group>"; };
+		33F9276E1C2D5F61002EEE36 /* UITableView+FDTemplateLayoutCellDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+FDTemplateLayoutCellDebug.m"; sourceTree = "<group>"; };
 		33FC8D0B1C23FEAD0089A24A /* singleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = singleton.h; sourceTree = "<group>"; };
 		33FC8D0D1C2401B10089A24A /* SMTBaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTBaseView.h; sourceTree = "<group>"; };
 		33FC8D0E1C2401B10089A24A /* SMTBaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTBaseView.m; sourceTree = "<group>"; };
@@ -299,6 +314,8 @@
 				3335371B1BA6AC3000B5B353 /* DetailViewController.m */,
 				33FC8D161C240AE90089A24A /* SMTBaseViewController.h */,
 				33FC8D171C240AE90089A24A /* SMTBaseViewController.m */,
+				33F927641C2D5B6C002EEE36 /* SMTMainTableViewController.h */,
+				33F927651C2D5B6C002EEE36 /* SMTMainTableViewController.m */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -442,6 +459,14 @@
 				5693635D1C1F197D0051DB6F /* SvGifView.m */,
 				338AA2FA1C1C77C900FBB79C /* UIImage+animatedGIF.h */,
 				338AA2FB1C1C77C900FBB79C /* UIImage+animatedGIF.m */,
+				33F927671C2D5F61002EEE36 /* UITableView+FDIndexPathHeightCache.h */,
+				33F927681C2D5F61002EEE36 /* UITableView+FDIndexPathHeightCache.m */,
+				33F927691C2D5F61002EEE36 /* UITableView+FDKeyedHeightCache.h */,
+				33F9276A1C2D5F61002EEE36 /* UITableView+FDKeyedHeightCache.m */,
+				33F9276B1C2D5F61002EEE36 /* UITableView+FDTemplateLayoutCell.h */,
+				33F9276C1C2D5F61002EEE36 /* UITableView+FDTemplateLayoutCell.m */,
+				33F9276D1C2D5F61002EEE36 /* UITableView+FDTemplateLayoutCellDebug.h */,
+				33F9276E1C2D5F61002EEE36 /* UITableView+FDTemplateLayoutCellDebug.m */,
 			);
 			path = ThirdParty;
 			sourceTree = "<group>";
@@ -641,20 +666,24 @@
 				33FC8D181C240AE90089A24A /* SMTBaseViewController.m in Sources */,
 				33153B841BA57DFF007B6859 /* LeftMenuView.m in Sources */,
 				33153B6F1BA57C29007B6859 /* DataModel.m in Sources */,
+				33F927711C2D5F61002EEE36 /* UITableView+FDTemplateLayoutCell.m in Sources */,
 				336D6D201C1C24EC001F1B33 /* SMTListByAuthorRequest.m in Sources */,
 				330B109C1C1FE8B300BF39BB /* SMTCurrentIsDay.m in Sources */,
+				33F9276F1C2D5F61002EEE36 /* UITableView+FDIndexPathHeightCache.m in Sources */,
 				33153B6B1BA57C29007B6859 /* DigestModel.m in Sources */,
 				33F795481C1AD751001556FE /* SMTBaseRequest.m in Sources */,
 				338AA2F91C1C45CB00FBB79C /* SMTContentView.m in Sources */,
 				33153B851BA57DFF007B6859 /* TimerView.m in Sources */,
 				330DC4151C2138D00085973E /* SMTRandomColor.m in Sources */,
 				33153B821BA57DFF007B6859 /* SuspendView.m in Sources */,
+				33F927721C2D5F61002EEE36 /* UITableView+FDTemplateLayoutCellDebug.m in Sources */,
 				3335371F1BA6C14D00B5B353 /* TitleView.m in Sources */,
 				338AA2FC1C1C77C900FBB79C /* UIImage+animatedGIF.m in Sources */,
 				33153B741BA57D1B007B6859 /* MainViewController.m in Sources */,
 				33FC8D151C2402370089A24A /* SMTTheme.m in Sources */,
 				330DC5AA1C2592FC00F86CA9 /* SMTDetailView.m in Sources */,
 				33153B6C1BA57C29007B6859 /* RootModel.m in Sources */,
+				33F927701C2D5F61002EEE36 /* UITableView+FDKeyedHeightCache.m in Sources */,
 				330DC40C1C21361E0085973E /* SMTEBookInfoView.m in Sources */,
 				330DC3FC1C20FCC60085973E /* SMTDetailDataModel.m in Sources */,
 				337E5F4A1BA5783600C83E58 /* AppDelegate.m in Sources */,
@@ -667,6 +696,7 @@
 				33153B701BA57C29007B6859 /* StatusModel.m in Sources */,
 				33153B6E1BA57C29007B6859 /* SignModel.m in Sources */,
 				330DC3F91C20FC820085973E /* SMTDetailModel.m in Sources */,
+				33F927661C2D5B6C002EEE36 /* SMTMainTableViewController.m in Sources */,
 				330DC4021C2100E00085973E /* SMTUserBaseInfoModel.m in Sources */,
 				33FC8D121C2401C20089A24A /* SMTBaseCell.m in Sources */,
 				330DC4121C2137900085973E /* SMTSignView.m in Sources */,

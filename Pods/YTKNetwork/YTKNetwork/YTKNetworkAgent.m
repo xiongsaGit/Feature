@@ -279,7 +279,7 @@
     @synchronized(self) {
         [_requestsRecord removeObjectForKey:key];
     }
-    YTKLog(@"Request queue size = %lu", (unsigned long)[_requestsRecord count]);
+//    YTKLog(@"Request queue size = %lu", (unsigned long)[_requestsRecord count]);
 }
 
 @end

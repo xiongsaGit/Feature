@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Feature/Feature/DetailViewController.m"
-            timestampString = "472703922.592305"
+            timestampString = "473676488.937928"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "242"
-            endingLineNumber = "242"
+            startingLineNumber = "246"
+            endingLineNumber = "246"
             landmarkName = "-refreshOrLoadMore:"
             landmarkType = "5">
          </BreakpointContent>
@@ -25,61 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Feature/Feature/SMTSignView.m"
-            timestampString = "472705548.039589"
+            filePath = "Feature/Feature/MainViewController.m"
+            timestampString = "473585265.358473"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "74"
-            endingLineNumber = "74"
-            landmarkName = "-configureUI"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[SMTSignView configureUI]"
-                  moduleName = "Feature"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/rr/Feature/Feature/Feature/SMTSignView.m"
-                  timestampString = "472705170.233206"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "70"
-                  endingLineNumber = "70"
-                  offsetFromSymbolStart = "240">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__26-[SMTSignView configureUI]_block_invoke"
-                  moduleName = "Feature"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/rr/Feature/Feature/Feature/SMTSignView.m"
-                  timestampString = "472705170.233472"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "70"
-                  endingLineNumber = "70"
-                  offsetFromSymbolStart = "52">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Feature/Feature/SMTSignView.m"
-            timestampString = "472705548.039589"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "66"
-            endingLineNumber = "66"
-            landmarkName = "-configureUI"
+            startingLineNumber = "196"
+            endingLineNumber = "196"
+            landmarkName = "-loadMoreDataInTableView"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -89,13 +41,45 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Feature/Feature/SMTSignView.m"
-            timestampString = "472705548.039589"
+            filePath = "Feature/Feature/MainViewController.m"
+            timestampString = "473585268.971788"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "86"
-            endingLineNumber = "86"
-            landmarkName = "-configureUI"
+            startingLineNumber = "185"
+            endingLineNumber = "185"
+            landmarkName = "-refreshDataInTableView"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Feature/Feature/LeftMenuView.m"
+            timestampString = "473585275.278026"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "54"
+            endingLineNumber = "54"
+            landmarkName = "-decideToShowWhatWhenTimeIsCurrent"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Feature/Feature/DetailViewController.m"
+            timestampString = "473676488.937928"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "360"
+            endingLineNumber = "360"
+            landmarkName = "-suspendView"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
